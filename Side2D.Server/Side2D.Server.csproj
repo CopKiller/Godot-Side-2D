@@ -1,0 +1,17 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>Side2D.Server</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Side2D.Logger\Side2D.Logger.csproj" />
+    <ProjectReference Include="..\Side2D.Services.Configuration\Side2D.Services.Configuration.csproj" />
+    <ProjectReference Include="..\Side2D.Services\Side2D.Services.csproj" />
+  </ItemGroup>
+
+</Project>

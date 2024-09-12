@@ -1,0 +1,31 @@
+using Godot;
+using Side2D.Logger;
+
+namespace Side2D.scripts;
+
+public class Logger : ILogger
+{
+    public Logger()
+    {
+        Log.LogInstance = this;
+    }
+    public void Print(string message)
+    {
+        GD.Print(message);
+    }
+
+    public void PrintInfo(string message)
+    {
+        GD.Print(message);
+    }
+
+    public void PrintWarning(string message)
+    {
+        GD.Print(message);
+    }
+
+    public void PrintError(string message)
+    {
+        GD.PrintErr(message);
+    }
+}

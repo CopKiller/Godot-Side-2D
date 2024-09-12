@@ -1,0 +1,38 @@
+# Arquivos de compilação do Visual Studio
+*.user
+*.suo
+*.sln.docstates
+*.suo
+
+# Pasta de compilação do Visual Studio
+bin/
+obj/
+
+# Arquivos de backup do Visual Studio
+[Bb]ackup([ _])*([0-9]).*
+
+# Arquivos de compilação do Mono
+mono/
+
+# Pasta de compilação do Mono
+bin_mono/
+obj_mono/
+
+# Arquivos de compilação do Rider
+.idea/
+
+# Arquivos temporários do Godot
+*.import/
+*.imported/
+*.tres.*
+*.tscn.*
+*.scn.*
+*.sres.*
+
+# Cache do Godot
+*.import/
+*.imported/
+
+# Arquivos de configuração de usuário do Godot
+*.godot/
+*.import

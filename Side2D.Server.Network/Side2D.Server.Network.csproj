@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\External\LiteNet\LiteNetLib\LiteNetLib.csproj" />
+      <ProjectReference Include="..\Side2D.Logger\Side2D.Logger.csproj" />
+      <ProjectReference Include="..\Side2D.Network\Side2D.Network.csproj" />
+    </ItemGroup>
+
+</Project>
