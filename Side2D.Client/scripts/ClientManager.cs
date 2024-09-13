@@ -9,32 +9,30 @@ public class ClientManager
 {
     public static ClientManager Instance { get; private set; }
     
-    private ClientNetworkService _clientNetworkService;
     private NetworkManager _networkManager;
-    private ClientPacketProcessor _clientPacketProcessor;
-    
     private Thread _networkThread;
     
-    public ClientPlayer ClientPlayer { get; private set; } = new();
+    public ClientPlayer ClientPlayer { get; private set; }
     
     private PacketReceiver _packetReceiver;
     
     public ClientManager()
     {
         Instance = this;
-        new Logger();
+        var logger = new Logger();
     }
     
     public void Start()
     {
-        _clientPacketProcessor = new ClientPacketProcessor();
-        _clientNetworkService = new ClientNetworkService(_clientPacketProcessor);
-        _networkManager = new NetworkManager(_clientNetworkService);
+        var packetProcessor = new ClientPacketProcessor();
+        var clientNetworkService = new ClientNetworkService(packetProcessor);
+        ClientPlayer = new ClientPlayer(packetProcessor);
+        _networkManager = new NetworkManager(clientNetworkService);
         
-        _clientNetworkService.CurrentPeerConnectedEvent += ClientPlayer.OnLocalPeerConnected;
-        _clientNetworkService.RemotePeerConnectedEvent += ClientPlayer.OnRemotePeerConnected;
-        _clientNetworkService.CurrentPeerDisconnectedEvent += ClientPlayer.OnLocalPeerDisconnected;
-        _clientNetworkService.RemotePeerDisconnectedEvent += ClientPlayer.OnRemotePeerDisconnected;
+        clientNetworkService.CurrentPeerConnectedEvent += ClientPlayer.OnLocalPeerConnected;
+        clientNetworkService.RemotePeerConnectedEvent += ClientPlayer.OnRemotePeerConnected;
+        clientNetworkService.CurrentPeerDisconnectedEvent += ClientPlayer.OnLocalPeerDisconnected;
+        clientNetworkService.RemotePeerDisconnectedEvent += ClientPlayer.OnRemotePeerDisconnected;
         
         _packetReceiver = new PacketReceiver();
         _packetReceiver.Initialize();

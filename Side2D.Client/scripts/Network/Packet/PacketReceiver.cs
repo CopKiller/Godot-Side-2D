@@ -7,9 +7,9 @@ public class PacketReceiver
 {
     public void Initialize()
     {
-        ClientPacketProcessor.Instance.SubscribeReusable<SPlayerData>(ServerPlayerData);
-        ClientPacketProcessor.Instance.SubscribeReusable<SPlayerMove>(ServerPlayerMove);
-        ClientPacketProcessor.Instance.SubscribeReusable<SPlayerLeft>(ServerLeft);
+        ClientManager.Instance.ClientPlayer.clientPacketProcessor.SubscribeReusable<SPlayerData>(ServerPlayerData);
+        ClientManager.Instance.ClientPlayer.clientPacketProcessor.SubscribeReusable<SPlayerMove>(ServerPlayerMove);
+        ClientManager.Instance.ClientPlayer.clientPacketProcessor.SubscribeReusable<SPlayerLeft>(ServerLeft);
     }
     
     private void ServerPlayerData(SPlayerData obj)

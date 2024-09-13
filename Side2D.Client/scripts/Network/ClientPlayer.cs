@@ -4,7 +4,7 @@ using Side2D.Logger;
 
 namespace Side2D.scripts.Network
 {
-    public partial class ClientPlayer : GodotObject
+    public class ClientPlayer(ClientPacketProcessor clientPacketProcessor)
     {
         /// <summary>
         /// Get the current latency between server and client
@@ -25,6 +25,8 @@ namespace Side2D.scripts.Network
         ///  Player Index in the server
         /// </summary>
         public int PlayerIndex { get; set; } = -1;
+
+        public ClientPacketProcessor clientPacketProcessor { get; } = clientPacketProcessor;
         
         public bool CheckConnection()
         {
@@ -89,7 +91,7 @@ namespace Side2D.scripts.Network
                 return;
             }
             
-            ClientPacketProcessor.Instance.SendDataTo(CurrentPeer, packet, deliveryMethod);
+            clientPacketProcessor.SendDataTo(CurrentPeer, packet, deliveryMethod);
         }
     }
 }

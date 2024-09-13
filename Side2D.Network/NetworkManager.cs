@@ -19,7 +19,10 @@ public class NetworkManager : INetworkManager
     public void Start()
     {
         NetworkService?.Start();
-        _stopwatch.Start();
+        
+        if (DefaultUpdateInterval > 0) 
+            _stopwatch.Start();
+        
         _isRunning = true;
     }
     
@@ -42,9 +45,14 @@ public class NetworkManager : INetworkManager
     public void Update()
     {
         if (!_isRunning) return;
-        if (_stopwatch.ElapsedMilliseconds < DefaultUpdateInterval) return;
+        
+        if (DefaultUpdateInterval > 0) 
+            if (_stopwatch.ElapsedMilliseconds < DefaultUpdateInterval) return;
+        
         NetworkService?.Update();
-        _stopwatch.Restart();
+        
+        if (DefaultUpdateInterval > 0) 
+            _stopwatch.Restart();
     }
 
     public void Dispose()
