@@ -2,9 +2,9 @@
 
 [ext_resource type="Texture2D" uid="uid://cplrkncjecfny" path="res://resources/Panoramas/5.png" id="1_jl54l"]
 [ext_resource type="Texture2D" uid="uid://nnu1omp1f3ka" path="res://resources/grass.png" id="1_kd8hv"]
-[ext_resource type="Script" path="res://scripts/Map.cs" id="1_xumii"]
+[ext_resource type="Script" path="res://scripts/Game/Map.cs" id="1_xumii"]
 [ext_resource type="Texture2D" uid="uid://cwcu0sqwynlma" path="res://resources/PattersData.png" id="2_6uhb1"]
-[ext_resource type="Script" path="res://scripts/Players.cs" id="6_msofe"]
+[ext_resource type="Script" path="res://scripts/Game/Players.cs" id="6_msofe"]
 [ext_resource type="Script" path="res://scenes/CanvasLayer.cs" id="7_titel"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4p6y2"]

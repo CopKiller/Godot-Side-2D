@@ -5,10 +5,6 @@ namespace Side2D.scripts;
 
 public class Logger : ILogger
 {
-    public Logger()
-    {
-        Log.LogInstance = this;
-    }
     public void Print(string message)
     {
         GD.Print(message);

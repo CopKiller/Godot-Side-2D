@@ -5,12 +5,15 @@ using Side2D.Models.Enum;
 using Side2D.Models.Vectors;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Client;
+using Side2D.scripts.Host;
+using Side2D.scripts.Network;
 using Vector2 = Godot.Vector2;
 
 namespace Side2D.scripts;
 
 public partial class Player : CharacterBody2D
 {
+	private ClientPlayer _clientPlayer;
 	public PlayerDataModel PlayerDataModel;
 	public PlayerMoveModel PlayerMoveModel;
 	public CPlayerMove CPlayerMove = new();
@@ -29,6 +32,7 @@ public partial class Player : CharacterBody2D
 	public override void _Ready()
 	{
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
 		
 		UpdatePlayer();
 	}
@@ -95,7 +99,7 @@ public partial class Player : CharacterBody2D
 
 		// Envia a atualização
 		CPlayerMove.PlayerMoveModel = PlayerMoveModel;
-		ClientManager.Instance.ClientPlayer.SendData(CPlayerMove, DeliveryMethod.Sequenced);
+		_clientPlayer.SendData(CPlayerMove, DeliveryMethod.Sequenced);
 	}
 	
 	private void ProcessPlayerMovement()

@@ -1,26 +1,20 @@
+using System;
 using System.Threading;
+using Godot;
+using Side2D.Models.Enum;
 using Side2D.Network;
 using Side2D.scripts.Network;
-using Side2D.scripts.Network.Packet;
 
 namespace Side2D.scripts;
 
-public class ClientManager
+public partial class ClientManager : Node
 {
-    public static ClientManager Instance { get; private set; }
-    
+    private ClientPacketProcessor _packetProcessor;
     private NetworkManager _networkManager;
+    private SceneManager _sceneManager;
     private Thread _networkThread;
     
     public ClientPlayer ClientPlayer { get; private set; }
-    
-    private PacketReceiver _packetReceiver;
-    
-    public ClientManager()
-    {
-        Instance = this;
-        var logger = new Logger();
-    }
     
     public void Start()
     {
@@ -28,14 +22,12 @@ public class ClientManager
         var clientNetworkService = new ClientNetworkService(packetProcessor);
         ClientPlayer = new ClientPlayer(packetProcessor);
         _networkManager = new NetworkManager(clientNetworkService);
+        _sceneManager = new SceneManager();
         
         clientNetworkService.CurrentPeerConnectedEvent += ClientPlayer.OnLocalPeerConnected;
         clientNetworkService.RemotePeerConnectedEvent += ClientPlayer.OnRemotePeerConnected;
         clientNetworkService.CurrentPeerDisconnectedEvent += ClientPlayer.OnLocalPeerDisconnected;
         clientNetworkService.RemotePeerDisconnectedEvent += ClientPlayer.OnRemotePeerDisconnected;
-        
-        _packetReceiver = new PacketReceiver();
-        _packetReceiver.Initialize();
         
         _networkManager.Register();
         _networkManager.Start();
@@ -51,5 +43,29 @@ public class ClientManager
             }
         });
         _networkThread.Start();
+    }
+    
+    public void ChangeClientStateDeferred(ClientState state)
+    {
+        CallDeferred(nameof(ChangeClientState), (byte)state);
+    }
+    
+    public void ChangeClientState(ClientState state)
+    {
+        switch (state)
+        {
+            case ClientState.Menu:
+                break;
+            case ClientState.NewCharacter:
+                break;
+            case ClientState.Game:
+                _sceneManager.LoadScene<Game>();
+                break;
+            case ClientState.None:
+                GetTree().Quit();
+                break;
+            default:
+                throw new ArgumentOutOfRangeException(nameof(state), state, null);
+        }
     }
 }
