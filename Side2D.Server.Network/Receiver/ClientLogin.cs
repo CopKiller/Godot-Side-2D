@@ -1,5 +1,6 @@
 ﻿
 using LiteNetLib;
+using Side2D.Models.Enum;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Client;
 using Side2D.Network.Packet.Server;
@@ -13,6 +14,17 @@ namespace Side2D.Server.Network
             _players.TryGetValue(netPeer.Id, out var player);
 
             if (player == null) return;
+            
+            if (player.ClientState != ClientState.Menu) return;
+            
+            player.ClientState = ClientState.Game;
+            var changeClientState = new SClientState()
+            {
+                ClientState = player.ClientState
+            };
+            
+            SendDataTo(netPeer, changeClientState, DeliveryMethod.ReliableOrdered);
+            
 
             var packet = new SPlayerData();
             

@@ -1,11 +1,10 @@
-[gd_scene load_steps=11 format=4 uid="uid://bxq374n0w3y20"]
+[gd_scene load_steps=10 format=4 uid="uid://bxq374n0w3y20"]
 
 [ext_resource type="Texture2D" uid="uid://cplrkncjecfny" path="res://resources/Panoramas/5.png" id="1_jl54l"]
 [ext_resource type="Texture2D" uid="uid://nnu1omp1f3ka" path="res://resources/grass.png" id="1_kd8hv"]
-[ext_resource type="Script" path="res://scripts/Game/Map.cs" id="1_xumii"]
+[ext_resource type="Script" path="res://scripts/MainScripts/Game/Map.cs" id="1_xumii"]
 [ext_resource type="Texture2D" uid="uid://cwcu0sqwynlma" path="res://resources/PattersData.png" id="2_6uhb1"]
-[ext_resource type="Script" path="res://scripts/Game/Players.cs" id="6_msofe"]
-[ext_resource type="Script" path="res://scenes/CanvasLayer.cs" id="7_titel"]
+[ext_resource type="Script" path="res://scripts/MainScripts/Game/Players.cs" id="6_msofe"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4p6y2"]
 texture = ExtResource("1_kd8hv")
@@ -386,29 +385,3 @@ rendering_quadrant_size = 32
 
 [node name="Players" type="Node" parent="."]
 script = ExtResource("6_msofe")
-
-[node name="CanvasLayer" type="CanvasLayer" parent="."]
-script = ExtResource("7_titel")
-
-[node name="Panel" type="Panel" parent="CanvasLayer"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Button" type="Button" parent="CanvasLayer/Panel"]
-unique_name_in_owner = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -4.0
-offset_top = -4.0
-offset_right = 4.0
-offset_bottom = 4.0
-grow_horizontal = 2
-grow_vertical = 2
-text = "Iniciar Jogo"

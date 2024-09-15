@@ -3,21 +3,22 @@ using System.Threading;
 using Godot;
 using Side2D.Models.Enum;
 using Side2D.Network;
+using Side2D.Network.Packet.Server;
+using Side2D.scripts.MainScripts.Game;
 using Side2D.scripts.Network;
 
 namespace Side2D.scripts;
 
-public partial class ClientManager : Node
+public partial class ClientManager : Node, IPacketHandler
 {
     private ClientPacketProcessor _packetProcessor;
     private NetworkManager _networkManager;
     private SceneManager _sceneManager;
     private Thread _networkThread;
     
-    public ClientPlayer ClientPlayer { get; private set; }
-    
-    public void Start()
+    public ClientManager()
     {
+        Name = nameof(ClientManager);
         var packetProcessor = new ClientPacketProcessor();
         var clientNetworkService = new ClientNetworkService(packetProcessor);
         ClientPlayer = new ClientPlayer(packetProcessor);
@@ -30,6 +31,14 @@ public partial class ClientManager : Node
         clientNetworkService.RemotePeerDisconnectedEvent += ClientPlayer.OnRemotePeerDisconnected;
         
         _networkManager.Register();
+        
+        RegisterPacketHandlers();
+    }
+    
+    public ClientPlayer ClientPlayer { get; private set; }
+    
+    public void Start()
+    {
         _networkManager.Start();
         
         _networkThread = new Thread(() =>
@@ -45,16 +54,12 @@ public partial class ClientManager : Node
         _networkThread.Start();
     }
     
-    public void ChangeClientStateDeferred(ClientState state)
-    {
-        CallDeferred(nameof(ChangeClientState), (byte)state);
-    }
-    
     public void ChangeClientState(ClientState state)
     {
         switch (state)
         {
             case ClientState.Menu:
+                _sceneManager.LoadScene<MainMenu>();
                 break;
             case ClientState.NewCharacter:
                 break;
@@ -67,5 +72,21 @@ public partial class ClientManager : Node
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
+    }
+
+    public void RegisterPacketHandlers()
+    {
+        ClientPacketProcessor.RegisterPacket<SClientState>(ChangeState);
+        return;
+        
+        void ChangeState(SClientState obj)
+        {
+            ChangeClientState(obj.ClientState);
+        }
+    }
+
+    public override void _ExitTree()
+    {
+        ClientPacketProcessor.UnregisterPacket<SClientState>();
     }
 }

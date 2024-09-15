@@ -15,13 +15,15 @@ namespace Side2D.Server.Network
         public NetPeer Peer { get; set; }
         public PlayerDataModel PlayerDataModel { get; set; }
         public PlayerMoveModel PlayerMoveModel { get; set; }
+        
+        public ClientState ClientState { get; set; }
 
 
-        public readonly ServerPacketProcessor? ServerPacketProcessor;
+        private readonly ServerPacketProcessor? _serverPacketProcessor;
 
         public ServerClient(NetPeer netPeer, ServerPacketProcessor? serverPacketProcessor)
         {
-            ServerPacketProcessor = serverPacketProcessor;
+            _serverPacketProcessor = serverPacketProcessor;
 
             Peer = netPeer;
 
@@ -39,6 +41,8 @@ namespace Side2D.Server.Network
                 Direction = Direction.Right,
                 Position = new Vector2C(400, 300),
             };
+            
+            ClientState = ClientState.Menu;
         }
 
         public void Disconnect()
@@ -49,7 +53,7 @@ namespace Side2D.Server.Network
             };
             
             Peer.Disconnect();
-            ServerPacketProcessor?.ServerLeft(Peer, left);
+            _serverPacketProcessor?.ServerLeft(Peer, left);
         }
         
     }

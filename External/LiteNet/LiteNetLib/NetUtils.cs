@@ -170,7 +170,7 @@ namespace LiteNetLib
                         {
                             NetDebug.WriteForce(
                                 NetLogLevel.Info,
-                                $"Interface: {ni.Name}, Type: {ni.NetworkInterfaceType}, Ip: {ip.Address}, OpStatus: {ni.OperationalStatus}");
+                                $"Interfaces: {ni.Name}, Type: {ni.NetworkInterfaceType}, Ip: {ip.Address}, OpStatus: {ni.OperationalStatus}");
                         }
                     }
                 }

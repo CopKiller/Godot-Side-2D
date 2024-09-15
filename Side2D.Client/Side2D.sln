@@ -20,6 +20,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{2A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Models", "..\Side2D.Models\Side2D.Models.csproj", "{C6900FEC-A945-4587-9FE6-7F35B5646809}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "..\External\Database\Database.csproj", "{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Database", "..\Side2D.Server.Database\Side2D.Server.Database.csproj", "{5ACBAD0D-2441-4406-9151-B8BBD5EBD8CE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Cryptography", "..\Side2D.Cryptography\Side2D.Cryptography.csproj", "{DEC70B9D-0406-4698-A4CD-03CFCE4CDB19}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Tests", "..\Side2D.Tests\Side2D.Tests.csproj", "{CB4166CB-6763-479E-A352-B835C383975D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU
@@ -81,8 +89,33 @@ Global
 		{C6900FEC-A945-4587-9FE6-7F35B5646809}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
 		{C6900FEC-A945-4587-9FE6-7F35B5646809}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
 		{C6900FEC-A945-4587-9FE6-7F35B5646809}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{5ACBAD0D-2441-4406-9151-B8BBD5EBD8CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ACBAD0D-2441-4406-9151-B8BBD5EBD8CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5ACBAD0D-2441-4406-9151-B8BBD5EBD8CE}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ACBAD0D-2441-4406-9151-B8BBD5EBD8CE}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{5ACBAD0D-2441-4406-9151-B8BBD5EBD8CE}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{5ACBAD0D-2441-4406-9151-B8BBD5EBD8CE}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{DEC70B9D-0406-4698-A4CD-03CFCE4CDB19}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC70B9D-0406-4698-A4CD-03CFCE4CDB19}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC70B9D-0406-4698-A4CD-03CFCE4CDB19}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC70B9D-0406-4698-A4CD-03CFCE4CDB19}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{DEC70B9D-0406-4698-A4CD-03CFCE4CDB19}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{DEC70B9D-0406-4698-A4CD-03CFCE4CDB19}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{CB4166CB-6763-479E-A352-B835C383975D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB4166CB-6763-479E-A352-B835C383975D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CB4166CB-6763-479E-A352-B835C383975D}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB4166CB-6763-479E-A352-B835C383975D}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{CB4166CB-6763-479E-A352-B835C383975D}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{CB4166CB-6763-479E-A352-B835C383975D}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{F776E7E6-9848-4AE9-AD66-9303A8B283B5} = {2A69FAD0-BC78-4F13-B109-C1DBD4AE715C}
+		{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB} = {2A69FAD0-BC78-4F13-B109-C1DBD4AE715C}
 	EndGlobalSection
 EndGlobal

@@ -6,6 +6,8 @@ namespace Side2D.scripts.Network
 {
     public class ClientPlayer(ClientPacketProcessor clientPacketProcessor)
     {
+        public ClientPacketProcessor clientPacketProcessor { get; } = clientPacketProcessor;
+        
         /// <summary>
         /// Get the current latency between server and client
         /// </summary>
@@ -25,8 +27,6 @@ namespace Side2D.scripts.Network
         ///  Player Index in the server
         /// </summary>
         public int PlayerIndex { get; set; } = -1;
-
-        public ClientPacketProcessor clientPacketProcessor { get; } = clientPacketProcessor;
         
         public bool CheckConnection()
         {

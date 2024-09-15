@@ -9,4 +9,10 @@
   <ItemGroup>
     <ProjectReference Include="..\Side2D.Network\Side2D.Network.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="scenes\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="scenes\**" />
+  </ItemGroup>
 </Project>

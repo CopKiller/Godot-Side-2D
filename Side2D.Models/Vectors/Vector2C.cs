@@ -1,12 +1,21 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace Side2D.Models.Vectors;
 
-public struct Vector2C(float x, float y)
+public class Vector2C
 {
-    public float X { get; set; } = x;
-
-    public float Y { get; set; } = y;
+    public Vector2C(float x, float y)
+    {
+        X = x;
+        Y = y;
+    }
+    public Vector2C() { }
     
-    public static Vector2C Zero => new(0, 0);
+    public int Id { get; set; }
+    public float X { get; set; }
+    public float Y { get; set; }
+    
+    public static Vector2C Zero => new(0,0);
     
     public override string ToString()
     {

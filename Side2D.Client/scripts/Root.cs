@@ -1,8 +1,8 @@
 using Godot;
-using System;
 using Side2D.Models.Enum;
-using Side2D.scripts;
 using Side2D.scripts.Host;
+
+namespace Side2D.scripts;
 
 public partial class Root : Node2D
 {
@@ -10,9 +10,9 @@ public partial class Root : Node2D
 	public override void _Ready()
 	{
 		var clientManager = ApplicationHost.Instance.GetSingleton<ClientManager>();
-		
 		clientManager.Start();
-		clientManager.ChangeClientStateDeferred(ClientState.Game);
+		
+		clientManager.ChangeClientState(ClientState.Menu);
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

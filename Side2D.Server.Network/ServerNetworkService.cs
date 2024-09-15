@@ -66,8 +66,6 @@ public class ServerNetworkService : NetworkService
         this.listener.NtpResponseEvent -= OnNtpResponseEvent;
 
         Players?.Clear();
-
-        base.Unregister();
     }
 
     private void OnPeerConnectedEvent(NetPeer peer)

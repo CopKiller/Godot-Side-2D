@@ -5,7 +5,6 @@ using Side2D.Logger;
 namespace Side2D.Network;
 public abstract class NetworkService : INetworkService
 {
-    
     protected NetManager? NetManager;
     protected EventBasedNetListener? listener;
 

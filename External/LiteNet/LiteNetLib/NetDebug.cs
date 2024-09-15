@@ -26,7 +26,7 @@ namespace LiteNetLib
     }
 
     /// <summary>
-    /// Interface to implement for your own logger
+    /// Interfaces to implement for your own logger
     /// </summary>
     public interface INetLogger
     {
