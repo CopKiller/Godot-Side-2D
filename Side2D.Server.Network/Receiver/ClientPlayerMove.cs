@@ -9,8 +9,10 @@ namespace Side2D.Server.Network
     {
         public void ClientPlayerMove(CPlayerMove obj, NetPeer netPeer)
         {
-            _players.TryGetValue(netPeer.Id, out var player);
+            if (ServerNetworkService.Players == null) return;
             
+            ServerNetworkService.Players.TryGetValue(netPeer.Id, out var player);
+
             if (player == null) return;
 
             var receivedMove = obj.PlayerMoveModel;

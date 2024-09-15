@@ -5,21 +5,18 @@ using Side2D.Services.Configuration;
 
 namespace Side2D.Services;
 
-public sealed class ServicesManager : ISingleService
+public sealed class ServicesManager : IDisposable
 {
     private const int DefaultUpdateInterval = 5;
-    
-    public static ISingleService? Instance { get; private set; }
+
     private IServiceProvider? ServiceProvider { get; set; }             // --> Provider de serviços
     private List<ISingleService>? Services { get; set; }                // --> Coleção de serviços unicos
     
     private CancellationTokenSource? _updateCancellationTokenSource;    // --> Token de cancelamento
-    
-    private Thread? _updateThread;
 
     public ServicesManager()
     {
-        Instance = this;
+        
     }
 
     public void Register()
@@ -91,11 +88,9 @@ public sealed class ServicesManager : ISingleService
         _updateCancellationTokenSource?.Dispose();
         _updateCancellationTokenSource = new CancellationTokenSource();
         
-        //_updateThread = new Thread(() => UpdateService(_updateCancellationTokenSource.Token));
-        //_updateThread.Start();
-        
         UpdateService(_updateCancellationTokenSource.Token);
-        
+        return;
+
         void UpdateService(CancellationToken cancellationToken)
         {
             Stopwatch stopwatch = new();
@@ -103,8 +98,6 @@ public sealed class ServicesManager : ISingleService
             
             while (!cancellationToken.IsCancellationRequested)
             {
-                //if (stopwatch.ElapsedMilliseconds < DefaultUpdateInterval) continue;
-                
                 foreach (var service in Services)
                 {
                     service.Update();

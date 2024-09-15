@@ -8,7 +8,7 @@ namespace Side2D.Server.Infrastructure;
 
 internal class InitServer
 {
-    private ISingleService? Services { get; set; }
+    private ServicesManager? Services { get; set; }
     private bool _isRunning { get; set; }
 
     public void Start()

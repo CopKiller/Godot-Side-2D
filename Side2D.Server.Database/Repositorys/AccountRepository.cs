@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Side2D.Cryptography;
 using Side2D.Models;
 using Side2D.Server.Database.Interfaces;
+using Side2D.Server.Database.Results;
 
 namespace Side2D.Server.Database.Repositorys;
 
@@ -19,9 +20,10 @@ public class AccountRepository(DatabaseContext context) : Repository<AccountMode
         account.Password = PasswordHelper.HashPassword(account.Password);
 
         await AddAsync(account);
-        await SaveChangesAsync();
-
-        return null;
+        
+        var countChanges = await SaveChangesAsync();
+        
+        return countChanges > 0 ? null : new DatabaseException("Failed to add account");
     }
 
     public async Task<bool> EmailExistsAsync(string email)

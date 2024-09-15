@@ -1,0 +1,14 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\External\Database\Database.csproj" />
+      <ProjectReference Include="..\Side2D.Cryptography\Side2D.Cryptography.csproj" />
+    </ItemGroup>
+
+</Project>

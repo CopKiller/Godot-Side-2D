@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Side2D.Models.Enum;
 using Side2D.Models.Interfaces;
 using Side2D.Models.Player;
+using Side2D.Models.Result;
 using Side2D.Models.Vectors;
 
 namespace Side2D.Models;
@@ -16,6 +17,7 @@ public class PlayerModel : IEntity
     
     [Required]
     [StringLength(MaxNameLength, MinimumLength = MinNameLength)]
+    
     public string Name { get; set; } = string.Empty;
     
     public Vocation Vocation { get; set; }
@@ -31,16 +33,20 @@ public class PlayerModel : IEntity
     public float JumpVelocity { get; set; } = -400.0F;
     public float Speed { get; set; } = 300.0F;
     
-    public void Validate()
+    public ModelException? Validate()
     {
+        Name = Name.Trim();
+        
         if (string.IsNullOrWhiteSpace(Name))
         {
-            throw new ArgumentException("Name is required.");
+            return new ModelException("Name is required.");
         }
         
-        if (Name.Length < MinNameLength || Name.Length > MaxNameLength)
+        if (Name.Length is < MinNameLength or > MaxNameLength)
         {
-            throw new ArgumentException($"Name must be between {MinNameLength} and {MaxNameLength} characters.");
+            return new ModelException($"Name must be between {MinNameLength} and {MaxNameLength} characters.");
         }
+
+        return null;
     }
 }

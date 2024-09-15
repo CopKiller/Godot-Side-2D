@@ -2,17 +2,14 @@
 using Side2D.Logger;
 using Side2D.Network;
 using Side2D.Network.Packet.Client;
+using Side2D.Server.Network.Interfaces;
 
 namespace Side2D.Server.Network
 {
-    public partial class ServerPacketProcessor : PacketProcessor
+    public partial class ServerPacketProcessor(INetworkService serverNetworkService)
+        : PacketProcessor, IServerPacketProcessor
     {
-        public readonly Dictionary<int, ServerClient> _players;
-
-        public ServerPacketProcessor(Dictionary<int, ServerClient> players)
-        {
-            _players = players;
-        }
+        private ServerNetworkService ServerNetworkService { get; set; } = (ServerNetworkService)serverNetworkService;
 
         public void Initialize()
         {
@@ -26,13 +23,16 @@ namespace Side2D.Server.Network
             // Register to receive packets  
             this.Subscribe<CPlayerLogin>(ClientLogin);
             this.Subscribe<CPlayerMove>(ClientPlayerMove);
+            this.Subscribe<CAccountRegister>(ClientRegister);
         }
 
         public void SendDataToAllBut<T>(NetPeer excludePeer, T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
             var excludePeerId = excludePeer.Id;
 
-            var allPlayers = _players.Select(allPlayers => allPlayers.Value)
+            if (ServerNetworkService.Players == null) return;
+            
+            var allPlayers = ServerNetworkService.Players.Select(allPlayers => allPlayers.Value)
                 .Where(player => player.Peer.Id != excludePeerId)
                 .ToList();
 
@@ -44,16 +44,17 @@ namespace Side2D.Server.Network
 
         public void SendDataToAll<T>(T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
-            foreach (var player in _players)
+            if (ServerNetworkService.Players == null) return;
+            foreach (var player in ServerNetworkService.Players)
             {
                 SendDataTo(player.Value.Peer, packet, deliveryMethod);
             }
         }
 
-        public override void SendDataTo<T>(NetPeer peer, T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class
+        public void SendDataTo<T>(NetPeer peer, T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class, new()
         {
             Log.PrintInfo(packet.GetType().ToString());
-            base.SendDataTo(peer, packet, deliveryMethod);
+            base.Send(peer, packet, deliveryMethod);
         }
     }
 }

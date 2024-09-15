@@ -91,7 +91,7 @@ namespace Side2D.scripts.Network
                 return;
             }
             
-            clientPacketProcessor.SendDataTo(CurrentPeer, packet, deliveryMethod);
+            clientPacketProcessor.Send(CurrentPeer, packet, deliveryMethod);
         }
     }
 }

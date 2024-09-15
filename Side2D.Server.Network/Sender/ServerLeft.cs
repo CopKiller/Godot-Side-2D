@@ -9,7 +9,7 @@ namespace Side2D.Server.Network
     {
         public void ServerLeft(NetPeer netPeer, SPlayerLeft sPlayerLeft)
         {
-            _players.Remove(netPeer.Id);
+            ServerNetworkService.Players?.Remove(netPeer.Id);
             SendDataToAllBut(netPeer, sPlayerLeft, DeliveryMethod.ReliableUnordered);
         }
     }

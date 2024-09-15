@@ -7,7 +7,7 @@ using Side2D.Network.CustomDataSerializable.Extension;
 
 namespace Side2D.Network
 {
-    public class PacketProcessor : NetPacketProcessor
+    public abstract class PacketProcessor : NetPacketProcessor
     {
         protected PacketProcessor() { }
 
@@ -16,6 +16,7 @@ namespace Side2D.Network
             // Register Types Of Serializations
             this.RegisterNestedType<PlayerMoveModel>();
             this.RegisterNestedType<PlayerDataModel>();
+            this.RegisterNestedType<AccountRegisterModel>();
         }
 
         public virtual void SubscribePacket() { }
@@ -24,12 +25,7 @@ namespace Side2D.Network
         {
             this.SubscribeReusable(onReceive);
             
-            //Log.PrintError(onReceive.Method.Name + " Subscribed");
-        }
-        
-        public virtual void SendDataTo<T>(NetPeer playerPeer, T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class, new()
-        {
-            Send(playerPeer, packet, deliveryMethod);
+            //Log.PrintError(onReceive.Method.Username + " Subscribed");
         }
     }
 }

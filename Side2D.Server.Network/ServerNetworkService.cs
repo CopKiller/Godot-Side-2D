@@ -6,22 +6,34 @@ using System.Net;
 using System.Net.Sockets;
 using Side2D.Logger;
 using Side2D.Network;
+using Side2D.Server.Database.Interfaces;
+using Side2D.Server.Network.Interfaces;
 
 namespace Side2D.Server.Network;
 public class ServerNetworkService : NetworkService
 {
-
-    public Dictionary<int, ServerClient>? Players;
-
-    public ServerPacketProcessor? ServerPacketProcessor { get; private set; }
+    public Dictionary<int, ServerClient>? Players { get; private set; } = new();
+    private ServerPacketProcessor? ServerPacketProcessor { get; set; }
+    
+    public IAccountRepository AccountRepository { get; private set; }
+    public IPlayerRepository PlayerRepository { get; private set; }
+    
+    public ServerNetworkService(IAccountRepository accountRepository, IPlayerRepository playerRepository)
+    {
+        AccountRepository = accountRepository;
+        PlayerRepository = playerRepository;
+        ServerPacketProcessor = new ServerPacketProcessor(this);
+    }
 
     public override void Register()
     {
         base.Register();
 
         // Server is true, client is false
-        this.NetManager.UseNativeSockets = true;
+        var netManager = this.NetManager;
+        if (netManager != null) netManager.UseNativeSockets = true;
 
+        if (listener == null) return;
         listener.PeerConnectedEvent += OnPeerConnectedEvent;
         listener.PeerDisconnectedEvent += OnPeerDisconnectedEvent;
         listener.NetworkErrorEvent += OnNetworkErrorEvent;
@@ -37,33 +49,34 @@ public class ServerNetworkService : NetworkService
     {
         Players = new Dictionary<int, ServerClient>();
 
-        ServerPacketProcessor = new ServerPacketProcessor(Players);
+        ServerPacketProcessor?.Initialize();
 
-        ServerPacketProcessor.Initialize();
+        Log.Print("Server: Try to start on port " + NetworkAddress.ServerPort);
 
-        var port = NetworkAddress.ServerPort;
-
-        Log.Print("Server: Try to start on port " + port);
-
-        var result = this.NetManager.Start(port);
+        var netManager = this.NetManager;
+        var result = netManager != null && netManager.Start(NetworkAddress.ServerPort);
 
         if (result)
         {
-            Log.Print("Server: Bind on port " + port);
+            Log.Print("Server: Bind on port " + NetworkAddress.ServerPort);
         }
     }
 
     public override void Unregister()
     {
-        this.listener.PeerConnectedEvent -= OnPeerConnectedEvent;
-        this.listener.PeerDisconnectedEvent -= OnPeerDisconnectedEvent;
-        this.listener.NetworkErrorEvent -= OnNetworkErrorEvent;
-        this.listener.NetworkReceiveEvent -= OnNetworkReceiveEvent;
-        this.listener.NetworkReceiveUnconnectedEvent -= OnNetworkReceiveUnconnectedEvent;
-        this.listener.NetworkLatencyUpdateEvent -= OnNetworkLatencyUpdateEvent;
-        this.listener.ConnectionRequestEvent -= OnConnectionRequestEvent;
-        this.listener.DeliveryEvent -= OnDeliveryEvent;
-        this.listener.NtpResponseEvent -= OnNtpResponseEvent;
+        var eventBasedNetListener = this.listener;
+        if (eventBasedNetListener != null)
+        {
+            eventBasedNetListener.PeerConnectedEvent -= OnPeerConnectedEvent;
+            eventBasedNetListener.PeerDisconnectedEvent -= OnPeerDisconnectedEvent;
+            eventBasedNetListener.NetworkErrorEvent -= OnNetworkErrorEvent;
+            eventBasedNetListener.NetworkReceiveEvent -= OnNetworkReceiveEvent;
+            eventBasedNetListener.NetworkReceiveUnconnectedEvent -= OnNetworkReceiveUnconnectedEvent;
+            eventBasedNetListener.NetworkLatencyUpdateEvent -= OnNetworkLatencyUpdateEvent;
+            eventBasedNetListener.ConnectionRequestEvent -= OnConnectionRequestEvent;
+            eventBasedNetListener.DeliveryEvent -= OnDeliveryEvent;
+            eventBasedNetListener.NtpResponseEvent -= OnNtpResponseEvent;
+        }
 
         Players?.Clear();
     }

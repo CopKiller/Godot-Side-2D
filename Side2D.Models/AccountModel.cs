@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Side2D.Models.Interfaces;
+using Side2D.Models.Result;
 
 namespace Side2D.Models;
 
@@ -26,39 +27,44 @@ public class AccountModel : IEntity
     [StringLength(MaxEmailLength, MinimumLength = MinEmailLength)]
     public string Email { get; set; } = string.Empty;
     
-    
     public List<PlayerModel> Players { get; set; } = [];
     
-    public void Validate()
+    public ModelException? Validate()
     {
+        Username = Username.Trim();
+        Password = Password.Trim();
+        Email = Email.Trim();
+        
         if (string.IsNullOrWhiteSpace(Username))
         {
-            throw new ArgumentException("Username is required.");
+            return new ModelException("Username is required.");
         }
         
         if (Username.Length is < MinNameLength or > MaxNameLength)
         {
-            throw new ArgumentException($"Username must be between {MinNameLength} and {MaxNameLength} characters.");
+            return new ModelException($"Username must be between {MinNameLength} and {MaxNameLength} characters.");
         }
         
         if (string.IsNullOrWhiteSpace(Password))
         {
-            throw new ArgumentException("Password is required.");
+            return new ModelException("Password is required.");
         }
         
         if (Password.Length is < MinPasswordLength or > MaxPasswordLength)
         {
-            throw new ArgumentException($"Password must be between {MinPasswordLength} and {MaxPasswordLength} characters.");
+            return new ModelException($"Password must be between {MinPasswordLength} and {MaxPasswordLength} characters.");
         }
         
         if (string.IsNullOrWhiteSpace(Email))
         {
-            throw new ArgumentException("Email is required.");
+            return new ModelException("Email is required.");
         }
         
         if (Email.Length is < MinEmailLength or > MaxEmailLength)
         {
-            throw new ArgumentException($"Email must be between {MinEmailLength} and {MaxEmailLength} characters.");
+            return new ModelException($"Email must be between {MinEmailLength} and {MaxEmailLength} characters.");
         }
+
+        return null;
     }
 }
