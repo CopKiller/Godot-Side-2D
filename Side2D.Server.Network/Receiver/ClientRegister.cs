@@ -32,7 +32,7 @@ namespace Side2D.Server.Network
             
             if (results != null)
             {
-                Log.PrintError(results?.ToString());
+                Log.PrintError(results.ToString());
             }
             
             var result = await ServerNetworkService.AccountRepository.AddAccountAsync(accountModel);

@@ -62,15 +62,18 @@ public class ClientNetworkService : NetworkService
 
     public override void Unregister()
     {
-        listener.PeerConnectedEvent -= OnPeerConnectedEvent;
-        listener.PeerDisconnectedEvent -= OnPeerDisconnectedEvent;
-        listener.NetworkErrorEvent -= OnNetworkErrorEvent;
-        listener.NetworkReceiveEvent -= OnNetworkReceiveEvent;
-        listener.NetworkReceiveUnconnectedEvent -= OnNetworkReceiveUnconnectedEvent;
-        listener.NetworkLatencyUpdateEvent -= OnNetworkLatencyUpdateEvent;
-        listener.ConnectionRequestEvent -= OnConnectionRequestEvent;
-        listener.DeliveryEvent -= OnDeliveryEvent;
-        listener.NtpResponseEvent -= OnNtpResponseEvent;
+        if (listener != null)
+        {
+            listener.PeerConnectedEvent -= OnPeerConnectedEvent;
+            listener.PeerDisconnectedEvent -= OnPeerDisconnectedEvent;
+            listener.NetworkErrorEvent -= OnNetworkErrorEvent;
+            listener.NetworkReceiveEvent -= OnNetworkReceiveEvent;
+            listener.NetworkReceiveUnconnectedEvent -= OnNetworkReceiveUnconnectedEvent;
+            listener.NetworkLatencyUpdateEvent -= OnNetworkLatencyUpdateEvent;
+            listener.ConnectionRequestEvent -= OnConnectionRequestEvent;
+            listener.DeliveryEvent -= OnDeliveryEvent;
+            listener.NtpResponseEvent -= OnNtpResponseEvent;
+        }
 
         base.Unregister();
     }

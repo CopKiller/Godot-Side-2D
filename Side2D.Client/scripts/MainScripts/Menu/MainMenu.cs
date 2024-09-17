@@ -17,9 +17,9 @@ public partial class MainMenu : Control
 		{
 			var clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
 			
-			//var packet = new CPlayerLogin();
+			var packet = new CPlayerLogin();
 
-			var packet = new CAccountRegister()
+			/*var packet = new CAccountRegister()
 			{
 				AccountRegisterModel = new AccountRegisterModel()
 				{
@@ -27,7 +27,7 @@ public partial class MainMenu : Control
 					Password = "password123",
 					Email = "Rafuxo@gmail.com"
 				}
-			};
+			};*/
 			
 			clientPlayer.SendData(packet, DeliveryMethod.ReliableOrdered);
 			QueueFree();

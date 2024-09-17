@@ -10,6 +10,8 @@ public struct PlayerDataModel : INetSerializable
     
     public string Name { get; set; }
     
+    public Vocation Vocation { get; set; }
+    
     public Gender Gender { get; set; }
     
     public float JumpVelocity { get; set; }
@@ -20,6 +22,7 @@ public struct PlayerDataModel : INetSerializable
     {
         writer.Put(Index);
         writer.Put(Name);
+        writer.Put((byte)Vocation);
         writer.Put((byte)Gender);
         writer.Put(JumpVelocity);
         writer.Put(Speed);
@@ -29,6 +32,7 @@ public struct PlayerDataModel : INetSerializable
     {
         Index = reader.GetInt();
         Name = reader.GetString();
+        Vocation = (Vocation)reader.GetByte();
         Gender = (Gender)reader.GetByte();
         JumpVelocity = reader.GetFloat();
         Speed = reader.GetFloat();
@@ -38,6 +42,7 @@ public struct PlayerDataModel : INetSerializable
     {
         Index = playerModel.Id;
         Name = playerModel.Name;
+        Vocation = playerModel.Vocation;
         Gender = playerModel.Gender;
         JumpVelocity = playerModel.JumpVelocity;
         Speed = playerModel.Speed;

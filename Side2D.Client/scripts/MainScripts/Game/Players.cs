@@ -10,7 +10,6 @@ namespace Side2D.scripts.MainScripts.Game;
 
 public partial class Players : Node, IPacketHandler
 {
-	
 	private readonly List<Player> _players = [];
 	
 	private PackedScene _playerScene = GD.Load<PackedScene>("res://scenes/Game/Player.tscn");
@@ -48,14 +47,13 @@ public partial class Players : Node, IPacketHandler
 	
 	public void PlayerMove(PlayerMoveModel playerMove)
 	{
-		Log.PrintInfo($"Player {playerMove.Index} moved to {playerMove.Position}");
 		var player = _players.Find(x => x.PlayerDataModel.Index == playerMove.Index);
 		
 		if (player == null) return;
 		
 		player.PlayerMoveModel = playerMove;
 		
-		player.CallDeferred(nameof(player.UpdatePlayer));
+		player.CallDeferred(nameof(player.UpdatePlayerMove));
 	}
 
 	public void RegisterPacketHandlers()

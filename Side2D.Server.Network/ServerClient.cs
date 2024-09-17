@@ -32,6 +32,8 @@ namespace Side2D.Server.Network
             PlayerDataModel = new PlayerDataModel
             {
                 Index = Index,
+                Name = "Player" + Index,
+                Vocation = Vocation.Archer,
             };
 
             PlayerMoveModel = new PlayerMoveModel

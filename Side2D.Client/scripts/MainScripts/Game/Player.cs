@@ -1,5 +1,6 @@
 using Godot;
 using LiteNetLib;
+using Side2D.Logger;
 using Side2D.Models.Enum;
 using Side2D.Models.Vectors;
 using Side2D.Network.CustomDataSerializable;
@@ -11,6 +12,8 @@ namespace Side2D.scripts.MainScripts.Game;
 
 public partial class Player : CharacterBody2D
 {
+	private bool _loaded = false;
+	
 	private ClientPlayer _clientPlayer;
 	public PlayerDataModel PlayerDataModel;
 	public PlayerMoveModel PlayerMoveModel;
@@ -25,18 +28,30 @@ public partial class Player : CharacterBody2D
 	private bool _isMoving = false;
 	private Direction _direction = Direction.Right;
 	private Vector2 _velocity = Vector2.Zero;
+	
+	// Children's
 	private AnimatedSprite2D _animatedSprite;
+	private Panel _panelBg;
+	private Label _lblName;
+	
 	
 	public override void _Ready()
 	{
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
+		_panelBg = GetNode<Panel>("panelBg");
+		_lblName = GetNode<Label>("lblName");
+		
 		_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
 		
 		UpdatePlayer();
+		
+		_loaded = true;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
+		if (!_loaded) return;
+		
 		ProcessPlayerInput();
 		ProcessPlayerGravity(delta);
 		ProcessLocalPlayerSync();
@@ -134,7 +149,13 @@ public partial class Player : CharacterBody2D
 		
 	}
 
-	public void UpdatePlayer()
+	private void UpdatePlayer()
+	{
+		UpdatePlayerData();
+		UpdatePlayerMove();
+	}
+
+	public void UpdatePlayerMove()
 	{
 		// Interpolação suave da posição
 		Position = Position.Lerp(
@@ -145,6 +166,29 @@ public partial class Player : CharacterBody2D
 		_velocity = new Vector2(PlayerMoveModel.Velocity.X, PlayerMoveModel.Velocity.Y);
 		_direction = PlayerMoveModel.Direction;
 		_isMoving = PlayerMoveModel.IsMoving;
+	}
+	
+	public void UpdatePlayerData()
+	{
+		// Name
+		UpdateName();
+		// Vocation
+		UpdateVocation();
+		
+		return;
+		
+		void UpdateName()
+		{
+			_lblName.Text = PlayerDataModel.Name;
+			_panelBg.Size = new Vector2(_lblName.Size.X + 20, _panelBg.Size.Y);
+			_panelBg.Position = new Vector2(-_panelBg.Size.X / 2, _panelBg.Position.Y);
+		}
+		void UpdateVocation()
+		{
+			var vocation = PlayerDataModel.Vocation.ToString();
+			Log.PrintInfo($"Vocation: {vocation}");
+			_animatedSprite.SpriteFrames = GD.Load<SpriteFrames>($"res://scenes/Game/Vocation/{vocation}.tres");
+		}
 	}
 
 

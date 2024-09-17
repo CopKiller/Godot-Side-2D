@@ -1,5 +1,6 @@
 ﻿using LiteNetLib;
 using Side2D.Logger;
+using Side2D.Models.Enum;
 using Side2D.Network.Packet.Client;
 using Side2D.Network.Packet.Server;
 
@@ -28,7 +29,7 @@ namespace Side2D.Server.Network
 
             Log.Print(player.PlayerMoveModel.ToString());
             
-            SendDataToAllBut(netPeer, packet, DeliveryMethod.ReliableSequenced);
+            SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableSequenced);
         }
     }
 }
