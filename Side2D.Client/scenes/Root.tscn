@@ -1,6 +1,12 @@
-[gd_scene load_steps=2 format=3 uid="uid://c5vsspgaye7ms"]
+[gd_scene load_steps=3 format=3 uid="uid://c5vsspgaye7ms"]
 
 [ext_resource type="Script" path="res://scripts/Root.cs" id="1_4ii42"]
+[ext_resource type="Texture2D" uid="uid://c7ai6uq5db56e" path="res://resources/GUI/SplashScreen/_f7d572a9-c8dc-419c-a0e4-27ce8ce2ecd0.jpg" id="2_qpco2"]
 
 [node name="Root" type="Node2D"]
 script = ExtResource("1_4ii42")
+
+[node name="texSplash" type="TextureRect" parent="."]
+offset_right = 40.0
+offset_bottom = 40.0
+texture = ExtResource("2_qpco2")

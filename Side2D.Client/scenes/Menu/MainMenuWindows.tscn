@@ -1,0 +1,47 @@
+[gd_scene format=3 uid="uid://caxv7daojy724"]
+
+[node name="MainMenuWindows" type="Node"]
+
+[node name="winMenu" type="Window" parent="."]
+disable_3d = true
+title = "Menu"
+initial_position = 2
+size = Vector2i(250, 181)
+unresizable = true
+
+[node name="MarginContainer" type="MarginContainer" parent="winMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="winMenu/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="btnLogin" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Login"
+
+[node name="btnRegister" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Register"
+
+[node name="btnRecovery" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Recovery"
+
+[node name="btnCredits" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Credits"
+
+[node name="btnExit" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Exit"

@@ -1,8 +1,8 @@
 [gd_scene load_steps=4 format=3 uid="uid://crhufco7pdacv"]
 
 [ext_resource type="Script" path="res://scripts/MainScripts/Menu/MainMenu.cs" id="1_yuq4u"]
-[ext_resource type="Texture2D" uid="uid://c08i0y2hwtk2i" path="res://resources/GUI/MainMenu/BG.jpg" id="2_j1bxu"]
-[ext_resource type="Texture2D" uid="uid://b62lyea05uw0s" path="res://resources/GUI/MainMenu/logo.png" id="3_rroe8"]
+[ext_resource type="PackedScene" uid="uid://dt52ppwebqeqj" path="res://scenes/Parallax/2.tscn" id="2_f18tr"]
+[ext_resource type="PackedScene" uid="uid://caxv7daojy724" path="res://scenes/Menu/MainMenuWindows.tscn" id="3_cjwg1"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -11,20 +11,15 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
 script = ExtResource("1_yuq4u")
 
-[node name="TextureRect" type="TextureRect" parent="."]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-texture = ExtResource("2_j1bxu")
-expand_mode = 1
+[node name="2" parent="." instance=ExtResource("2_f18tr")]
 
 [node name="Button" type="Button" parent="."]
 unique_name_in_owner = true
+visible = false
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
@@ -39,14 +34,34 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "Iniciar Jogo"
 
-[node name="Logo" type="TextureRect" parent="."]
+[node name="MainMenuWindows" parent="." instance=ExtResource("3_cjwg1")]
+
+[node name="Panel" type="Panel" parent="."]
 layout_mode = 1
-anchors_preset = 5
+anchors_preset = 7
 anchor_left = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-offset_left = -150.0
-offset_right = 150.0
-offset_bottom = 300.0
+anchor_bottom = 1.0
+offset_left = -640.0
+offset_top = -35.0
+offset_right = 640.0
 grow_horizontal = 2
-texture = ExtResource("3_rroe8")
-expand_mode = 1
+grow_vertical = 0
+
+[node name="Label" type="Label" parent="Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -11.5
+offset_right = 20.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "Eternal Embers Project 2D - Powered By Peixonalta - 2024."
+horizontal_alignment = 1
+vertical_alignment = 1

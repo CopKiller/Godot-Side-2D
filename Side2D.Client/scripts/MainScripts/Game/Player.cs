@@ -12,18 +12,14 @@ namespace Side2D.scripts.MainScripts.Game;
 
 public partial class Player : CharacterBody2D
 {
-	private bool _loaded = false;
+	private bool Loaded { get; set; } = false;
+	public bool IsLocal { get; set; } = false;
 	
 	private ClientPlayer _clientPlayer;
 	public PlayerDataModel PlayerDataModel;
 	public PlayerMoveModel PlayerMoveModel;
 	private readonly CPlayerMove _cPlayerMove = new();
 	
-	public bool IsLocal = false;
-	private bool _needSync = false;
-	
-	public const float Speed = 300.0f;
-	public const float JumpVelocity = -400.0f;
 	
 	private bool _isMoving = false;
 	private Direction _direction = Direction.Right;
@@ -41,16 +37,17 @@ public partial class Player : CharacterBody2D
 		_panelBg = GetNode<Panel>("panelBg");
 		_lblName = GetNode<Label>("lblName");
 		
-		_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
+		if (IsLocal)
+			_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
 		
 		UpdatePlayer();
 		
-		_loaded = true;
+		Loaded = true;
 	}
 
 	public override void _PhysicsProcess(double delta)
 	{
-		if (!_loaded) return;
+		if (!Loaded) return;
 		
 		ProcessPlayerInput();
 		ProcessPlayerGravity(delta);
@@ -74,12 +71,12 @@ public partial class Player : CharacterBody2D
 			var direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
 			if (direction.X != 0) 
 			{
-				_velocity.X = direction.X * Speed;
+				_velocity.X = direction.X * PlayerDataModel.Speed;
 				_isMoving = true;
 			}
 			else
 			{
-				_velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
+				_velocity.X = Mathf.MoveToward(Velocity.X, 0, PlayerDataModel.Speed);
 				_isMoving = false;
 			}
 		}
@@ -88,7 +85,7 @@ public partial class Player : CharacterBody2D
 		{
 			if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
 			{
-				_velocity.Y = JumpVelocity;
+				_velocity.Y = PlayerDataModel.JumpVelocity;
 			}
 		}
 	}
@@ -157,18 +154,16 @@ public partial class Player : CharacterBody2D
 
 	public void UpdatePlayerMove()
 	{
-		// Interpolação suave da posição
-		Position = Position.Lerp(
-			new Vector2(PlayerMoveModel.Position.X, PlayerMoveModel.Position.Y),
-			1f // A taxa de interpolação, ajuste conforme necessário
-		);
+		Position = Loaded 
+			? Position.Lerp(new Vector2(PlayerMoveModel.Position.X, PlayerMoveModel.Position.Y), 0.1f) 
+			: new Vector2(PlayerMoveModel.Position.X, PlayerMoveModel.Position.Y);
 
 		_velocity = new Vector2(PlayerMoveModel.Velocity.X, PlayerMoveModel.Velocity.Y);
 		_direction = PlayerMoveModel.Direction;
 		_isMoving = PlayerMoveModel.IsMoving;
 	}
 	
-	public void UpdatePlayerData()
+	private void UpdatePlayerData()
 	{
 		// Name
 		UpdateName();
@@ -190,6 +185,4 @@ public partial class Player : CharacterBody2D
 			_animatedSprite.SpriteFrames = GD.Load<SpriteFrames>($"res://scenes/Game/Vocation/{vocation}.tres");
 		}
 	}
-
-
 }

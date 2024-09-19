@@ -1,24 +1,24 @@
 [gd_scene load_steps=11 format=3 uid="uid://s3f636v0fk4q"]
 
-[ext_resource type="Texture2D" uid="uid://b50wtara0jgjh" path="res://resources/Maps/parallax saturated background pack/11_background.png" id="1_7ghno"]
-[ext_resource type="Texture2D" uid="uid://cfjo3i5rip3bx" path="res://resources/Maps/parallax saturated background pack/10_distant_clouds.png" id="2_5e1iw"]
-[ext_resource type="Texture2D" uid="uid://knl2eskyte3f" path="res://resources/Maps/parallax saturated background pack/09_distant_clouds1.png" id="3_rn1th"]
-[ext_resource type="Texture2D" uid="uid://cf8al2hc6y5mg" path="res://resources/Maps/parallax saturated background pack/08_clouds.png" id="4_mnul8"]
-[ext_resource type="Texture2D" uid="uid://dcbhg0c6nyaj4" path="res://resources/Maps/parallax saturated background pack/07_huge_clouds.png" id="5_336ny"]
-[ext_resource type="Texture2D" uid="uid://nbgfwnfo8hxs" path="res://resources/Maps/parallax saturated background pack/06_hill2.png" id="6_4r742"]
-[ext_resource type="Texture2D" uid="uid://cp1qdtp7fi0ki" path="res://resources/Maps/parallax saturated background pack/03_distant_trees.png" id="7_o46lj"]
-[ext_resource type="Texture2D" uid="uid://ceeljwehu5jli" path="res://resources/Maps/parallax saturated background pack/04_bushes.png" id="8_dk8y8"]
-[ext_resource type="Texture2D" uid="uid://da15nlkfl8xbe" path="res://resources/Maps/parallax saturated background pack/02_trees and bushes.png" id="9_ea7md"]
-[ext_resource type="Texture2D" uid="uid://bom4bq48nv0pj" path="res://resources/Maps/parallax saturated background pack/01_ground.png" id="10_n66yg"]
+[ext_resource type="Texture2D" uid="uid://b50wtara0jgjh" path="res://resources/Maps/parallax saturated background pack/11_background.png" id="1_h8p4r"]
+[ext_resource type="Texture2D" uid="uid://cfjo3i5rip3bx" path="res://resources/Maps/parallax saturated background pack/10_distant_clouds.png" id="2_hfrmp"]
+[ext_resource type="Texture2D" uid="uid://knl2eskyte3f" path="res://resources/Maps/parallax saturated background pack/09_distant_clouds1.png" id="3_nslf0"]
+[ext_resource type="Texture2D" uid="uid://cf8al2hc6y5mg" path="res://resources/Maps/parallax saturated background pack/08_clouds.png" id="4_os7ln"]
+[ext_resource type="Texture2D" uid="uid://dcbhg0c6nyaj4" path="res://resources/Maps/parallax saturated background pack/07_huge_clouds.png" id="5_bw7q6"]
+[ext_resource type="Texture2D" uid="uid://nbgfwnfo8hxs" path="res://resources/Maps/parallax saturated background pack/06_hill2.png" id="6_ynuob"]
+[ext_resource type="Texture2D" uid="uid://cp1qdtp7fi0ki" path="res://resources/Maps/parallax saturated background pack/03_distant_trees.png" id="7_76ck5"]
+[ext_resource type="Texture2D" uid="uid://ceeljwehu5jli" path="res://resources/Maps/parallax saturated background pack/04_bushes.png" id="8_yekax"]
+[ext_resource type="Texture2D" uid="uid://da15nlkfl8xbe" path="res://resources/Maps/parallax saturated background pack/02_trees and bushes.png" id="9_ivada"]
+[ext_resource type="Texture2D" uid="uid://bom4bq48nv0pj" path="res://resources/Maps/parallax saturated background pack/01_ground.png" id="10_klui7"]
 
-[node name="ParallaxMenu" type="Node2D"]
+[node name="1" type="Node2D"]
 
 [node name="Parallax2D" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.1, 0.1)
 repeat_size = Vector2(1280, 0)
 
 [node name="11Background" type="Sprite2D" parent="Parallax2D"]
-texture = ExtResource("1_7ghno")
+texture = ExtResource("1_h8p4r")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D1" type="Parallax2D" parent="."]
@@ -26,7 +26,7 @@ scroll_scale = Vector2(0.2, 0.2)
 repeat_size = Vector2(1280, 0)
 
 [node name="10DistantClouds" type="Sprite2D" parent="Parallax2D1"]
-texture = ExtResource("2_5e1iw")
+texture = ExtResource("2_hfrmp")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D2" type="Parallax2D" parent="."]
@@ -34,7 +34,7 @@ scroll_scale = Vector2(0.3, 0.3)
 repeat_size = Vector2(1280, 0)
 
 [node name="09DistantClouds1" type="Sprite2D" parent="Parallax2D2"]
-texture = ExtResource("3_rn1th")
+texture = ExtResource("3_nslf0")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D3" type="Parallax2D" parent="."]
@@ -42,7 +42,7 @@ scroll_scale = Vector2(0.4, 0.4)
 repeat_size = Vector2(1280, 0)
 
 [node name="08Clouds" type="Sprite2D" parent="Parallax2D3"]
-texture = ExtResource("4_mnul8")
+texture = ExtResource("4_os7ln")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D4" type="Parallax2D" parent="."]
@@ -50,7 +50,7 @@ scroll_scale = Vector2(0.5, 0.5)
 repeat_size = Vector2(1280, 0)
 
 [node name="07HugeClouds" type="Sprite2D" parent="Parallax2D4"]
-texture = ExtResource("5_336ny")
+texture = ExtResource("5_bw7q6")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D5" type="Parallax2D" parent="."]
@@ -58,7 +58,7 @@ scroll_scale = Vector2(0.6, 0.6)
 repeat_size = Vector2(1280, 0)
 
 [node name="06Hill2" type="Sprite2D" parent="Parallax2D5"]
-texture = ExtResource("6_4r742")
+texture = ExtResource("6_ynuob")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D6" type="Parallax2D" parent="."]
@@ -66,7 +66,7 @@ scroll_scale = Vector2(0.7, 0.7)
 repeat_size = Vector2(1280, 0)
 
 [node name="TextureRect4" type="Sprite2D" parent="Parallax2D6"]
-texture = ExtResource("7_o46lj")
+texture = ExtResource("7_76ck5")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D7" type="Parallax2D" parent="."]
@@ -74,7 +74,7 @@ scroll_scale = Vector2(0.8, 0.8)
 repeat_size = Vector2(1280, 0)
 
 [node name="04Bushes" type="Sprite2D" parent="Parallax2D7"]
-texture = ExtResource("8_dk8y8")
+texture = ExtResource("8_yekax")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D8" type="Parallax2D" parent="."]
@@ -82,12 +82,12 @@ scroll_scale = Vector2(0.9, 0.9)
 repeat_size = Vector2(1280, 0)
 
 [node name="TextureRect3" type="Sprite2D" parent="Parallax2D8"]
-texture = ExtResource("9_ea7md")
+texture = ExtResource("9_ivada")
 offset = Vector2(640, 360)
 
 [node name="Parallax2D9" type="Parallax2D" parent="."]
 repeat_size = Vector2(1280, 0)
 
 [node name="TextureRect2" type="Sprite2D" parent="Parallax2D9"]
-texture = ExtResource("10_n66yg")
+texture = ExtResource("10_klui7")
 offset = Vector2(640, 360)
