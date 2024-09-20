@@ -1,7 +1,7 @@
 using Godot;
 using Side2D.Logger;
 
-namespace Side2D.scripts;
+namespace Side2D.scripts.Alert;
 
 public class Logger : ILogger
 {

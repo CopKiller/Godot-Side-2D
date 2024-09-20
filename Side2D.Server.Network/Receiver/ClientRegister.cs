@@ -20,28 +20,32 @@ namespace Side2D.Server.Network
             if (player == null) return;
             
             if (player.ClientState != ClientState.Menu) return;
-
-            var accountModel = new AccountModel()
+            
+            var account = new AccountModel()
             {
-                Username = obj.AccountRegisterModel.Username,
-                Password = obj.AccountRegisterModel.Password,
-                Email = obj.AccountRegisterModel.Email
+                Username = obj.Username,
+                Password = obj.Password,
+                Email = obj.Email
             };
-            
-            var results = accountModel.Validate();
-            
-            if (results != null)
-            {
-                Log.PrintError(results.ToString());
-            }
-            
-            var result = await ServerNetworkService.AccountRepository.AddAccountAsync(accountModel);
 
+            var exception = account.Validate();
+            if (exception != null)
+            {
+                ServerAlert(netPeer, exception.Message);
+                return;
+            }
+
+            var result = await ServerNetworkService.AccountRepository.AddAccountAsync(account);
+            
             if (result != null)
             {
-                Log.PrintError(result.ToString());
+                ServerAlert(netPeer, result.Message);
+                return;
             }
             
+            ServerAlert(netPeer, "Account created successfully!");
+            
+            //player.ClientState = ClientState.Game;
         }
     }
 }

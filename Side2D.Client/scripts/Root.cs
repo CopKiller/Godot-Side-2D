@@ -22,7 +22,7 @@ public partial class Root : Node2D
 			
 			var tween = CreateTween();
 			tween.TweenProperty(_splashScreen, "modulate:a", 1f, 3f);
-			tween.SetTrans(Tween.TransitionType.Expo);
+			tween.SetTrans(Tween.TransitionType.Sine);
 			tween.TweenCallback(Callable.From(FadeOutSplashScreen));
 			tween.Play();
 		}
@@ -31,9 +31,7 @@ public partial class Root : Node2D
 		{
 			var tween = CreateTween();
 			tween.TweenProperty(_splashScreen, "modulate:a", 0f, 2f);
-			//tween.SetParallel();
-			//tween.TweenProperty(_splashScreen, "modulate:a", 0f, 3f);
-			tween.SetTrans(Tween.TransitionType.Expo);
+			tween.SetTrans(Tween.TransitionType.Sine);
 			tween.TweenCallback(Callable.From(StartMenu));
 			tween.Play();
 		}

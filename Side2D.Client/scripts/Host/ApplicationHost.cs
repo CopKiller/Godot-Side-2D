@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Godot;
 using Side2D.Logger;
 using Side2D.scripts;
+using Side2D.scripts.Alert;
 
 namespace Side2D.scripts.Host;
 
@@ -18,8 +19,10 @@ public sealed partial class ApplicationHost : Node {
 
     public override void _EnterTree()
     {
-        Log.LogInstance = new Logger();
+        Log.LogInstance = new Alert.Logger();
+        
         AddSingleton(new ClientManager());
+        AddSingleton(new AlertManager());
     }
 
     public void AddSingleton<T>(T node) where T : Node {

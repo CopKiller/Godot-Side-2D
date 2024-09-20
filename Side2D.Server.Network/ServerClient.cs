@@ -34,6 +34,8 @@ namespace Side2D.Server.Network
                 Index = Index,
                 Name = "Player" + Index,
                 Vocation = Vocation.Archer,
+                JumpVelocity = -400.0F,
+                Speed = 300.0F,
             };
 
             PlayerMoveModel = new PlayerMoveModel
@@ -41,7 +43,7 @@ namespace Side2D.Server.Network
                 Index = Index,
                 Velocity = Vector2C.Zero,
                 Direction = Direction.Right,
-                Position = new Vector2C(400, 300),
+                Position = new Vector2C(400, 450),
             };
             
             ClientState = ClientState.Menu;

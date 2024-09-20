@@ -1,0 +1,57 @@
+[gd_scene load_steps=2 format=3 uid="uid://drqp6caxsls37"]
+
+[ext_resource type="Script" path="res://scripts/MainScripts/Menu/Windows/winLogin.cs" id="1_hnxoo"]
+
+[node name="winLogin" type="Window"]
+auto_translate_mode = 1
+disable_3d = true
+title = "Login"
+initial_position = 2
+size = Vector2i(250, 200)
+visible = false
+script = ExtResource("1_hnxoo")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_vertical = 3
+
+[node name="Label" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Username:"
+
+[node name="txtUsername" type="LineEdit" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="VBoxContainer"]
+layout_mode = 2
+text = "Password:"
+
+[node name="txtPassword" type="LineEdit" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+alignment = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="chkSaveUsername" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save user?"
+
+[node name="chkSavePassword" type="CheckBox" parent="VBoxContainer/HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save pass?"
+
+[node name="btnEnter" type="Button" parent="VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 3
+text = "Enter"

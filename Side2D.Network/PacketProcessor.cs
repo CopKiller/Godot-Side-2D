@@ -16,7 +16,6 @@ namespace Side2D.Network
             // Register Types Of Serializations
             this.RegisterNestedType<PlayerMoveModel>();
             this.RegisterNestedType<PlayerDataModel>();
-            this.RegisterNestedType<AccountRegisterModel>();
         }
 
         public virtual void SubscribePacket() { }

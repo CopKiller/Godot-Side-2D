@@ -1,4 +1,4 @@
-namespace Side2D.Models.Result;
+namespace Side2D.Models.Validation;
 
 public class ModelException(string msg)
 {

@@ -32,7 +32,6 @@ public sealed class ServicesManager : IDisposable
         ServiceProvider = services.BuildServiceProvider();
         Services ??= [];
         
-        Log.PrintInfo("Obtendo serviços registrados como ISingleService que sao singletons...");
         foreach (var serviceType in servicesTypes)
         {
             var instance = ServiceProvider.GetService(serviceType);

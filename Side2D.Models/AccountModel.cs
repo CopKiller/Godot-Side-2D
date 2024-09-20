@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Side2D.Models.Interfaces;
-using Side2D.Models.Result;
+using Side2D.Models.Validation;
 
 namespace Side2D.Models;
 
@@ -35,36 +35,16 @@ public class AccountModel : IEntity
         Password = Password.Trim();
         Email = Email.Trim();
         
-        if (string.IsNullOrWhiteSpace(Username))
+        if (!Username.IsValidName())
         {
-            return new ModelException("Username is required.");
+            return new ModelException("Username is invalid.");
         }
         
-        if (Username.Length is < MinNameLength or > MaxNameLength)
+        if (!Password.IsValidPassword())
         {
-            return new ModelException($"Username must be between {MinNameLength} and {MaxNameLength} characters.");
+            return new ModelException("Password is invalid.");
         }
         
-        if (string.IsNullOrWhiteSpace(Password))
-        {
-            return new ModelException("Password is required.");
-        }
-        
-        if (Password.Length is < MinPasswordLength or > MaxPasswordLength)
-        {
-            return new ModelException($"Password must be between {MinPasswordLength} and {MaxPasswordLength} characters.");
-        }
-        
-        if (string.IsNullOrWhiteSpace(Email))
-        {
-            return new ModelException("Email is required.");
-        }
-        
-        if (Email.Length is < MinEmailLength or > MaxEmailLength)
-        {
-            return new ModelException($"Email must be between {MinEmailLength} and {MaxEmailLength} characters.");
-        }
-
-        return null;
+        return !Email.IsValidEmail() ? new ModelException("Email is invalid.") : null;
     }
 }

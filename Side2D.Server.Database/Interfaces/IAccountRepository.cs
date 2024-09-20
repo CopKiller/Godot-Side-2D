@@ -9,5 +9,5 @@ public interface IAccountRepository : IRepository<AccountModel>
     Task<DatabaseException?> AddAccountAsync(AccountModel account);
     Task<bool> EmailExistsAsync(string email);
     Task<bool> UsernameExistsAsync(string username);
-    Task<Result<AccountModel?>> GetAccountAsync(string username, string hashedPassword);
+    Task<Result<AccountModel?>> GetAccountAsync(string username, string password);
 }

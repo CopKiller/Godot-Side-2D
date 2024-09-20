@@ -36,13 +36,15 @@ public class AccountRepository(DatabaseContext context) : Repository<AccountMode
         return await Context.Accounts.AsNoTracking().AnyAsync(a => a.Username == username);
     }
 
-    public async Task<Result<AccountModel?>> GetAccountAsync(string username, string hashedPassword)
+    public async Task<Result<AccountModel?>> GetAccountAsync(string username, string password)
     {
+        
         var account = await Context.Accounts.AsNoTracking()
-            .FirstOrDefaultAsync(a => a.Username == username && a.Password == hashedPassword);
-
-        return account == null
-            ? new Result<AccountModel?>(null, new DatabaseException("Invalid username or password"))
-            : new Result<AccountModel?>(account, null);
+            .FirstOrDefaultAsync(a => a.Username == username);
+        
+        if (account != null && !PasswordHelper.VerifyPassword(password, account.Password))
+            return new Result<AccountModel?>(null, new DatabaseException("Invalid username or password"));
+        
+        return new Result<AccountModel?>(account, null);
     }
 }

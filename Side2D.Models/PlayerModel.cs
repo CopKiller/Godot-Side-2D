@@ -1,23 +1,18 @@
 using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 using Side2D.Models.Enum;
 using Side2D.Models.Interfaces;
 using Side2D.Models.Player;
-using Side2D.Models.Result;
+using Side2D.Models.Validation;
 using Side2D.Models.Vectors;
 
 namespace Side2D.Models;
 
 public class PlayerModel : IEntity
 {
-    private const int MaxNameLength = 20;
-    private const int MinNameLength = 3;
-    
     public int Id { get; set; }
     
     [Required]
-    [StringLength(MaxNameLength, MinimumLength = MinNameLength)]
-    
+    [StringLength(InputValidator.MaxNameCaracteres, MinimumLength = InputValidator.MinNameCaracteres)]
     public string Name { get; set; } = string.Empty;
     
     public Vocation Vocation { get; set; }
@@ -37,16 +32,6 @@ public class PlayerModel : IEntity
     {
         Name = Name.Trim();
         
-        if (string.IsNullOrWhiteSpace(Name))
-        {
-            return new ModelException("Name is required.");
-        }
-        
-        if (Name.Length is < MinNameLength or > MaxNameLength)
-        {
-            return new ModelException($"Name must be between {MinNameLength} and {MaxNameLength} characters.");
-        }
-
-        return null;
+        return !Name.IsValidName() ? new ModelException("Invalid name.") : null;
     }
 }

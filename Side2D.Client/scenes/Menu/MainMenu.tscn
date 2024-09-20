@@ -17,23 +17,6 @@ script = ExtResource("1_yuq4u")
 
 [node name="2" parent="." instance=ExtResource("2_f18tr")]
 
-[node name="Button" type="Button" parent="."]
-unique_name_in_owner = true
-visible = false
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -47.0
-offset_top = -15.5
-offset_right = 47.0
-offset_bottom = 15.5
-grow_horizontal = 2
-grow_vertical = 2
-text = "Iniciar Jogo"
-
 [node name="MainMenuWindows" parent="." instance=ExtResource("3_cjwg1")]
 
 [node name="Panel" type="Panel" parent="."]

@@ -4,6 +4,7 @@ using Godot;
 using Side2D.Models.Enum;
 using Side2D.Network;
 using Side2D.Network.Packet.Server;
+using Side2D.scripts.Alert;
 using Side2D.scripts.MainScripts.Game;
 using Side2D.scripts.Network;
 
@@ -11,10 +12,11 @@ namespace Side2D.scripts;
 
 public partial class ClientManager : Node, IPacketHandler
 {
-    private ClientPacketProcessor _packetProcessor;
     private NetworkManager _networkManager;
     private SceneManager _sceneManager;
     private Thread _networkThread;
+    
+    public ClientPlayer ClientPlayer { get; }
     
     public ClientManager()
     {
@@ -34,8 +36,6 @@ public partial class ClientManager : Node, IPacketHandler
         
         RegisterPacketHandlers();
     }
-    
-    public ClientPlayer ClientPlayer { get; private set; }
     
     public void Start()
     {

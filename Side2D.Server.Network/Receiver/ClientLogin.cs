@@ -1,5 +1,6 @@
 ﻿
 using LiteNetLib;
+using Side2D.Cryptography;
 using Side2D.Models.Enum;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Client;
@@ -9,7 +10,7 @@ namespace Side2D.Server.Network
 {
     public partial class ServerPacketProcessor
     {
-        public void ClientLogin(CPlayerLogin obj, NetPeer netPeer)
+        public async void ClientLogin(CPlayerLogin obj, NetPeer netPeer)
         {
             if (ServerNetworkService.Players == null) return;
             
@@ -18,6 +19,25 @@ namespace Side2D.Server.Network
             if (player == null) return;
             
             if (player.ClientState != ClientState.Menu) return;
+            
+            var account = await ServerNetworkService.AccountRepository.GetAccountAsync(obj.Username, obj.Password);
+            
+            if (account.Error != null)
+            {
+                ServerAlert(netPeer, account.Error.Message);
+                return;
+            }
+            
+            if (account.Value == null)
+            {
+                ServerAlert(netPeer, "Account not found!");
+                return;
+            }
+            
+            ServerAlert(netPeer, $"Account logged in successfully! User: {account.Value.Username}");
+
+            return;
+            
             
             player.ClientState = ClientState.Game;
             var changeClientState = new SClientState()
