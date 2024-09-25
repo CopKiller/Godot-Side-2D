@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using Side2D.Models.Enum;
 using Side2D.Models.Interfaces;
 using Side2D.Models.Player;
@@ -11,10 +12,13 @@ public class PlayerModel : IEntity
 {
     public int Id { get; set; }
     
+    public int SlotNumber { get; set; }
+    
     [Required]
     [StringLength(InputValidator.MaxNameCaracteres, MinimumLength = InputValidator.MinNameCaracteres)]
     public string Name { get; set; } = string.Empty;
-    
+
+    public int Level { get; set; } = 1;
     public Vocation Vocation { get; set; }
     public Gender Gender { get; set; }
     
@@ -27,6 +31,12 @@ public class PlayerModel : IEntity
     public Attributes Attributes { get; set; }
     public float JumpVelocity { get; set; } = -400.0F;
     public float Speed { get; set; } = 300.0F;
+    
+    
+    [ForeignKey("AccountModelId")] // Nome da propriedade de navegação
+    public int AccountModelId { get; set; }
+    
+    public AccountModel AccountModel { get; set; }
     
     public ModelException? Validate()
     {

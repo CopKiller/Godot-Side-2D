@@ -40,6 +40,12 @@ public class AccountRepository(DatabaseContext context) : Repository<AccountMode
     {
         
         var account = await Context.Accounts.AsNoTracking()
+            .Include(a => a.Players)
+            .ThenInclude(a => a.Position)
+            .Include(a => a.Players)
+            .ThenInclude(a => a.Vitals)
+            .Include(a => a.Players)
+            .ThenInclude(a => a.Attributes)
             .FirstOrDefaultAsync(a => a.Username == username);
         
         if (account != null && !PasswordHelper.VerifyPassword(password, account.Password))

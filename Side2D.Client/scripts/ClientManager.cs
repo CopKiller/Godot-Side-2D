@@ -12,8 +12,8 @@ namespace Side2D.scripts;
 
 public partial class ClientManager : Node, IPacketHandler
 {
-    private NetworkManager _networkManager;
-    private SceneManager _sceneManager;
+    private readonly NetworkManager _networkManager;
+    private readonly SceneManager _sceneManager;
     private Thread _networkThread;
     
     public ClientPlayer ClientPlayer { get; }
@@ -61,7 +61,11 @@ public partial class ClientManager : Node, IPacketHandler
             case ClientState.Menu:
                 _sceneManager.LoadScene<MainMenu>();
                 break;
-            case ClientState.NewCharacter:
+            case ClientState.Character:
+                if (_sceneManager.CurrentScene is MainMenu mainMenu)
+                {
+                    mainMenu.MainMenuWindows.ShowCharacterWindow();
+                }
                 break;
             case ClientState.Game:
                 _sceneManager.LoadScene<Game>();

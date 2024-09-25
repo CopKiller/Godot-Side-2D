@@ -1,9 +1,9 @@
 ﻿
 using LiteNetLib;
-using Side2D.Cryptography;
 using Side2D.Logger;
 using Side2D.Models;
 using Side2D.Models.Enum;
+using Side2D.Models.Player;
 using Side2D.Models.Validation;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Client;
@@ -13,7 +13,7 @@ namespace Side2D.Server.Network
 {
     public partial class ServerPacketProcessor
     {
-        public async void ClientLogin(CPlayerLogin obj, NetPeer netPeer)
+        public async void ClientCreateCharacter(CCreateCharacter obj, NetPeer netPeer)
         {
             if (ServerNetworkService.Players == null) return;
             
@@ -21,42 +21,57 @@ namespace Side2D.Server.Network
 
             if (player == null) return;
             
-            if (player.ClientState != ClientState.Menu) return;
+            if (player.ClientState != ClientState.Character) return;
             
-            var account = await ServerNetworkService.AccountRepository.GetAccountAsync(obj.Username, obj.Password);
-            
-            if (account.Error != null)
+            if (player.PlayerModels.Count >= EntityValidator.MaxCharacters)
             {
-                ServerAlert(netPeer, account.Error.Message);
+                ServerAlert(netPeer, $"You can only have {EntityValidator.MaxCharacters} characters!");
                 return;
             }
             
-            if (account.Value == null)
+            if (player.PlayerModels.Exists(p => p.SlotNumber == obj.SlotNumber))
             {
-                ServerAlert(netPeer, "Account not found!");
+                ServerAlert(netPeer, "Character already exists in slot!");
                 return;
             }
             
-            if (ServerNetworkService.Players.Values.Any(p => p.AccountId == account.Value.Id))
+            if (obj.SlotNumber is < 1 or > EntityValidator.MaxCharacters)
             {
-                ServerAlert(netPeer, "Account already logged in!");
+                ServerAlert(netPeer, "Invalid slot number!");
                 return;
             }
-            
-            ServerAlert(netPeer, $"Account logged in successfully! User: {account.Value.Username}");
-            
-            player.ClientState = ClientState.Character;
-            player.AccountId = account.Value.Id;
-            
-            var changeClientState = new SClientState()
+
+            var newPlayer = new PlayerModel()
             {
-                ClientState = player.ClientState
+                SlotNumber = obj.SlotNumber,
+                Name = obj.Name,
+                Attributes = new Attributes(),
+                Vitals = new Vitals(),
+                Direction = Direction.Right,
+                Gender = obj.Gender,
+                Vocation = obj.Vocation,
+                Position = EntityValidator.DefaultPosition
             };
+
+            var res = newPlayer.Validate();
             
-            SendDataTo(netPeer, changeClientState, DeliveryMethod.ReliableOrdered);
+            if (res != null)
+            {
+                ServerAlert(netPeer, res.Message);
+                return;
+            }
+
+            var result = await ServerNetworkService.PlayerRepository.AddPlayerAsync(player.AccountId, newPlayer);
             
-            // Adiciona os PlayerModels da conta ao Player
-            player.PlayerModels.AddRange(account.Value.Players);
+            if (result != null)
+            {
+                ServerAlert(netPeer, result.Message);
+                return;
+            }
+            
+            ServerAlert(netPeer, $"Character {newPlayer.Name} created successfully!");
+            
+            player.PlayerModels.Add(newPlayer);
 
             // Cria uma nova lista para os PlayerModels
             var myPlayerDataModel = new List<PlayerDataModel>();
@@ -104,25 +119,8 @@ namespace Side2D.Server.Network
             };
 
             Log.Print($"SCharacter slots: {myPlayerDataModel.Count}");
-
-
+            
             SendDataTo(netPeer, packet, DeliveryMethod.ReliableOrdered);
-
-
-            /*var packet = new SPlayerData();
-
-            packet.PlayersDataModels.Add(ServerNetworkService.Players.Values.FirstOrDefault(x => x.PlayerDataModel.Index == netPeer.Id)!.PlayerDataModel);
-            packet.PlayersMoveModels.Add(ServerNetworkService.Players.Values.FirstOrDefault(x => x.PlayerMoveModel.Index == netPeer.Id)!.PlayerMoveModel);
-
-            SendDataToAll(packet, DeliveryMethod.ReliableOrdered);
-
-            packet.PlayersDataModels.Clear();
-            packet.PlayersMoveModels.Clear();
-
-            packet.PlayersDataModels.AddRange(ServerNetworkService.Players.Values.Select(p => p.PlayerDataModel).Where(x => x.Index != netPeer.Id));
-            packet.PlayersMoveModels.AddRange(ServerNetworkService.Players.Values.Select(p => p.PlayerMoveModel).Where(x => x.Index != netPeer.Id));
-
-            SendDataTo(netPeer, packet, DeliveryMethod.ReliableOrdered);*/
         }
     }
 }

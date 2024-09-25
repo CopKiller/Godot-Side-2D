@@ -9,17 +9,24 @@ namespace Side2D.Server.Database.Repositorys
 {
     public class PlayerRepository(DatabaseContext context) : Repository<PlayerModel>(context), IPlayerRepository
     {
-        public async Task<DatabaseException?> AddPlayerAsync(PlayerModel player)
+        public async Task<DatabaseException?> AddPlayerAsync(int accountId, PlayerModel player)
         {
             if (await NameExistsAsync(player.Name))
                 return new DatabaseException("Username already exists");
             
-            await AddAsync(player);
-            await SaveChangesAsync();
+            var account = await Context.Accounts
+                .Include(a => a.Players)
+                .FirstOrDefaultAsync(a => a.Id == accountId);
+    
+            if (account == null)
+                return new DatabaseException("Account not found");
             
-            return null;
+            account.Players.Add(player);
+            Context.Accounts.Update(account);
+
+            var result = await SaveChangesAsync();
+            return result > 0 ? null : new DatabaseException("Failed to add player");
         }
-        
 
         public async Task<Result<List<PlayerModel>>> GetPlayersByAccountIdAsync(int accountId)
         {
@@ -31,9 +38,9 @@ namespace Side2D.Server.Database.Repositorys
                 .ToListAsync();
 
 
-            return players.Any() ? new Result<List<PlayerModel>>(players, null) : new Result<List<PlayerModel>>([], new DatabaseException("You do not have characters!"));
+            return players.Count != 0 ? new Result<List<PlayerModel>>(players, null) : new Result<List<PlayerModel>>([], new DatabaseException("You do not have characters!"));
         }
-        
+
         public async Task<bool> NameExistsAsync(string name)
         {
             return await Context.Players.AsNoTracking().AnyAsync(p => p.Name == name);

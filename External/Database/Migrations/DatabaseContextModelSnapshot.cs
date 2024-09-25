@@ -63,6 +63,9 @@ namespace Database.Migrations
                     b.Property<int>("Intelligence")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("PlayerModelId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<int>("Strength")
                         .HasColumnType("INTEGER");
 
@@ -70,6 +73,9 @@ namespace Database.Migrations
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerModelId")
+                        .IsUnique();
 
                     b.ToTable("Attributes");
                 });
@@ -92,7 +98,13 @@ namespace Database.Migrations
                     b.Property<int>("MaxMana")
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("PlayerModelId")
+                        .HasColumnType("INTEGER");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("PlayerModelId")
+                        .IsUnique();
 
                     b.ToTable("Vitals");
                 });
@@ -103,10 +115,7 @@ namespace Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int?>("AccountModelId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("AttributesId")
+                    b.Property<int>("AccountModelId")
                         .HasColumnType("INTEGER");
 
                     b.Property<byte>("Direction")
@@ -118,19 +127,19 @@ namespace Database.Migrations
                     b.Property<float>("JumpVelocity")
                         .HasColumnType("REAL");
 
+                    b.Property<int>("Level")
+                        .HasColumnType("INTEGER");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
-                    b.Property<int>("PositionId")
+                    b.Property<int>("SlotNumber")
                         .HasColumnType("INTEGER");
 
                     b.Property<float>("Speed")
                         .HasColumnType("REAL");
-
-                    b.Property<int>("VitalsId")
-                        .HasColumnType("INTEGER");
 
                     b.Property<byte>("Vocation")
                         .HasColumnType("INTEGER");
@@ -139,14 +148,8 @@ namespace Database.Migrations
 
                     b.HasIndex("AccountModelId");
 
-                    b.HasIndex("AttributesId");
-
                     b.HasIndex("Name")
                         .IsUnique();
-
-                    b.HasIndex("PositionId");
-
-                    b.HasIndex("VitalsId");
 
                     b.ToTable("Players");
                 });
@@ -157,6 +160,9 @@ namespace Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<int>("PlayerModelId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<float>("X")
                         .HasColumnType("REAL");
 
@@ -165,43 +171,71 @@ namespace Database.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("PlayerModelId")
+                        .IsUnique();
+
                     b.ToTable("Vector2C");
+                });
+
+            modelBuilder.Entity("Side2D.Models.Player.Attributes", b =>
+                {
+                    b.HasOne("Side2D.Models.PlayerModel", "PlayerModel")
+                        .WithOne("Attributes")
+                        .HasForeignKey("Side2D.Models.Player.Attributes", "PlayerModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayerModel");
+                });
+
+            modelBuilder.Entity("Side2D.Models.Player.Vitals", b =>
+                {
+                    b.HasOne("Side2D.Models.PlayerModel", "PlayerModel")
+                        .WithOne("Vitals")
+                        .HasForeignKey("Side2D.Models.Player.Vitals", "PlayerModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayerModel");
                 });
 
             modelBuilder.Entity("Side2D.Models.PlayerModel", b =>
                 {
-                    b.HasOne("Side2D.Models.AccountModel", null)
+                    b.HasOne("Side2D.Models.AccountModel", "AccountModel")
                         .WithMany("Players")
-                        .HasForeignKey("AccountModelId");
-
-                    b.HasOne("Side2D.Models.Player.Attributes", "Attributes")
-                        .WithMany()
-                        .HasForeignKey("AttributesId")
+                        .HasForeignKey("AccountModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Side2D.Models.Vectors.Vector2C", "Position")
-                        .WithMany()
-                        .HasForeignKey("PositionId")
+                    b.Navigation("AccountModel");
+                });
+
+            modelBuilder.Entity("Side2D.Models.Vectors.Vector2C", b =>
+                {
+                    b.HasOne("Side2D.Models.PlayerModel", "PlayerModel")
+                        .WithOne("Position")
+                        .HasForeignKey("Side2D.Models.Vectors.Vector2C", "PlayerModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Side2D.Models.Player.Vitals", "Vitals")
-                        .WithMany()
-                        .HasForeignKey("VitalsId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Attributes");
-
-                    b.Navigation("Position");
-
-                    b.Navigation("Vitals");
+                    b.Navigation("PlayerModel");
                 });
 
             modelBuilder.Entity("Side2D.Models.AccountModel", b =>
                 {
                     b.Navigation("Players");
+                });
+
+            modelBuilder.Entity("Side2D.Models.PlayerModel", b =>
+                {
+                    b.Navigation("Attributes")
+                        .IsRequired();
+
+                    b.Navigation("Position")
+                        .IsRequired();
+
+                    b.Navigation("Vitals")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }

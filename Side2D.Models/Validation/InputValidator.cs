@@ -1,5 +1,6 @@
 ﻿
 using System.Text.RegularExpressions;
+using Side2D.Models.Enum;
 using static System.String;
 
 namespace Side2D.Models.Validation
@@ -63,6 +64,16 @@ namespace Side2D.Models.Validation
             {
                 return false;
             }
+        }
+
+        public static bool IsValidGender(this int index)
+        {
+            return index is > (int)Gender.Undefined and < (int)Gender.Count;
+        }
+        
+        public static bool IsValidVocation(this int index)
+        {
+            return index is > (int)Vocation.None and < (int)Vocation.Count;
         }
 
         /*public static bool IsValidBirthDate(this string date)

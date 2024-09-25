@@ -1,5 +1,6 @@
 ﻿using System.Numerics;
 using LiteNetLib.Utils;
+using Side2D.Models.Player;
 using Side2D.Models.Vectors;
 
 namespace Side2D.Network.CustomDataSerializable.Extension
@@ -16,6 +17,48 @@ namespace Side2D.Network.CustomDataSerializable.Extension
         {
             var vector = new Vector2C(reader.GetFloat(), reader.GetFloat());
             return vector;
+        }
+        
+        public static void Put(this NetDataWriter writer, Vitals val)
+        {
+            writer.Put(val.Health);
+            writer.Put(val.Mana);
+            writer.Put(val.MaxHealth);
+            writer.Put(val.MaxMana);
+        }
+        
+        public static Vitals GetVitals(this NetDataReader reader)
+        {
+            var vitals = new Vitals()
+            {
+                Health = reader.GetInt(),
+                Mana = reader.GetInt(),
+                MaxHealth = reader.GetInt(),
+                MaxMana = reader.GetInt()
+            };
+            return vitals;
+        }
+        
+        public static void Put(this NetDataWriter writer, Attributes val)
+        {
+            writer.Put(val.Strength);
+            writer.Put(val.Defense);
+            writer.Put(val.Agility);
+            writer.Put(val.Intelligence);
+            writer.Put(val.Willpower);
+        }
+        
+        public static Attributes GetAttributes(this NetDataReader reader)
+        {
+            var attributes = new Attributes()
+            {
+                Strength = reader.GetInt(),
+                Defense = reader.GetInt(),
+                Agility = reader.GetInt(),
+                Intelligence = reader.GetInt(),
+                Willpower = reader.GetInt()
+            };
+            return attributes;
         }
     }
 }

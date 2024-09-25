@@ -10,4 +10,9 @@ public class Attributes
     public int Agility { get; set; }
     public int Intelligence { get; set; }
     public int Willpower { get; set; }
+    
+    [ForeignKey("PlayerModelId")]
+    public int PlayerModelId { get; set; }
+    
+    public PlayerModel PlayerModel { get; set; }
 }

@@ -1,6 +1,8 @@
 ﻿
+using System.Linq.Expressions;
 using System.Numerics;
 using LiteNetLib;
+using Side2D.Models;
 using Side2D.Models.Enum;
 using Side2D.Models.Vectors;
 using Side2D.Network.CustomDataSerializable;
@@ -10,14 +12,17 @@ namespace Side2D.Server.Network
 {
     public class ServerClient
     {
+        public int Index { get; private set; }
+        public NetPeer Peer { get; private set; }
+        public int AccountId { get; set; }
+
+        public List<PlayerModel> PlayerModels { get; private set; } = [];
         
-        public int Index { get; set; }
-        public NetPeer Peer { get; set; }
+        public PlayerMoveModel PlayerMoveModel { get; set; } 
+        
         public PlayerDataModel PlayerDataModel { get; set; }
-        public PlayerMoveModel PlayerMoveModel { get; set; }
         
         public ClientState ClientState { get; set; }
-
 
         private readonly ServerPacketProcessor? _serverPacketProcessor;
 
@@ -28,23 +33,6 @@ namespace Side2D.Server.Network
             Peer = netPeer;
 
             Index = netPeer.Id;
-            
-            PlayerDataModel = new PlayerDataModel
-            {
-                Index = Index,
-                Name = "Player" + Index,
-                Vocation = Vocation.Archer,
-                JumpVelocity = -400.0F,
-                Speed = 300.0F,
-            };
-
-            PlayerMoveModel = new PlayerMoveModel
-            {
-                Index = Index,
-                Velocity = Vector2C.Zero,
-                Direction = Direction.Right,
-                Position = new Vector2C(400, 450),
-            };
             
             ClientState = ClientState.Menu;
         }

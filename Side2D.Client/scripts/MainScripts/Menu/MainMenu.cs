@@ -7,12 +7,12 @@ using Side2D.scripts.Host;
 
 public partial class MainMenu : Control
 {
-	private MainMenuWindows _mainMenuWindows;
+	public MainMenuWindows MainMenuWindows { get; private set; }
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_mainMenuWindows = GetNode<MainMenuWindows>("MainMenuWindows");
+		MainMenuWindows = GetNode<MainMenuWindows>(nameof(MainMenuWindows));
 		
 		FadeInMainMenu();
 		return;
@@ -25,7 +25,7 @@ public partial class MainMenu : Control
 			
 			tween.TweenCallback(Callable.From(() =>
 			{
-				_mainMenuWindows.StartMenu();
+				MainMenuWindows.StartMenu();
 			}));
 			
 			tween.SetTrans(Tween.TransitionType.Linear);

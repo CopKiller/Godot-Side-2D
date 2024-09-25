@@ -11,4 +11,9 @@ public class Vitals
     
     public int Mana { get; set; }
     public int MaxMana { get; set; }
+    
+    [ForeignKey("PlayerModelId")]
+    public int PlayerModelId { get; set; }
+    
+    public PlayerModel PlayerModel { get; set; }
 }

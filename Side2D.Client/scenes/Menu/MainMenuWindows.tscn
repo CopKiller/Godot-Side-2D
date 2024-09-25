@@ -1,8 +1,9 @@
-[gd_scene load_steps=4 format=3 uid="uid://caxv7daojy724"]
+[gd_scene load_steps=5 format=3 uid="uid://caxv7daojy724"]
 
 [ext_resource type="Script" path="res://scripts/MainScripts/Menu/MainMenuWindows.cs" id="1_s4sl1"]
 [ext_resource type="PackedScene" uid="uid://drqp6caxsls37" path="res://scenes/Menu/Windows/winLogin.tscn" id="2_5p7hp"]
 [ext_resource type="PackedScene" uid="uid://d3pa0w4kdyrsw" path="res://scenes/Menu/Windows/winRegister.tscn" id="3_6b0s4"]
+[ext_resource type="PackedScene" uid="uid://bwro0aia8mile" path="res://scenes/Menu/Windows/winChar.tscn" id="4_iy2of"]
 
 [node name="MainMenuWindows" type="Node"]
 script = ExtResource("1_s4sl1")
@@ -62,11 +63,6 @@ text = "Exit"
 [node name="winRegister" parent="." instance=ExtResource("3_6b0s4")]
 visible = false
 
-[node name="winAlertMsg" type="AcceptDialog" parent="."]
+[node name="winCharacter" parent="." instance=ExtResource("4_iy2of")]
 disable_3d = true
-initial_position = 2
-size = Vector2i(233, 106)
-unresizable = true
-always_on_top = true
-popup_window = true
-dialog_autowrap = true
+always_on_top = false

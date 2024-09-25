@@ -11,7 +11,7 @@ namespace Side2D.Server.Network
 {
     public partial class ServerPacketProcessor
     {
-        public async void ClientRegister(CAccountRegister obj, NetPeer netPeer)
+        public async void ClientAccountRegister(CAccountRegister obj, NetPeer netPeer)
         {
             if (ServerNetworkService.Players == null) return;
             

@@ -36,7 +36,7 @@ public partial class Player : CharacterBody2D
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		_panelBg = GetNode<Panel>("panelBg");
 		_lblName = GetNode<Label>("lblName");
-		
+
 		if (IsLocal)
 			_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
 		

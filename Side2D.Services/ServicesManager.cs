@@ -14,10 +14,7 @@ public sealed class ServicesManager : IDisposable
     
     private CancellationTokenSource? _updateCancellationTokenSource;    // --> Token de cancelamento
 
-    public ServicesManager()
-    {
-        
-    }
+    public ServicesManager() { }
 
     public void Register()
     {

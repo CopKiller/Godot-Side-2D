@@ -6,7 +6,7 @@ namespace Side2D.scripts.Network
 {
     public class ClientPlayer(ClientPacketProcessor clientPacketProcessor)
     {
-        public ClientPacketProcessor clientPacketProcessor { get; } = clientPacketProcessor;
+        private ClientPacketProcessor ClientPacketProcessor { get; } = clientPacketProcessor;
         
         /// <summary>
         /// Get the current latency between server and client
@@ -91,7 +91,7 @@ namespace Side2D.scripts.Network
                 return;
             }
             
-            clientPacketProcessor.Send(CurrentPeer, packet, deliveryMethod);
+            ClientPacketProcessor.Send(CurrentPeer, packet, deliveryMethod);
         }
     }
 }

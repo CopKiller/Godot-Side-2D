@@ -19,4 +19,8 @@
       <ProjectReference Include="..\..\Side2D.Models\Side2D.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Migrations\" />
+    </ItemGroup>
+
 </Project>

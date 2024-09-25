@@ -4,6 +4,6 @@ public enum ClientState : byte
 {
     None,
     Menu,
-    NewCharacter,
+    Character,
     Game
 }

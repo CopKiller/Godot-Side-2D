@@ -20,14 +20,14 @@ public partial class Players : Node, IPacketHandler
 		RegisterPacketHandlers();
 	}
 	
-	public void AddPlayer(bool isLocal, PlayerDataModel playerData, PlayerMoveModel playerMove)
+	public void AddPlayer(bool isLocal, PlayerDataModel playerData, PlayerMoveModel playerMoveModel)
 	{
 		if (_playerScene.Instantiate() is not Player player) return;
 		
 		player.IsLocal = isLocal;
 		
 		player.PlayerDataModel = playerData;
-		player.PlayerMoveModel = playerMove;
+		player.PlayerMoveModel = playerMoveModel;
 		
 		_players.Add(player);
 		

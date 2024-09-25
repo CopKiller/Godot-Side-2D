@@ -9,7 +9,7 @@ namespace Side2D.scripts;
 
 public class SceneManager
 {
-    private Node CurrentScene { get; set; }
+    public Node CurrentScene { get; private set; }
 
     private readonly Dictionary<Type, StringName> _scenes = new()
     {

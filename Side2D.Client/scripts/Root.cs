@@ -6,12 +6,20 @@ namespace Side2D.scripts;
 
 public partial class Root : Node2D
 {
+	public bool IsDebugMode => true;
+	
 	private TextureRect _splashScreen;
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		_splashScreen = GetNode<TextureRect>("texSplash");
+		
+		if (IsDebugMode)
+		{
+			StartMenu();
+			return;
+		}
 		
 		FadeInSplashScreen();
 		return;
