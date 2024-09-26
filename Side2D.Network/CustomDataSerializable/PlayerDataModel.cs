@@ -38,7 +38,7 @@ public struct PlayerDataModel : INetSerializable
     public Vocation Vocation { get; set; }
     
     public Gender Gender { get; set; }
-    
+
     public Vitals Vitals { get; set; } = new Vitals();
     
     public Attributes Attributes { get; set; } = new Attributes();
@@ -46,6 +46,20 @@ public struct PlayerDataModel : INetSerializable
     public float JumpVelocity { get; set; }
     
     public float Speed { get; set; }
+
+    public void SetValues(PlayerDataModel playerModel)
+    {
+        SlotNumber = playerModel.SlotNumber;
+        Name = playerModel.Name;
+        Level = playerModel.Level;
+        Vocation = playerModel.Vocation;
+        
+        Vitals = playerModel.Vitals;
+        Attributes = playerModel.Attributes;
+        
+        JumpVelocity = playerModel.JumpVelocity;
+        Speed = playerModel.Speed;
+    }
 
     public void Serialize(NetDataWriter writer)
     {

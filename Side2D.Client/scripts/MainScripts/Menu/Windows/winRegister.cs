@@ -33,7 +33,45 @@ public partial class winRegister : Window
 		_txtRetypePassword = GetNode<LineEdit>("%txtRetypePassword");
 		_txtEmail = GetNode<LineEdit>("%txtEmail");
 		_btnEnter = GetNode<Button>("%btnEnter");
-		_btnEnter.Connect(BaseButton.SignalName.Pressed, Callable.From(Register));
+
+		ConnectSignals();
+		
+		return;
+		
+		void ConnectSignals()
+		{
+			_btnEnter.Connect(BaseButton.SignalName.Pressed, Callable.From(Register));
+			
+			_txtUsername.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
+			{
+				CreateValidation(newText.IsValidName(), _txtUsername);
+			}));
+			
+			_txtPassword.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
+			{
+				CreateValidation(newText.IsValidPassword(), _txtPassword);
+			}));
+			
+			_txtRetypePassword.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
+			{
+				CreateValidation(newText == _txtPassword.Text, _txtRetypePassword);
+			}));
+			
+			_txtEmail.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
+			{
+				CreateValidation(newText.IsValidEmail(), _txtEmail);
+			}));
+			
+
+			return;
+			
+			// Signals
+			void CreateValidation(bool valid, Control control)
+			{
+				_btnEnter.Disabled = !valid;
+				control.Modulate = valid ? new Color(0, 1, 0) : new Color(1, 0, 0);
+			}
+		}
 	}
 	
 	private void Register()

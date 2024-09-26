@@ -104,8 +104,7 @@ namespace Side2D.Server.Network
             };
 
             Log.Print($"SCharacter slots: {myPlayerDataModel.Count}");
-
-
+            
             SendDataTo(netPeer, packet, DeliveryMethod.ReliableOrdered);
 
 

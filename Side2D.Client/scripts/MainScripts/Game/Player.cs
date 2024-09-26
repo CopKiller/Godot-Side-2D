@@ -102,10 +102,10 @@ public partial class Player : CharacterBody2D
 		    _isMoving == PlayerMoveModel.IsMoving) return;
 		
 		// Atualiza PlayerMoveModel
-		PlayerMoveModel.Velocity = new Vector2C(_velocity.X, _velocity.Y);
+		PlayerMoveModel.Velocity.SetValues(_velocity.X, _velocity.Y);
+		PlayerMoveModel.Position.SetValues(Position.X, Position.Y);
 		PlayerMoveModel.Direction = _direction;
 		PlayerMoveModel.IsMoving = _isMoving;
-		PlayerMoveModel.Position = new Vector2C(Position.X, Position.Y);
 
 		// Envia a atualização
 		_cPlayerMove.PlayerMoveModel = PlayerMoveModel;
@@ -143,13 +143,19 @@ public partial class Player : CharacterBody2D
 		}
 		
 		_animatedSprite.Play($"{prefix}_{_direction.ToString().ToLower()}");
-		
 	}
 
 	private void UpdatePlayer()
 	{
-		UpdatePlayerData();
 		UpdatePlayerMove();
+		UpdatePlayerData();
+		UpdateCamera();
+	}
+	
+	private void UpdateCamera()
+	{
+		if (!IsLocal)
+			GetNode<Camera2D>(nameof(Camera2D)).QueueFree();
 	}
 
 	public void UpdatePlayerMove()
@@ -169,15 +175,25 @@ public partial class Player : CharacterBody2D
 		UpdateName();
 		// Vocation
 		UpdateVocation();
-		
+    
 		return;
-		
+    
 		void UpdateName()
 		{
 			_lblName.Text = PlayerDataModel.Name;
-			_panelBg.Size = new Vector2(_lblName.Size.X + 20, _panelBg.Size.Y);
-			_panelBg.Position = new Vector2(-_panelBg.Size.X / 2, _panelBg.Position.Y);
+			
+			_lblName.ItemRectChanged += UpdateNameBackground;
+
+			return;
+				
+			void UpdateNameBackground()
+			{
+				_panelBg.Size = new Vector2(_lblName.Size.X + 20, _panelBg.Size.Y);
+				_panelBg.Position = new Vector2(-_panelBg.Size.X / 2, _panelBg.Position.Y);
+				_lblName.ItemRectChanged -= UpdateNameBackground;
+			};
 		}
+
 		void UpdateVocation()
 		{
 			var vocation = PlayerDataModel.Vocation.ToString();

@@ -15,8 +15,12 @@ namespace Side2D.Network.CustomDataSerializable.Extension
 
         public static Vector2C GetVector2(this NetDataReader reader)
         {
-            var vector = new Vector2C(reader.GetFloat(), reader.GetFloat());
-            return vector;
+            var vector2 = new Vector2C
+            {
+                X = reader.GetFloat(),
+                Y = reader.GetFloat()
+            };
+            return vector2;
         }
         
         public static void Put(this NetDataWriter writer, Vitals val)

@@ -50,8 +50,8 @@ public partial class Players : Node, IPacketHandler
 		var player = _players.Find(x => x.PlayerDataModel.Index == playerMove.Index);
 		
 		if (player == null) return;
-		
-		player.PlayerMoveModel = playerMove;
+
+		player.PlayerMoveModel.SetValues(playerMove);
 		
 		player.CallDeferred(nameof(player.UpdatePlayerMove));
 	}

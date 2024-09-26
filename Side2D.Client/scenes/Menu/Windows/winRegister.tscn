@@ -42,6 +42,7 @@ text = "Password:"
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
+secret = true
 
 [node name="Label3" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -51,6 +52,7 @@ text = "Retype Password:"
 unique_name_in_owner = true
 layout_mode = 2
 alignment = 1
+secret = true
 
 [node name="Label4" type="Label" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2

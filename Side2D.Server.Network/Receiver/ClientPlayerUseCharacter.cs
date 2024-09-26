@@ -53,12 +53,8 @@ namespace Side2D.Server.Network
             // Envia os dados do jogador para todos os outros jogadores
             SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableOrdered);
 
-            // Agora envia os dados dos outros jogadores para o jogador atual
-            packet.PlayersDataModels.Clear();
-            packet.PlayersMoveModels.Clear();
-
             var otherPlayers = ServerNetworkService.Players.Values
-                .Where(x => x.ClientState == ClientState.Game);
+                .Where(x => x.ClientState == ClientState.Game && x.Index != player.Index);
 
             var serverClients = otherPlayers as ServerClient[] ?? otherPlayers.ToArray();
             packet.PlayersDataModels.AddRange(serverClients.Select(x => x.PlayerDataModel));

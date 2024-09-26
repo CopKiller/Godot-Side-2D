@@ -24,7 +24,7 @@ public class PlayerModel : IEntity
     
     public Direction Direction { get; set; }
     
-    public Vector2C Position { get; set; }
+    public Position Position { get; set; }
     
     public Vitals Vitals { get; set; }
     

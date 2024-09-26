@@ -9,6 +9,7 @@ public class Vector2C
         X = x;
         Y = y;
     }
+    
     public Vector2C() { }
     
     public int Id { get; set; }
@@ -25,5 +26,11 @@ public class Vector2C
     public override string ToString()
     {
         return $"X: {X}, Y: {Y}";
+    }
+    
+    public void SetValues(float x, float y)
+    {
+        X = x;
+        Y = y;
     }
 }

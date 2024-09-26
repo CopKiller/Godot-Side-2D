@@ -3,6 +3,7 @@ using Side2D.Network.CustomDataSerializable.Extension;
 using LiteNetLib.Utils;
 using Side2D.Models;
 using Side2D.Models.Enum;
+using Side2D.Models.Player;
 using Side2D.Models.Vectors;
 
 namespace Side2D.Network.CustomDataSerializable
@@ -10,7 +11,6 @@ namespace Side2D.Network.CustomDataSerializable
     public struct PlayerMoveModel : INetSerializable
     {
         public PlayerMoveModel() { }
-        
         public PlayerMoveModel(int index, PlayerModel playerModel)
         {
             Index = index;
@@ -22,9 +22,9 @@ namespace Side2D.Network.CustomDataSerializable
 
         public int Index { get; set; }
         public bool IsMoving { get; set; }
-        public Vector2C Velocity { get; set; }
+        public Vector2C Velocity { get; set; } = new Vector2C();
         public Direction Direction { get; set; }
-        public Vector2C Position { get; set; }
+        public Vector2C Position { get; set; } = new Vector2C();
 
         public void Deserialize(NetDataReader reader)
         {
@@ -43,13 +43,13 @@ namespace Side2D.Network.CustomDataSerializable
             writer.Put(Position);
         }
         
-        public void ConterToMove(int index, PlayerModel playerModel)
+        public void SetValues(PlayerMoveModel playerMoveModel)
         {
-            Index = index;
-            IsMoving = false;
-            Velocity = Vector2C.Zero;
-            Direction = playerModel.Direction;
-            Position = playerModel.Position;
+            Index = playerMoveModel.Index;
+            IsMoving = playerMoveModel.IsMoving;
+            Velocity.SetValues(playerMoveModel.Velocity.X, playerMoveModel.Velocity.Y);
+            Direction = playerMoveModel.Direction;
+            Position.SetValues(playerMoveModel.Position.X, playerMoveModel.Position.Y);
         }
         
         public override string ToString()
