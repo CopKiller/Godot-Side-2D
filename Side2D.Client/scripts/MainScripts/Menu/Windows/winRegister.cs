@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using LiteNetLib;
 using Side2D.Models.Validation;
@@ -9,7 +10,7 @@ using Side2D.scripts.Network;
 
 public partial class winRegister : Window
 {
-	// Input
+	// Input fields
 	private LineEdit _txtUsername;
 	private LineEdit _txtPassword;
 	private LineEdit _txtRetypePassword;
@@ -18,11 +19,10 @@ public partial class winRegister : Window
 	// Buttons
 	private Button _btnEnter;
 	
-	// Alert
+	// Alert manager and player
 	private AlertManager _alertManager;
 	private ClientPlayer _clientPlayer;
-	
-	// Called when the node enters the scene tree for the first time.
+
 	public override void _Ready()
 	{
 		_alertManager = ApplicationHost.Instance.GetSingleton<AlertManager>();
@@ -35,63 +35,59 @@ public partial class winRegister : Window
 		_btnEnter = GetNode<Button>("%btnEnter");
 
 		ConnectSignals();
-		
-		return;
-		
-		void ConnectSignals()
-		{
-			_btnEnter.Connect(BaseButton.SignalName.Pressed, Callable.From(Register));
-			
-			_txtUsername.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
-			{
-				CreateValidation(newText.IsValidName(), _txtUsername);
-			}));
-			
-			_txtPassword.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
-			{
-				CreateValidation(newText.IsValidPassword(), _txtPassword);
-			}));
-			
-			_txtRetypePassword.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
-			{
-				CreateValidation(newText == _txtPassword.Text, _txtRetypePassword);
-			}));
-			
-			_txtEmail.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
-			{
-				CreateValidation(newText.IsValidEmail(), _txtEmail);
-			}));
-			
-
-			return;
-			
-			// Signals
-			void CreateValidation(bool valid, Control control)
-			{
-				_btnEnter.Disabled = !valid;
-				control.Modulate = valid ? new Color(0, 1, 0) : new Color(1, 0, 0);
-			}
-		}
+		UpdateSubmitButtonState();
 	}
-	
+
+	private void ConnectSignals()
+	{
+		_btnEnter.Connect(BaseButton.SignalName.Pressed, Callable.From(Register));
+		
+		ConnectTextValidation(_txtUsername, () => _txtUsername.Text.IsValidName());
+		ConnectTextValidation(_txtPassword, () => _txtPassword.Text.IsValidPassword());
+		ConnectTextValidation(_txtRetypePassword, () => _txtRetypePassword.Text == _txtPassword.Text);
+		ConnectTextValidation(_txtEmail, () => _txtEmail.Text.IsValidEmail());
+	}
+
+	private void ConnectTextValidation(LineEdit input, Func<bool> validationFunc)
+	{
+		input.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
+		{
+			UpdateValidationState(input, validationFunc());
+		}));
+	}
+
+	private void UpdateValidationState(Control control, bool isValid)
+	{
+		control.Modulate = isValid ? new Color(0, 1, 0) : new Color(1, 0, 0);
+		UpdateSubmitButtonState();
+	}
+
+	private void UpdateSubmitButtonState()
+	{
+		var isFormValid = 
+			_txtUsername.Text.IsValidName() && 
+			_txtPassword.Text.IsValidPassword() && 
+			_txtRetypePassword.Text == _txtPassword.Text && 
+			_txtEmail.Text.IsValidEmail();
+		
+		_btnEnter.Disabled = !isFormValid;
+	}
+
 	private void Register()
 	{
-		var result = _txtUsername.Text.IsValidName();
-		if (!result)
+		if (!_txtUsername.Text.IsValidName())
 		{
 			_alertManager.AddAlert("Invalid username format");
 			return;
 		}
 		
-		result = _txtPassword.Text.IsValidPassword();
-		if (!result)
+		if (!_txtPassword.Text.IsValidPassword())
 		{
 			_alertManager.AddAlert("Invalid password format");
 			return;
 		}
 		
-		result = _txtEmail.Text.IsValidEmail();
-		if (!result)
+		if (!_txtEmail.Text.IsValidEmail())
 		{
 			_alertManager.AddAlert("Invalid email format");
 			return;
@@ -102,14 +98,14 @@ public partial class winRegister : Window
 			_alertManager.AddAlert("Password and retype password do not match");
 			return;
 		}
-		
+
+		// Create and send registration packet
 		var packet = new CAccountRegister()
 		{
 			Username = _txtUsername.Text,
 			Password = _txtPassword.Text,
 			Email = _txtEmail.Text
 		};
-
 		_clientPlayer.SendData(packet, DeliveryMethod.ReliableOrdered);
 	}
 }

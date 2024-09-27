@@ -9,24 +9,6 @@ namespace Side2D.Network.CustomDataSerializable;
 
 public struct PlayerDataModel : INetSerializable
 {
-    public PlayerDataModel() { }
-    public PlayerDataModel(int index, PlayerModel playerModel)
-    {
-        Index = index;
-        SlotNumber = playerModel.SlotNumber;
-        Name = playerModel.Name;
-        Level = playerModel.Level;
-        Vocation = playerModel.Vocation;
-        Gender = playerModel.Gender;
-        
-        
-        Vitals = playerModel.Vitals;
-        Attributes = playerModel.Attributes;
-        
-        JumpVelocity = playerModel.JumpVelocity;
-        Speed = playerModel.Speed;
-    }
-
     public int Index { get; set; }
     
     public int SlotNumber { get; set; }
@@ -46,6 +28,23 @@ public struct PlayerDataModel : INetSerializable
     public float JumpVelocity { get; set; }
     
     public float Speed { get; set; }
+    
+    public PlayerDataModel() { }
+    public PlayerDataModel(int index, PlayerModel playerModel)
+    {
+        Index = index;
+        SlotNumber = playerModel.SlotNumber;
+        Name = playerModel.Name;
+        Level = playerModel.Level;
+        Vocation = playerModel.Vocation;
+        Gender = playerModel.Gender;
+        
+        Vitals = playerModel.Vitals;
+        Attributes = playerModel.Attributes;
+        
+        JumpVelocity = playerModel.JumpVelocity;
+        Speed = playerModel.Speed;
+    }
 
     public void SetValues(PlayerDataModel playerModel)
     {

@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using LiteNetLib;
 using Side2D.Models.Validation;
@@ -27,41 +28,48 @@ public partial class winLogin : Window
 	{
 		_alertManager = ApplicationHost.Instance.GetSingleton<AlertManager>();
 		_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
-		
+
 		_txtUsername = GetNode<LineEdit>("%txtUsername");
 		_txtPassword = GetNode<LineEdit>("%txtPassword");
 		_chkSaveUsername = GetNode<CheckBox>("%chkSaveUsername");
 		_chkSavePassword = GetNode<CheckBox>("%chkSavePassword");
 		_btnEnter = GetNode<Button>("%btnEnter");
+
+		ConnectSignals();
+		UpdateSubmitButtonState();
+
+		return;
+	}
+	
+	private void ConnectSignals()
+	{
 		_btnEnter.Connect(BaseButton.SignalName.Pressed, Callable.From(Login));
 		
-		ConnectSignals();
-		
-		return;
-		
-		void ConnectSignals()
+		ConnectTextValidation(_txtUsername, () => _txtUsername.Text.IsValidName());
+		ConnectTextValidation(_txtPassword, () => _txtPassword.Text.IsValidPassword());
+	}
+	
+	private void ConnectTextValidation(LineEdit input, Func<bool> validationFunc)
+	{
+		input.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
 		{
-			_btnEnter.Connect(BaseButton.SignalName.Pressed, Callable.From(Login));
+			UpdateValidationState(input, validationFunc());
+		}));
+	}
 
-			_txtUsername.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
-			{
-				CreateValidation(newText.IsValidName(), _txtUsername);
-			}));
+	private void UpdateValidationState(Control control, bool isValid)
+	{
+		control.Modulate = isValid ? new Color(0, 1, 0) : new Color(1, 0, 0);
+		UpdateSubmitButtonState();
+	}
 
-			_txtPassword.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
-			{
-				CreateValidation(newText.IsValidPassword(), _txtPassword);
-			}));
-			
-			return;
-			
-			// Signals
-			void CreateValidation(bool valid, Control control)
-			{
-				_btnEnter.Disabled = !valid;
-				control.Modulate = valid ? new Color(0, 1, 0) : new Color(1, 0, 0);
-			}
-		}
+	private void UpdateSubmitButtonState()
+	{
+		var isFormValid = 
+			_txtUsername.Text.IsValidName() && 
+			_txtPassword.Text.IsValidPassword();
+		
+		_btnEnter.Disabled = !isFormValid;
 	}
 	
 	private void Login()
@@ -87,6 +95,5 @@ public partial class winLogin : Window
 		};
 
 		_clientPlayer.SendData(packet, DeliveryMethod.ReliableOrdered);
-		//QueueFree();
 	}
 }

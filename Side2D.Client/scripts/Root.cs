@@ -6,7 +6,7 @@ namespace Side2D.scripts;
 
 public partial class Root : Node2D
 {
-	public bool IsDebugMode => true;
+	public bool IsDebugMode => false;
 	
 	private TextureRect _splashScreen;
 	

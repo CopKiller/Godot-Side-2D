@@ -10,6 +10,12 @@ namespace Side2D.Network.CustomDataSerializable
 {
     public struct PlayerMoveModel : INetSerializable
     {
+        public int Index { get; set; }
+        public bool IsMoving { get; set; }
+        public Vector2C Velocity { get; set; } = new Vector2C();
+        public Direction Direction { get; set; }
+        public Vector2C Position { get; set; } = new Vector2C();
+        
         public PlayerMoveModel() { }
         public PlayerMoveModel(int index, PlayerModel playerModel)
         {
@@ -19,12 +25,6 @@ namespace Side2D.Network.CustomDataSerializable
             Direction = playerModel.Direction;
             Position = playerModel.Position;
         }
-
-        public int Index { get; set; }
-        public bool IsMoving { get; set; }
-        public Vector2C Velocity { get; set; } = new Vector2C();
-        public Direction Direction { get; set; }
-        public Vector2C Position { get; set; } = new Vector2C();
 
         public void Deserialize(NetDataReader reader)
         {
