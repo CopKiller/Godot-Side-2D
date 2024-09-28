@@ -15,7 +15,7 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 script = ExtResource("1_yuq4u")
 
-[node name="2" parent="." instance=ExtResource("2_f18tr")]
+[node name="Parallax2D" parent="." instance=ExtResource("2_f18tr")]
 
 [node name="MainMenuWindows" parent="." instance=ExtResource("3_cjwg1")]
 

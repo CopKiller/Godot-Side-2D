@@ -43,4 +43,23 @@ public class SceneManager
             tree.ProcessFrame -= ProcessFrame;
         }
     }
+    
+    public void LoadSceneNow<T>() where T : Node
+    {
+        if (!_scenes.ContainsKey(typeof(T)))
+        {
+            Log.PrintError($"{nameof(T)} Scene not found in SceneManager");
+            return;
+        }
+        
+        var tree = ApplicationHost.Instance.GetSceneTree();
+        CurrentScene = tree.CurrentScene;
+            
+        var scene = GD.Load<PackedScene>(_scenes[typeof(T)]).Instantiate<T>();
+        
+        tree.Root.AddChild(scene);
+        CurrentScene?.QueueFree();
+        tree.CurrentScene = scene;
+        CurrentScene = scene;
+    }
 }

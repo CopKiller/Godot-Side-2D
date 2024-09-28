@@ -44,8 +44,22 @@ namespace Side2D.Server.Network
                 Index = Index
             };
             
-            Peer.Disconnect();
+            if (Peer.ConnectionState == ConnectionState.Connected)
+                Peer.Disconnect();
+            
             _serverPacketProcessor?.ServerLeft(Peer, left);
+        }
+        
+        public void PlayerSwitchCharacter(int index)
+        {
+            ClientState = ClientState.Character;
+            
+            var left = new SPlayerLeft
+            {
+                Index = index
+            };
+            
+            _serverPacketProcessor?.ServerLeft(Peer, left, false);
         }
         
     }

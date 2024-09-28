@@ -25,9 +25,6 @@ namespace Side2D.Server.Network
             {
                 PlayerMoveModel = player.PlayerMoveModel,
             };
-
-
-            Log.Print(player.PlayerMoveModel.ToString());
             
             SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableSequenced);
         }

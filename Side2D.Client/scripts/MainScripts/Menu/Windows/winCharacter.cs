@@ -2,7 +2,6 @@ using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
-using LiteNetLib;
 using Side2D.Models.Enum;
 using Side2D.Models.Validation;
 using Side2D.Network.CustomDataSerializable;
@@ -10,11 +9,12 @@ using Side2D.Network.Packet.Client;
 using Side2D.Network.Packet.Server;
 using Side2D.scripts;
 using Side2D.scripts.Alert;
+using Side2D.scripts.Controls;
 using Side2D.scripts.Host;
 using Side2D.scripts.MainScripts.Menu.Windows;
 using Side2D.scripts.Network;
 
-public partial class winCharacter : Window, IPacketHandler
+public partial class winCharacter : BaseWindow, IPacketHandler
 {
 	private const int MAX_FRAMES = 2;
 	
@@ -44,6 +44,8 @@ public partial class winCharacter : Window, IPacketHandler
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		base._Ready();
+		
 		_mainContainer = GetNode<HBoxContainer>("%MainContainer");
 
 		GetInfoNodes();
@@ -55,6 +57,8 @@ public partial class winCharacter : Window, IPacketHandler
 		RegisterPacketHandlers();
 		
 		PopulateOptions();
+		
+		UpdateSubmitButtonState();
 		return;
 
 		void GetInfoNodes()
@@ -78,117 +82,123 @@ public partial class winCharacter : Window, IPacketHandler
 			_optVocation = GetNode<OptionButton>("%optVocation");
 			_btnCreate = GetNode<Button>("%btnCreate");
 		}
-
-		void PopulateOptions()
+	}
+	
+	private void PopulateOptions()
+	{
+		foreach (var gender in Enum.GetValues<Gender>())
 		{
-			foreach (var gender in Enum.GetValues<Gender>())
-			{
-				if (gender == Gender.Count) continue;
-				_optGender.AddItem(gender.ToString(), (int)gender);
-			}
-
-			foreach (var vocation in Enum.GetValues<Vocation>())
-			{
-				if (vocation == Vocation.Count) continue;
-				_optVocation.AddItem(vocation.ToString(), (int)vocation);
-			}
-
+			if (gender == Gender.Count) continue;
+			_optGender.AddItem(gender.ToString(), (int)gender);
 		}
+
+		foreach (var vocation in Enum.GetValues<Vocation>())
+		{
+			if (vocation == Vocation.Count) continue;
+			_optVocation.AddItem(vocation.ToString(), (int)vocation);
+		}
+
 	}
 
 	private void ConnectSignals()
 	{
-		_txtName.Connect("text_changed", Callable.From<string>((newText) =>
+		_btnCreate.Connect(BaseButton.SignalName.Pressed, Callable.From(OnCreatePressed));
+		_btnCreateChar.Connect(BaseButton.SignalName.Pressed, Callable.From(OnCreateCharPressed));
+		_btnEnterGame.Connect(BaseButton.SignalName.Pressed, Callable.From(OnEnterGamePressed));
+		
+		_txtName.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
 		{
-			CreateValidation(newText.IsValidName(), _txtName);
+			UpdateValidationState(_txtName, newText.IsValidName());
 		}));
-		
-		_optGender.Connect("item_selected", Callable.From<int>((index) =>
+		ConnectOptionValidation(_optGender, () => _optGender.Selected.IsValidGender());
+		ConnectOptionValidation(_optVocation, () => _optVocation.Selected.IsValidVocation());
+	}
+	
+	private void ConnectOptionValidation(OptionButton input, Func<bool> validationFunc)
+	{
+		input.Connect(OptionButton.SignalName.ItemSelected, Callable.From<int>((index) =>
 		{
-			CreateValidation(index.IsValidGender(), _optGender);
+			UpdateValidationState(input, validationFunc());
 		}));
+	}
+	
+	private void UpdateValidationState(Control control, bool isValid)
+	{
+		control.Modulate = isValid ? new Color(0, 1, 0) : new Color(1, 0, 0);
+		UpdateSubmitButtonState();
+	}
+
+	private void UpdateSubmitButtonState()
+	{
+		var isFormValid = 
+			_optGender.Selected.IsValidGender() && 
+			_optVocation.Selected.IsValidVocation();
 		
-		_optVocation.Connect("item_selected", Callable.From<int>((index) =>
-		{
-			CreateValidation(index.IsValidVocation(), _optVocation);
-		}));
+		_btnCreate.Disabled = !isFormValid;
+	}
+	
+	private void OnEnterGamePressed()
+	{
+		// Enter game
+		var clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
+		var slot = _btnSlots.First(a => a.ButtonPressed);
 
-		_btnCreateChar.Connect("pressed", Callable.From(OnCreateCharPressed));
-		_btnEnterGame.Connect("pressed", Callable.From(OnEnterGamePressed));
-		_btnCreate.Connect("pressed", Callable.From(OnCreatePressed));
-
-		return;
-		
-		// Signals
-		void CreateValidation(bool valid, Control control)
+		var packet = new CPlayerUseCharacter
 		{
-			_btnCreate.Disabled = !valid;
-			control.Modulate = valid ? new Color(0, 1, 0) : new Color(1, 0, 0);
+			SlotNumber = slot.SlotNumber
+		};
+
+		clientPlayer.SendData(packet);
+	}
+	
+	private void OnCreateCharPressed()
+	{
+		// Open create character panel
+		_createContainer.Show();
+		foreach(var slot in _btnSlots)
+		{
+			slot.Hide();
 		}
-		
-		void OnCreateCharPressed()
-		{
-			// Open create character panel
-			_createContainer.Show();
-			foreach(var slot in _btnSlots)
-			{
-				slot.Hide();
-			}
 			
-			_btnCreateChar.Disabled = true;
+		_btnCreateChar.Disabled = true;
+	}
+	
+	private void OnCreatePressed()
+	{
+		var alertManager = ApplicationHost.Instance.GetSingleton<AlertManager>();
+		// Validate inputs
+		if (!_txtName.Text.IsValidName())
+		{
+			alertManager.AddAlert($"Invalid name Name must have between {InputValidator.MinNameCaracteres} and {InputValidator.MaxNameCaracteres} characters");
+			return;
 		}
 
-		void OnEnterGamePressed()
+		if (!_optGender.Selected.IsValidGender())
 		{
-			// Enter game
-			var clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
-			var slot = _btnSlots.First(a => a.ButtonPressed);
-
-			var packet = new CPlayerUseCharacter
-			{
-				SlotNumber = slot.SlotNumber
-			};
-
-			clientPlayer.SendData(packet);
+			alertManager.AddAlert($"Invalid Gender");
+			return;
 		}
-		
-		void OnCreatePressed()
+			
+		if (!_optVocation.Selected.IsValidVocation())
 		{
-			var alertManager = ApplicationHost.Instance.GetSingleton<AlertManager>();
-			// Validate inputs
-			if (!_txtName.Text.IsValidName())
-			{
-				alertManager.AddAlert($"Invalid name Name must have between {InputValidator.MinNameCaracteres} and {InputValidator.MaxNameCaracteres} characters");
-				return;
-			}
-
-			if (!_optGender.Selected.IsValidGender())
-			{
-				alertManager.AddAlert($"Invalid Gender");
-				return;
-			}
-			
-			if (!_optVocation.Selected.IsValidVocation())
-			{
-				alertManager.AddAlert($"Invalid Vocation");
-				return;
-			}
-
-			// Send Create Character Packet
-			var clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
-
-			var packet = new CCreateCharacter()
-			{
-				SlotNumber = _btnSlots.First(a => a.ButtonPressed).SlotNumber,
-				Name = _txtName.Text,
-				Gender = (Gender)_optGender.Selected,
-				Vocation = (Vocation)_optVocation.Selected
-			};
-			
-			clientPlayer.SendData(packet);
-			
-			_createContainer.Hide();
+			alertManager.AddAlert($"Invalid Vocation");
+			return;
 		}
+
+		// Send Create Character Packet
+		var clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
+
+		var packet = new CCreateCharacter()
+		{
+			SlotNumber = _btnSlots.First(a => a.ButtonPressed).SlotNumber,
+			Name = _txtName.Text,
+			Gender = (Gender)_optGender.Selected,
+			Vocation = (Vocation)_optVocation.Selected
+		};
+			
+		clientPlayer.SendData(packet);
+			
+		_createContainer.Hide();
 	}
 
 
@@ -215,7 +225,6 @@ public partial class winCharacter : Window, IPacketHandler
 	}
 	private void AddSlots()
 	{
-		// Adiciona todos os slots ao container
 		foreach (var slot in _btnSlots)
 		{
 			_mainContainer.AddChild(slot);

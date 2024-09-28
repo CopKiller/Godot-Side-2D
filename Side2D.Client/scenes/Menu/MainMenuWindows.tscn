@@ -1,67 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://caxv7daojy724"]
+[gd_scene load_steps=6 format=3 uid="uid://caxv7daojy724"]
 
 [ext_resource type="Script" path="res://scripts/MainScripts/Menu/MainMenuWindows.cs" id="1_s4sl1"]
 [ext_resource type="PackedScene" uid="uid://drqp6caxsls37" path="res://scenes/Menu/Windows/winLogin.tscn" id="2_5p7hp"]
+[ext_resource type="PackedScene" uid="uid://yy1h424dy0ny" path="res://scenes/Menu/Windows/winMenu.tscn" id="2_e1hic"]
 [ext_resource type="PackedScene" uid="uid://d3pa0w4kdyrsw" path="res://scenes/Menu/Windows/winRegister.tscn" id="3_6b0s4"]
-[ext_resource type="PackedScene" uid="uid://bwro0aia8mile" path="res://scenes/Menu/Windows/winChar.tscn" id="4_iy2of"]
+[ext_resource type="PackedScene" uid="uid://bwro0aia8mile" path="res://scenes/Menu/Windows/winCharacter.tscn" id="4_iy2of"]
 
 [node name="MainMenuWindows" type="Node"]
 script = ExtResource("1_s4sl1")
 
-[node name="winMenu" type="Window" parent="."]
-disable_3d = true
-title = "Menu"
-initial_position = 2
-size = Vector2i(250, 181)
-visible = false
-unresizable = true
-
-[node name="MarginContainer" type="MarginContainer" parent="winMenu"]
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
-theme_override_constants/margin_left = 5
-theme_override_constants/margin_top = 5
-theme_override_constants/margin_right = 5
-theme_override_constants/margin_bottom = 5
-
-[node name="VBoxContainer" type="VBoxContainer" parent="winMenu/MarginContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-
-[node name="btnLogin" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Login"
-
-[node name="btnRegister" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Register"
-
-[node name="btnRecovery" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Recovery"
-
-[node name="btnCredits" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Credits"
-
-[node name="btnExit" type="Button" parent="winMenu/MarginContainer/VBoxContainer"]
-unique_name_in_owner = true
-layout_mode = 2
-text = "Exit"
+[node name="winMenu" parent="." instance=ExtResource("2_e1hic")]
 
 [node name="winLogin" parent="." instance=ExtResource("2_5p7hp")]
 
 [node name="winRegister" parent="." instance=ExtResource("3_6b0s4")]
-visible = false
 
 [node name="winCharacter" parent="." instance=ExtResource("4_iy2of")]
 disable_3d = true

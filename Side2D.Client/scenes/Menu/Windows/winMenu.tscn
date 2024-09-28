@@ -1,0 +1,55 @@
+[gd_scene load_steps=2 format=3 uid="uid://yy1h424dy0ny"]
+
+[ext_resource type="Script" path="res://scripts/MainScripts/Menu/Windows/winMenu.cs" id="1_6nf4w"]
+
+[node name="winMenu" type="Window"]
+auto_translate_mode = 1
+disable_3d = true
+title = "Menu"
+initial_position = 2
+size = Vector2i(250, 181)
+visible = false
+unresizable = true
+script = ExtResource("1_6nf4w")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="btnLogin" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Login"
+
+[node name="btnRegister" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Register"
+
+[node name="btnRecovery" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Recovery"
+
+[node name="btnCredits" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Credits"
+
+[node name="btnExit" type="Button" parent="MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Exit"

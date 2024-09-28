@@ -10,64 +10,45 @@ using Side2D.scripts.Host;
 public partial class MainMenuWindows : Node
 {
 	// Windows
-	private Window _winMenu;
+	private winMenu _winMenu;
 	private winLogin _winLogin;
 	private winRegister _winRegister;
 	private winCharacter _winCharacter;
 	
-	private Button _btnLogin;
-	private Button _btnRegister;
-	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_winMenu = GetNode<Window>("winMenu");
-		_winLogin = GetNode<winLogin>("winLogin");
-		_winRegister = GetNode<winRegister>("winRegister");
-		_winCharacter = GetNode<winCharacter>("winCharacter");
-		
-		_btnLogin = GetNode<Button>("%btnLogin");
-		_btnRegister = GetNode<Button>("%btnRegister");
-		
-		_btnLogin.Connect(BaseButton.SignalName.Pressed, Callable.From(() =>
-		{
-			ShowWindow(_winLogin);
-		}));
-		_winLogin.Connect(Window.SignalName.CloseRequested, Callable.From(() =>
-		{
-			HideWindow(_winLogin);
-		}));
-		
-		_btnRegister.Connect(BaseButton.SignalName.Pressed, Callable.From(() =>
-		{
-			ShowWindow(_winRegister);
-		}));
-		_winRegister.Connect(Window.SignalName.CloseRequested, Callable.From(() =>
-		{
-			HideWindow(_winRegister);
-		}));
+		_winMenu = GetNode<winMenu>(nameof(winMenu));
+		_winLogin = GetNode<winLogin>(nameof(winLogin));
+		_winRegister = GetNode<winRegister>(nameof(winRegister));
+		_winCharacter = GetNode<winCharacter>(nameof(winCharacter));
 	}
 	
-	public void StartMenu()
+	public void ShowMenuWindow()
 	{
-		_winMenu.Show();
+		HideAll();
+		_winMenu.ShowWindow();
 	}
 	
 	public void ShowCharacterWindow()
 	{
-		ShowWindow(_winCharacter);
+		_winMenu.CloseWindow();
+		
+		_winCharacter.ShowWindow();
 	}
 	
-	private void ShowWindow(Window window)
+	public void ShowLoginWindow()
 	{
-		_winMenu.Hide();
-		window.Show();
+		_winMenu.CloseWindow();
+		
+		_winLogin.ShowWindow();
 	}
 	
-	private void HideWindow(Window window)
+	public void ShowRegisterWindow()
 	{
-		window.Hide();
-		_winMenu.Show();
+		_winMenu.CloseWindow();
+		
+		_winRegister.ShowWindow();
 	}
 	
 	private void HideAll()
@@ -77,10 +58,4 @@ public partial class MainMenuWindows : Node
 		_winRegister.Hide();
 		_winCharacter.Hide();
 	}
-	
-	
-	/*var clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
-			var packet = new CPlayerLogin();
-			clientPlayer.SendData(packet, DeliveryMethod.ReliableOrdered);
-			QueueFree();*/
 }

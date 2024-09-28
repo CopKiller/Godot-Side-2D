@@ -6,7 +6,7 @@ namespace Side2D.scripts;
 
 public partial class Root : Node2D
 {
-	public bool IsDebugMode => false;
+	public bool IsDebugMode => true;
 	
 	private TextureRect _splashScreen;
 	
@@ -47,7 +47,6 @@ public partial class Root : Node2D
 		void StartMenu()
 		{
 			var clientManager = ApplicationHost.Instance.GetSingleton<ClientManager>();
-			clientManager.Start();
 			clientManager.ChangeClientState(ClientState.Menu);
 		}
 	}

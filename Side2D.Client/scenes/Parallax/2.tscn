@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://dt52ppwebqeqj"]
+[gd_scene load_steps=10 format=3 uid="uid://dt52ppwebqeqj"]
 
 [ext_resource type="Texture2D" uid="uid://ybia4srtnovy" path="res://resources/Maps/parallax-city/layer_01_1920 x 1080.png" id="1_r3yd5"]
+[ext_resource type="Script" path="res://scripts/Controls/BaseParallax2D.cs" id="1_xrqrx"]
 [ext_resource type="Texture2D" uid="uid://cay4vra22e3ur" path="res://resources/Maps/parallax-city/layer_02_1920 x 1080.png" id="2_qfcms"]
 [ext_resource type="Texture2D" uid="uid://4mqsywxic50s" path="res://resources/Maps/parallax-city/layer_03_1920 x 1080.png" id="3_iscf5"]
 [ext_resource type="Texture2D" uid="uid://cffkexdg2isri" path="res://resources/Maps/parallax-city/layer_04_1920 x 1080.png" id="4_opesi"]
@@ -9,7 +10,8 @@
 [ext_resource type="Texture2D" uid="uid://c3hy6dhwlbd0c" path="res://resources/Maps/parallax-city/layer_07_1920 x 1080.png" id="7_n13ou"]
 [ext_resource type="Texture2D" uid="uid://bsxce3sxmv3ao" path="res://resources/Maps/parallax-city/layer_08_1920 x 1080.png" id="8_76vsw"]
 
-[node name="2" type="Node2D"]
+[node name="Parallax2D" type="Node2D"]
+script = ExtResource("1_xrqrx")
 
 [node name="Parallax2D9" type="Parallax2D" parent="."]
 scroll_scale = Vector2(0.1, 0.1)

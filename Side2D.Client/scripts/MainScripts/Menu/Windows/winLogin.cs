@@ -5,10 +5,11 @@ using Side2D.Models.Validation;
 using Side2D.Network.Packet.Client;
 using Side2D.scripts;
 using Side2D.scripts.Alert;
+using Side2D.scripts.Controls;
 using Side2D.scripts.Host;
 using Side2D.scripts.Network;
 
-public partial class winLogin : Window
+public partial class winLogin : BaseWindow
 {
 	// Input
 	private LineEdit _txtUsername;
@@ -26,6 +27,8 @@ public partial class winLogin : Window
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		base._Ready();
+		
 		_alertManager = ApplicationHost.Instance.GetSingleton<AlertManager>();
 		_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
 
@@ -37,8 +40,6 @@ public partial class winLogin : Window
 
 		ConnectSignals();
 		UpdateSubmitButtonState();
-
-		return;
 	}
 	
 	private void ConnectSignals()

@@ -7,9 +7,17 @@ namespace Side2D.Server.Network
 {
     public partial class ServerPacketProcessor
     {
-        public void ServerLeft(NetPeer netPeer, SPlayerLeft sPlayerLeft)
+        public void ServerLeft(NetPeer netPeer, SPlayerLeft sPlayerLeft, bool isDisconnect = true)
         {
-            ServerNetworkService.Players?.Remove(netPeer.Id);
+            if (isDisconnect)
+            {
+                var player = ServerNetworkService.Players?[netPeer.Id];
+                
+                if (player == null) return;
+                
+                ServerNetworkService.Players?.Remove(netPeer.Id);
+            }
+            
             SendDataToAllBut(netPeer, sPlayerLeft, DeliveryMethod.ReliableUnordered);
         }
     }

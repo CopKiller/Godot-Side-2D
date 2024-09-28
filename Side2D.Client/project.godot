@@ -29,6 +29,10 @@ window/stretch/mode="canvas_items"
 
 project/assembly_name="Side2D"
 
+[gui]
+
+theme/custom="res://resources/MainTheme.tres"
+
 [rendering]
 
 renderer/rendering_method="gl_compatibility"

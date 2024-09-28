@@ -1,3 +1,4 @@
+using System;
 using Godot;
 using LiteNetLib;
 using Side2D.Network.CustomDataSerializable;
@@ -7,6 +8,8 @@ using Side2D.scripts.Host;
 
 public partial class MainMenu : Control
 {
+	public Action Loaded;
+	
 	public MainMenuWindows MainMenuWindows { get; private set; }
 	
 	// Called when the node enters the scene tree for the first time.
@@ -25,7 +28,8 @@ public partial class MainMenu : Control
 			
 			tween.TweenCallback(Callable.From(() =>
 			{
-				MainMenuWindows.StartMenu();
+				MainMenuWindows.ShowMenuWindow();
+				Loaded?.Invoke();
 			}));
 			
 			tween.SetTrans(Tween.TransitionType.Linear);

@@ -5,10 +5,11 @@ using Side2D.Models.Validation;
 using Side2D.Network.Packet.Client;
 using Side2D.scripts;
 using Side2D.scripts.Alert;
+using Side2D.scripts.Controls;
 using Side2D.scripts.Host;
 using Side2D.scripts.Network;
 
-public partial class winRegister : Window
+public partial class winRegister : BaseWindow
 {
 	// Input fields
 	private LineEdit _txtUsername;
@@ -25,6 +26,8 @@ public partial class winRegister : Window
 
 	public override void _Ready()
 	{
+		base._Ready();
+		
 		_alertManager = ApplicationHost.Instance.GetSingleton<AlertManager>();
 		_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
 		
