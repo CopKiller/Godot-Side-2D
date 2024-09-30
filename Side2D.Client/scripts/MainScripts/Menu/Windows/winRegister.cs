@@ -6,8 +6,8 @@ using Side2D.Network.Packet.Client;
 using Side2D.scripts;
 using Side2D.scripts.Alert;
 using Side2D.scripts.Controls;
-using Side2D.scripts.Host;
 using Side2D.scripts.Network;
+using ApplicationHost = Side2D.Host.ApplicationHost;
 
 public partial class winRegister : BaseWindow
 {

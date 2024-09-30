@@ -1,11 +1,7 @@
 using Godot;
-using System;
-using System.Collections.Generic;
-using LiteNetLib;
-using Side2D.Models;
-using Side2D.Network.Packet.Client;
+using Side2D.Host;
+using Side2D.Models.Enum;
 using Side2D.scripts;
-using Side2D.scripts.Host;
 
 public partial class MainMenuWindows : Node
 {
@@ -32,23 +28,26 @@ public partial class MainMenuWindows : Node
 	
 	public void ShowCharacterWindow()
 	{
-		_winMenu.CloseWindow();
+		HideAll();
 		
-		_winCharacter.ShowWindow();
+		_winCharacter.ShowWindow(() =>
+		{
+			ApplicationHost.Instance.GetSingleton<ClientManager>().ChangeClientState(ClientState.Menu);
+		});
 	}
 	
 	public void ShowLoginWindow()
 	{
-		_winMenu.CloseWindow();
+		HideAll();
 		
-		_winLogin.ShowWindow();
+		_winLogin.ShowWindow(ShowMenuWindow);
 	}
 	
 	public void ShowRegisterWindow()
 	{
-		_winMenu.CloseWindow();
+		HideAll();
 		
-		_winRegister.ShowWindow();
+		_winRegister.ShowWindow(ShowMenuWindow);
 	}
 	
 	private void HideAll()

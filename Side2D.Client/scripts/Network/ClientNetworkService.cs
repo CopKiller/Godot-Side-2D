@@ -44,7 +44,6 @@ public class ClientNetworkService : NetworkService
     /// <inheritdoc />
     public override void Start()
     {
-        
         base.Start();
         
         var currentPeer = NetManager?.Connect(NetworkAddress.ServerAddress, NetworkAddress.ServerPort, NetworkAddress.SecureConnectionKey);

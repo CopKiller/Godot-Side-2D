@@ -60,7 +60,7 @@ namespace Side2D.Server.Network
             var myPlayerDataModel = new List<PlayerDataModel>();
             myPlayerDataModel.AddRange(player.PlayerModels.Select(a => new PlayerDataModel(netPeer.Id, a)));
             
-            myPlayerDataModel = myPlayerDataModel.OrderBy(p => p.SlotNumber).ToList();
+            //myPlayerDataModel = myPlayerDataModel.OrderBy(p => p.SlotNumber).ToList();
             
             var slotsCount = myPlayerDataModel.Count;
             

@@ -5,7 +5,7 @@ using Side2D.Logger;
 using Side2D.scripts;
 using Side2D.scripts.Alert;
 
-namespace Side2D.scripts.Host;
+namespace Side2D.Host;
 
 public sealed partial class ApplicationHost : Node {
     // Singleton
@@ -19,7 +19,7 @@ public sealed partial class ApplicationHost : Node {
 
     public override void _EnterTree()
     {
-        Log.LogInstance = new Alert.Logger();
+        Log.LogInstance = new scripts.Alert.Logger();
         
         AddSingleton(new ClientManager());
         AddSingleton(new AlertManager());

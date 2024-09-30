@@ -2,8 +2,8 @@ using System;
 using System.Collections.Generic;
 using Godot;
 using Side2D.Logger;
-using Side2D.scripts.Host;
 using Side2D.scripts.MainScripts.Game;
+using ApplicationHost = Side2D.Host.ApplicationHost;
 
 namespace Side2D.scripts;
 

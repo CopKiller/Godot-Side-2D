@@ -1,6 +1,6 @@
 using System.Diagnostics.CodeAnalysis;
 
-namespace Side2D.scripts.Environment;
+namespace Side2D.Environment;
 
 [SuppressMessage("ReSharper", "InconsistentNaming")]
 public enum EnvironmentPlatforms

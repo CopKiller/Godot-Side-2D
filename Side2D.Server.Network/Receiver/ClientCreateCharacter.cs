@@ -78,7 +78,7 @@ namespace Side2D.Server.Network
             myPlayerDataModel.AddRange(player.PlayerModels.Select(a => new PlayerDataModel(netPeer.Id, a)));
 
             // Ordena os jogadores existentes por SlotNumber
-            myPlayerDataModel = myPlayerDataModel.OrderBy(p => p.SlotNumber).ToList();
+            //myPlayerDataModel = myPlayerDataModel.OrderBy(p => p.SlotNumber).ToList();
 
             // Conta quantos jogadores estão na lista
             var slotsCount = myPlayerDataModel.Count;

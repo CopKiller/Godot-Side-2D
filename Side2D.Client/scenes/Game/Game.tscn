@@ -1,12 +1,23 @@
-[gd_scene load_steps=4 format=3 uid="uid://43w7ycgov5mo"]
+[gd_scene load_steps=6 format=3 uid="uid://43w7ycgov5mo"]
 
 [ext_resource type="Script" path="res://scripts/MainScripts/Game/Game.cs" id="1_r6jy2"]
 [ext_resource type="PackedScene" uid="uid://bxq374n0w3y20" path="res://scenes/Game/Map.tscn" id="2_h4cu2"]
 [ext_resource type="PackedScene" uid="uid://215kte6c1kls" path="res://scenes/Game/GameOptions.tscn" id="3_0dake"]
+[ext_resource type="PackedScene" uid="uid://dmr0fcamx7t56" path="res://scenes/Game/VirtualJoystick.tscn" id="4_58to1"]
+[ext_resource type="PackedScene" uid="uid://dijtbw7viyy5n" path="res://scenes/Game/GameButtons.tscn" id="4_lc2nk"]
 
 [node name="Game" type="Node2D"]
 script = ExtResource("1_r6jy2")
 
 [node name="Map" parent="." instance=ExtResource("2_h4cu2")]
 
-[node name="GameOptions" parent="." instance=ExtResource("3_0dake")]
+[node name="GameEntities" type="CanvasLayer" parent="."]
+
+[node name="GameOptions" parent="GameEntities" instance=ExtResource("3_0dake")]
+unique_name_in_owner = true
+
+[node name="VirtualJoystick" parent="GameEntities" instance=ExtResource("4_58to1")]
+unique_name_in_owner = true
+
+[node name="GameButtons" parent="GameEntities" instance=ExtResource("4_lc2nk")]
+unique_name_in_owner = true

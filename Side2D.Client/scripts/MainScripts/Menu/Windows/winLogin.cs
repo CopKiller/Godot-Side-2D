@@ -1,12 +1,14 @@
 using System;
 using Godot;
 using LiteNetLib;
+using Side2D.Cryptography;
+using Side2D.Host;
+using Side2D.Logger;
 using Side2D.Models.Validation;
 using Side2D.Network.Packet.Client;
 using Side2D.scripts;
 using Side2D.scripts.Alert;
 using Side2D.scripts.Controls;
-using Side2D.scripts.Host;
 using Side2D.scripts.Network;
 
 public partial class winLogin : BaseWindow
@@ -39,6 +41,9 @@ public partial class winLogin : BaseWindow
 		_btnEnter = GetNode<Button>("%btnEnter");
 
 		ConnectSignals();
+		
+		LoadLoginData();
+		
 		UpdateSubmitButtonState();
 	}
 	
@@ -94,7 +99,44 @@ public partial class winLogin : BaseWindow
 			Username = _txtUsername.Text,
 			Password = _txtPassword.Text
 		};
+		
+		SaveLogin(_chkSaveUsername.ButtonPressed);
+		SavePass(_chkSavePassword.ButtonPressed);
 
 		_clientPlayer.SendData(packet, DeliveryMethod.ReliableOrdered);
+	}
+	
+	private void SaveLogin(bool toggled)
+	{
+		var loginFieldText = _txtUsername.Text;
+
+		CryptoManager.Save(ConfigSection.User, ConfigKey.Username, toggled ? loginFieldText : "");
+	}
+
+	private void SavePass(bool toggled)
+	{
+		var passField = _txtPassword.Text;
+		
+		CryptoManager.Save(ConfigSection.User, ConfigKey.Password, toggled ? passField : "", true);
+	}
+	
+	private void LoadLoginData()
+	{
+		var saveUsername = CryptoManager.Load(ConfigSection.User, ConfigKey.Username).AsString();
+		
+		var savePassword = CryptoManager.Load(ConfigSection.User, ConfigKey.Password, true).AsString();
+		
+		if (saveUsername != "")
+		{
+			_chkSaveUsername.ButtonPressed = true;
+			_txtUsername.Text = saveUsername;
+		}
+		
+		if (savePassword != "")
+		{
+			_chkSavePassword.ButtonPressed = true;
+			_txtPassword.Text = savePassword;
+			GD.Print(savePassword);
+		}
 	}
 }

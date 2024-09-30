@@ -1,10 +1,9 @@
 using System.Collections.Generic;
 using Godot;
-using Side2D.Logger;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Server;
-using Side2D.scripts.Host;
 using Side2D.scripts.Network;
+using ApplicationHost = Side2D.Host.ApplicationHost;
 
 namespace Side2D.scripts.MainScripts.Game;
 

@@ -1,10 +1,5 @@
 using System;
 using Godot;
-using LiteNetLib;
-using Side2D.Network.CustomDataSerializable;
-using Side2D.Network.Packet.Client;
-using Side2D.scripts;
-using Side2D.scripts.Host;
 
 public partial class MainMenu : Control
 {

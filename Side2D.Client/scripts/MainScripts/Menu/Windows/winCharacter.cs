@@ -2,6 +2,7 @@ using System;
 using Godot;
 using System.Collections.Generic;
 using System.Linq;
+using Side2D.Host;
 using Side2D.Models.Enum;
 using Side2D.Models.Validation;
 using Side2D.Network.CustomDataSerializable;
@@ -10,7 +11,6 @@ using Side2D.Network.Packet.Server;
 using Side2D.scripts;
 using Side2D.scripts.Alert;
 using Side2D.scripts.Controls;
-using Side2D.scripts.Host;
 using Side2D.scripts.MainScripts.Menu.Windows;
 using Side2D.scripts.Network;
 
@@ -279,6 +279,7 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 		
 		void HandleCharacter(SCharacter packet)
 		{
+			GD.Print("Handling character packet");
 			ResetState();
 			AddCharacters(packet.PlayerDataModel);
 		}
@@ -297,6 +298,6 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 	public override void _ExitTree()
 	{
 		base._ExitTree();
-		ClientPacketProcessor.UnregisterPacket<SCharacter>();
+		//ClientPacketProcessor.UnregisterPacket<SCharacter>();
 	}
 }

@@ -1,6 +1,4 @@
 using Godot;
-using Side2D.Models.Enum;
-using Side2D.scripts.Host;
 using Side2D.scripts.Network;
 
 namespace Side2D.scripts.MainScripts.Game;
@@ -15,7 +13,7 @@ public partial class Game : Node2D, IPacketHandler
 	
 	public override void _Ready()
 	{
-		_gameOptions = GetNode<GameOptions>(nameof(GameOptions));
+		_gameOptions = GetNode<GameOptions>("%" + nameof(GameOptions));
 	}
 	
 
@@ -29,12 +27,20 @@ public partial class Game : Node2D, IPacketHandler
 	{
 		//ClientPacketProcessor.Instance.RemoveSubscription<SMapData>();
 	}
+	
+	public void ShowGameOptions()
+	{
+		if (_gameOptions.Visible)
+			_gameOptions.Hide();
+		else
+			_gameOptions.Show();
+	}
 
 	public override void _ShortcutInput(InputEvent @event)
 	{
 		if (@event.IsActionPressed("ui_cancel"))
 		{
-			_gameOptions.Show();
+			ShowGameOptions();
 		}
 	}
 }

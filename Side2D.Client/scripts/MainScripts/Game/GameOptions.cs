@@ -1,9 +1,8 @@
 using Godot;
 using System;
+using Side2D.Host;
 using Side2D.Models.Enum;
 using Side2D.scripts;
-using Side2D.scripts.Controls;
-using Side2D.scripts.Host;
 
 public partial class GameOptions : Window
 {
@@ -59,5 +58,12 @@ public partial class GameOptions : Window
 	{
 		GoTo(ClientState.None);
 	}
-	
+
+	public override void _Input(InputEvent @event)
+	{
+		if (@event.IsActionPressed("ui_cancel"))
+		{
+			Hide();
+		}
+	}
 }

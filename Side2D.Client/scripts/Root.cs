@@ -1,12 +1,13 @@
 using Godot;
+using Side2D.Cryptography;
 using Side2D.Models.Enum;
-using Side2D.scripts.Host;
+using ApplicationHost = Side2D.Host.ApplicationHost;
 
 namespace Side2D.scripts;
 
 public partial class Root : Node2D
 {
-	public bool IsDebugMode => true;
+	public bool IsDebugMode => false;
 	
 	private TextureRect _splashScreen;
 	
@@ -14,6 +15,10 @@ public partial class Root : Node2D
 	public override void _Ready()
 	{
 		_splashScreen = GetNode<TextureRect>("texSplash");
+
+		//CryptoManager.CreateDefault();
+		
+		//CryptoManager.Save(ConfigSection.User, ConfigKey.Password, "", true);
 		
 		if (IsDebugMode)
 		{

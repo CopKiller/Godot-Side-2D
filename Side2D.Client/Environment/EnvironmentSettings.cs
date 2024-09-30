@@ -1,7 +1,7 @@
 using System;
 using Godot;
 
-namespace Side2D.scripts.Environment;
+namespace Side2D.Environment;
 
 public static class EnvironmentSettings
 {

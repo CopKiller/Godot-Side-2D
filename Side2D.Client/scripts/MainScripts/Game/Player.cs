@@ -1,11 +1,10 @@
 using Godot;
 using LiteNetLib;
+using Side2D.Host;
 using Side2D.Logger;
 using Side2D.Models.Enum;
-using Side2D.Models.Vectors;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Client;
-using Side2D.scripts.Host;
 using Side2D.scripts.Network;
 
 namespace Side2D.scripts.MainScripts.Game;
@@ -68,7 +67,7 @@ public partial class Player : CharacterBody2D
 		void CheckPlayerMove()
 		{
 			_velocity = Velocity;
-			var direction = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
+			var direction = Input.GetVector("move_left", "move_right", "move_jump", "move_down");
 			if (direction.X != 0) 
 			{
 				_velocity.X = direction.X * PlayerDataModel.Speed;
@@ -83,7 +82,7 @@ public partial class Player : CharacterBody2D
 		
 		void CheckPlayerJump()
 		{
-			if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
+			if (Input.IsActionPressed("move_jump") && IsOnFloor())
 			{
 				_velocity.Y = PlayerDataModel.JumpVelocity;
 			}
