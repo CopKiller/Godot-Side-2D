@@ -7,6 +7,9 @@ namespace Side2D.scripts.MainScripts.Menu.Windows;
 
 public partial class CharSlotButton(int slotNumber, int countFrames, PlayerDataModel playerDataModel) : Button
 {
+    // Seção específica para declaração de diretórios de arquivos.
+    private string _dirVocation =>
+        $"res://resources/Vocation/{playerDataModel.Vocation.ToString()}/sprites/{playerDataModel.Gender.ToString().ToLower()}/";
     
     [Signal]
     public delegate void SlotPressedEventHandler(bool pressed, CharSlotButton btnSlot);
@@ -36,7 +39,7 @@ public partial class CharSlotButton(int slotNumber, int countFrames, PlayerDataM
         
         for (var i = 1; i <= countFrames; i++)
         {
-            _slotTextures.Add(GD.Load<Texture2D>($"res://resources/Vocation/{playerDataModel.Vocation.ToString()}/{i}.png"));
+            _slotTextures.Add(GD.Load<Texture2D>($"{_dirVocation + i}.png"));
         }
         
         this.Icon = _slotTextures[0];
@@ -65,5 +68,10 @@ public partial class CharSlotButton(int slotNumber, int countFrames, PlayerDataM
     public override void _ExitTree()
     {
         this.Toggled -= PressedSlot;
+    }
+    
+    public new void QueueFree()
+    {
+        CallDeferred("queue_free");
     }
 }

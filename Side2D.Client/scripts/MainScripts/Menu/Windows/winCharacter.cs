@@ -52,13 +52,13 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 		GetButtonNodes();
 		GetCreateNodes();
 
-		ConnectSignals();
+		_connectSignals();
 
 		RegisterPacketHandlers();
 		
-		PopulateOptions();
+		_populateOptions();
 		
-		UpdateSubmitButtonState();
+		_updateSubmitButtonState();
 		return;
 
 		void GetInfoNodes()
@@ -84,7 +84,7 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 		}
 	}
 	
-	private void PopulateOptions()
+	private void _populateOptions()
 	{
 		foreach (var gender in Enum.GetValues<Gender>())
 		{
@@ -100,35 +100,35 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 
 	}
 
-	private void ConnectSignals()
+	private void _connectSignals()
 	{
-		_btnCreate.Connect(BaseButton.SignalName.Pressed, Callable.From(OnCreatePressed));
-		_btnCreateChar.Connect(BaseButton.SignalName.Pressed, Callable.From(OnCreateCharPressed));
-		_btnEnterGame.Connect(BaseButton.SignalName.Pressed, Callable.From(OnEnterGamePressed));
+		_btnCreate.Connect(BaseButton.SignalName.Pressed, Callable.From(_onCreatePressed));
+		_btnCreateChar.Connect(BaseButton.SignalName.Pressed, Callable.From(_onCreateCharPressed));
+		_btnEnterGame.Connect(BaseButton.SignalName.Pressed, Callable.From(_onEnterGamePressed));
 		
 		_txtName.Connect(LineEdit.SignalName.TextChanged, Callable.From<string>((newText) =>
 		{
-			UpdateValidationState(_txtName, newText.IsValidName());
+			_UpdateValidationState(_txtName, newText.IsValidName());
 		}));
-		ConnectOptionValidation(_optGender, () => _optGender.Selected.IsValidGender());
-		ConnectOptionValidation(_optVocation, () => _optVocation.Selected.IsValidVocation());
+		_connectOptionValidation(_optGender, () => _optGender.Selected.IsValidGender());
+		_connectOptionValidation(_optVocation, () => _optVocation.Selected.IsValidVocation());
 	}
 	
-	private void ConnectOptionValidation(OptionButton input, Func<bool> validationFunc)
+	private void _connectOptionValidation(OptionButton input, Func<bool> validationFunc)
 	{
 		input.Connect(OptionButton.SignalName.ItemSelected, Callable.From<int>((index) =>
 		{
-			UpdateValidationState(input, validationFunc());
+			_UpdateValidationState(input, validationFunc());
 		}));
 	}
 	
-	private void UpdateValidationState(Control control, bool isValid)
+	private void _UpdateValidationState(Control control, bool isValid)
 	{
 		control.Modulate = isValid ? new Color(0, 1, 0) : new Color(1, 0, 0);
-		UpdateSubmitButtonState();
+		_updateSubmitButtonState();
 	}
 
-	private void UpdateSubmitButtonState()
+	private void _updateSubmitButtonState()
 	{
 		var isFormValid = 
 			_optGender.Selected.IsValidGender() && 
@@ -137,7 +137,7 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 		_btnCreate.Disabled = !isFormValid;
 	}
 	
-	private void OnEnterGamePressed()
+	private void _onEnterGamePressed()
 	{
 		// Enter game
 		var clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
@@ -151,19 +151,39 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 		clientPlayer.SendData(packet);
 	}
 	
-	private void OnCreateCharPressed()
+	private void _onCreateCharPressed()
 	{
 		// Open create character panel
 		_createContainer.Show();
-		foreach(var slot in _btnSlots)
-		{
-			slot.Hide();
-		}
+
+		base.CanClose = false;
+		AddActionCloseChildComponent(_closeCreateContainer);
+		
+		_slotsVisibility(false);
 			
 		_btnCreateChar.Disabled = true;
 	}
 	
-	private void OnCreatePressed()
+	private void _closeCreateContainer()
+	{
+		if (_createContainer.Visible)
+		{
+			_createContainer.Hide();
+		}
+	}
+	
+	private void _slotsVisibility(bool show)
+	{
+		foreach(var slot in _btnSlots)
+		{
+			if (show) 
+				slot.Show();
+			else 
+				slot.Hide();
+		}
+	}
+	
+	private void _onCreatePressed()
 	{
 		var alertManager = ApplicationHost.Instance.GetSingleton<AlertManager>();
 		// Validate inputs
@@ -198,11 +218,11 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 			
 		clientPlayer.SendData(packet);
 			
-		_createContainer.Hide();
+		_closeCreateContainer();
 	}
 
 
-	public void AddCharacters(List<PlayerDataModel> playerDataModel)
+	public void _addCharacters(List<PlayerDataModel> playerDataModel)
 	{
 		GD.Print($"Adding characters to slots quantity: {playerDataModel.Count}");
 		
@@ -217,13 +237,13 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 		
 		foreach (var btnSlot in playerDataModel.Select(playerModel => new CharSlotButton(playerModel.SlotNumber, MAX_FRAMES, playerModel)))
 		{
-			btnSlot.Connect(CharSlotButton.SignalName.SlotPressed, new Callable(this, nameof(OnSlotPressed)));
+			btnSlot.Connect(CharSlotButton.SignalName.SlotPressed, new Callable(this, nameof(_onSlotPressed)));
 			_btnSlots.Add(btnSlot);
 		}
 
-		CallDeferred(nameof(AddSlots));
+		CallDeferred(nameof(_addSlots));
 	}
-	private void AddSlots()
+	private void _addSlots()
 	{
 		foreach (var slot in _btnSlots)
 		{
@@ -231,7 +251,7 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 		}
 	}
 
-	private void OnSlotPressed(bool pressed, CharSlotButton button)
+	private void _onSlotPressed(bool pressed, CharSlotButton button)
 	{
 		GD.Print($"Slot {button.Name} pressed: {pressed}");
 		
@@ -281,7 +301,7 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 		{
 			GD.Print("Handling character packet");
 			ResetState();
-			AddCharacters(packet.PlayerDataModel);
+			if (packet.PlayerDataModel != null) _addCharacters(packet.PlayerDataModel);
 		}
 		
 		void ResetState()
@@ -291,7 +311,7 @@ public partial class winCharacter : BaseWindow, IPacketHandler
 			_lblVocation.Text = $"Vocation: None";
 			_btnCreateChar.Disabled = true;
 			_btnEnterGame.Disabled = true;
-			_createContainer.Hide();
+			_closeCreateContainer();
 		}
 	}
 

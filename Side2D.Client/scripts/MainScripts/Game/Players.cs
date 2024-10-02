@@ -9,9 +9,12 @@ namespace Side2D.scripts.MainScripts.Game;
 
 public partial class Players : Node, IPacketHandler
 {
+	// Seção específica de diretórios de arquivos.
+	private const string PLAYER_SPRITE_PATH = "res://scenes/Game/Player.tscn";
+	
 	private readonly List<Player> _players = [];
 	
-	private PackedScene _playerScene = GD.Load<PackedScene>("res://scenes/Game/Player.tscn");
+	private PackedScene _playerScene = GD.Load<PackedScene>(PLAYER_SPRITE_PATH);
 	
 	public Players()
 	{

@@ -11,6 +11,9 @@ namespace Side2D.scripts.MainScripts.Game;
 
 public partial class Player : CharacterBody2D
 {
+	// Seção específica de diretórios de arquivos.
+	private string _spritePath => $"res://scenes/Game/Vocation/{PlayerDataModel.Vocation.ToString()}/{PlayerDataModel.Gender.ToString().ToLower()}.tres";
+	
 	private bool Loaded { get; set; } = false;
 	public bool IsLocal { get; set; } = false;
 	
@@ -196,8 +199,9 @@ public partial class Player : CharacterBody2D
 		void UpdateVocation()
 		{
 			var vocation = PlayerDataModel.Vocation.ToString();
+			var gender = PlayerDataModel.Gender.ToString().ToLower();
 			Log.PrintInfo($"Vocation: {vocation}");
-			_animatedSprite.SpriteFrames = GD.Load<SpriteFrames>($"res://scenes/Game/Vocation/{vocation}.tres");
+			_animatedSprite.SpriteFrames = GD.Load<SpriteFrames>(_spritePath);
 		}
 	}
 }

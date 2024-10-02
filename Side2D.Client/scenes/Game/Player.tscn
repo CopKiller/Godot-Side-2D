@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://p0y885va3mtc"]
 
 [ext_resource type="Script" path="res://scripts/MainScripts/Game/Player.cs" id="1_e116c"]
-[ext_resource type="SpriteFrames" uid="uid://cx6ewfmcm3q6w" path="res://scenes/Game/Vocation/Archer.tres" id="2_esc38"]
+[ext_resource type="SpriteFrames" uid="uid://cx6ewfmcm3q6w" path="res://scenes/Game/Vocation/Knight/male.tres" id="2_esc38"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3rior"]
 height = 32.0

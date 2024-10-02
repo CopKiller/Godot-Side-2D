@@ -51,7 +51,7 @@ public partial class VirtualJoystick : Control
         
         if (IsJoyStickVisible() == false)
         {
-            //Hide();
+            Hide();
         }
         
         _base = GetNode<TextureRect>("Base");

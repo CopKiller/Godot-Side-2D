@@ -108,8 +108,8 @@ public partial class winLogin : BaseWindow
 	
 	private void SaveLogin(bool toggled)
 	{
-		var loginFieldText = _txtUsername.Text;
-
+		var loginFieldText = _txtUsername.Text; ;
+		
 		CryptoManager.Save(ConfigSection.User, ConfigKey.Username, toggled ? loginFieldText : "");
 	}
 

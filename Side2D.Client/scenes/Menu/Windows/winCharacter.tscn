@@ -7,7 +7,6 @@ auto_translate_mode = 1
 title = "Characters"
 initial_position = 2
 size = Vector2i(600, 300)
-visible = false
 unresizable = true
 always_on_top = true
 script = ExtResource("1_n5gvl")
