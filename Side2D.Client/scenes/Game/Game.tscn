@@ -18,6 +18,7 @@ unique_name_in_owner = true
 
 [node name="VirtualJoystick" parent="GameEntities" instance=ExtResource("4_58to1")]
 unique_name_in_owner = true
+visible = false
 
 [node name="GameButtons" parent="GameEntities" instance=ExtResource("4_lc2nk")]
 unique_name_in_owner = true

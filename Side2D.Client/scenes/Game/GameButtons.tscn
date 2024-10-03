@@ -9,6 +9,7 @@ anchors_preset = 0
 script = ExtResource("1_ykxbc")
 
 [node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 10.0
 offset_right = 42.0

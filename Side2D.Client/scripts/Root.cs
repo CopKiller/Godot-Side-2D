@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using Godot;
 using Side2D.Cryptography;
 using Side2D.Models.Enum;
@@ -10,6 +12,8 @@ public partial class Root : Node2D
 	public bool IsDebugMode => false;
 	
 	private TextureRect _splashScreen;
+	
+	private List<Tween> _tweens = [];
 	
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -34,6 +38,7 @@ public partial class Root : Node2D
 			_splashScreen.Modulate = new Color(1, 1, 1, 0);
 			
 			var tween = CreateTween();
+			_tweens.Add(tween);
 			tween.TweenProperty(_splashScreen, "modulate:a", 1f, 3f);
 			tween.SetTrans(Tween.TransitionType.Sine);
 			tween.TweenCallback(Callable.From(FadeOutSplashScreen));
@@ -43,16 +48,36 @@ public partial class Root : Node2D
 		void FadeOutSplashScreen()
 		{
 			var tween = CreateTween();
+			_tweens.Add(tween);
 			tween.TweenProperty(_splashScreen, "modulate:a", 0f, 2f);
 			tween.SetTrans(Tween.TransitionType.Sine);
 			tween.TweenCallback(Callable.From(StartMenu));
 			tween.Play();
 		}
+	}
+	
+	private void StartMenu()
+	{
+		var clientManager = ApplicationHost.Instance.GetSingleton<ClientManager>();
+		clientManager.ChangeClientState(ClientState.Menu);
+	}
+
+	public override void _Input(InputEvent @event)
+	{
+		if (@event is not (InputEventKey { Pressed: true, Keycode: Key.Escape } or InputEventMouse
+		    {
+			    ButtonMask: MouseButtonMask.Left
+		    })) return;
 		
-		void StartMenu()
+		foreach (var tween in _tweens.ToList())
 		{
-			var clientManager = ApplicationHost.Instance.GetSingleton<ClientManager>();
-			clientManager.ChangeClientState(ClientState.Menu);
+			tween.Stop();
+			_tweens.Remove(tween);
+			tween.Dispose();
 		}
+	        
+		StartMenu();
+
+		return;
 	}
 }

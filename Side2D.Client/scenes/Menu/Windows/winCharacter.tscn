@@ -7,6 +7,7 @@ auto_translate_mode = 1
 title = "Characters"
 initial_position = 2
 size = Vector2i(600, 300)
+visible = false
 unresizable = true
 always_on_top = true
 script = ExtResource("1_n5gvl")
@@ -127,38 +128,47 @@ alignment = 1
 
 [node name="HSeparator" type="HSeparator" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_constants/separation = 20
 
-[node name="Label2" type="Label" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
+layout_mode = 2
+alignment = 1
+
+[node name="Label2" type="Label" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Gender:"
 horizontal_alignment = 1
 
-[node name="optGender" type="OptionButton" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
+[node name="optGender" type="OptionButton" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 alignment = 1
 
-[node name="HSeparator2" type="HSeparator" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
-layout_mode = 2
-
-[node name="Label3" type="Label" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
+[node name="Label3" type="Label" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 1
 text = "Vocation:"
 horizontal_alignment = 1
 
-[node name="optVocation" type="OptionButton" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
+[node name="optVocation" type="OptionButton" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer/HBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_horizontal = 3
 alignment = 1
 
-[node name="HSeparator3" type="HSeparator" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
 layout_mode = 2
-size_flags_vertical = 3
-theme_override_constants/separation = 10
+theme_override_constants/separation = 20
+
+[node name="texCreateSprite" type="TextureRect" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+stretch_mode = 5
 
 [node name="btnCreate" type="Button" parent="MarginContainer/MainContainer/CreateContainer/MarginContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+size_flags_vertical = 10
 text = "Create"

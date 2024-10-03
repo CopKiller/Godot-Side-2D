@@ -5,10 +5,12 @@ namespace Side2D.scripts.Controls;
 
 public partial class BaseWindow : Window
 {
-    // Open other window on close?
-    private Action? _onClose;
-
-    private Action? _closeChildComponent;
+    [Signal]
+    public delegate void OnCloseEventHandler();
+    
+    [Signal]
+    public delegate void HandleCloseEventHandler();
+    
     
     // Can Close this window?
     protected bool CanClose { get; set; } = true;
@@ -21,29 +23,16 @@ public partial class BaseWindow : Window
 
     private void AssignSignals()
     {
-        this.CloseRequested += CloseWindow;
-    }
-    
-    private void UnassignSignals()
-    {
-        this.CloseRequested -= CloseWindow;
-        _onClose = null;
-        _closeChildComponent = null;
+        this.Connect(Window.SignalName.CloseRequested, Callable.From(CloseWindow));
     }
 
     public void CloseWindow()
     {
-        if (_closeChildComponent != null)
-        {
-            _closeChildComponent.Invoke();
-            _closeChildComponent = null;
-        }
-        else
-        {
-            if (!CanClose) return;
-            this.Hide();
-            _onClose?.Invoke();
-        }
+        EmitSignal(SignalName.HandleClose); // --> Emited First, for close others childrens
+        
+        if (!CanClose) return;
+        this.Hide();
+        EmitSignal(SignalName.OnClose);
     }
 
     public void ShowWindow()
@@ -53,19 +42,7 @@ public partial class BaseWindow : Window
     
     public void ShowWindow(Action? onClose)
     {
-        _onClose = onClose;
+        if (onClose != null) this.Connect(SignalName.OnClose, Callable.From(onClose));
         ShowWindow();
-    }
-
-    protected void AddActionCloseChildComponent(Action action)
-    {
-        _onClose = _closeChildComponent;
-    }
-
-    public override void _ExitTree()
-    {
-        base._ExitTree();
-        
-        UnassignSignals();
     }
 }

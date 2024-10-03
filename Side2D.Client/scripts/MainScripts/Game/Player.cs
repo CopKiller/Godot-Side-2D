@@ -22,10 +22,13 @@ public partial class Player : CharacterBody2D
 	public PlayerMoveModel PlayerMoveModel;
 	private readonly CPlayerMove _cPlayerMove = new();
 	
+	private ulong _lastAttackTime = 0;
 	
 	private bool _isMoving = false;
 	private Direction _direction = Direction.Right;
 	private Vector2 _velocity = Vector2.Zero;
+	
+	private bool _isAttacking = false;
 	
 	// Children's
 	private AnimatedSprite2D _animatedSprite;
@@ -65,6 +68,7 @@ public partial class Player : CharacterBody2D
 		
 		CheckPlayerMove();
 		CheckPlayerJump();
+		CheckPlayerattack();
 		return;
 
 		void CheckPlayerMove()
@@ -88,6 +92,22 @@ public partial class Player : CharacterBody2D
 			if (Input.IsActionPressed("move_jump") && IsOnFloor())
 			{
 				_velocity.Y = PlayerDataModel.JumpVelocity;
+			}
+		}
+
+		void CheckPlayerattack()
+		{
+			if (Input.IsActionPressed("attack_action"))
+			{
+				if (_isAttacking) return;
+				_isAttacking = true;
+				_lastAttackTime = Time.GetTicksMsec() + 1000;
+			}
+			else
+			{
+				if (!_isAttacking) return;
+				if (Time.GetTicksMsec() > _lastAttackTime)
+					_isAttacking = false;
 			}
 		}
 	}
@@ -141,7 +161,7 @@ public partial class Player : CharacterBody2D
 		}
 		else
 		{
-			prefix = "idle";
+			prefix = _isAttacking ? "attack" : "idle";
 		}
 		
 		_animatedSprite.Play($"{prefix}_{_direction.ToString().ToLower()}");
