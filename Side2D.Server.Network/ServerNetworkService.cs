@@ -8,6 +8,7 @@ using Side2D.Logger;
 using Side2D.Network;
 using Side2D.Server.Database.Interfaces;
 using Side2D.Server.Network.Interfaces;
+using Side2D.Server.TempData.Interface;
 
 namespace Side2D.Server.Network;
 public class ServerNetworkService : NetworkService
@@ -17,11 +18,15 @@ public class ServerNetworkService : NetworkService
     
     public IAccountRepository AccountRepository { get; private set; }
     public IPlayerRepository PlayerRepository { get; private set; }
+    public ITempDataService TempDataService { get; private set; }
     
-    public ServerNetworkService(IAccountRepository accountRepository, IPlayerRepository playerRepository)
+    public ServerNetworkService(IAccountRepository accountRepository,
+                                IPlayerRepository playerRepository,
+                                ITempDataService tempDataService)
     {
         AccountRepository = accountRepository;
         PlayerRepository = playerRepository;
+        TempDataService = tempDataService;
         ServerPacketProcessor = new ServerPacketProcessor(this);
     }
 

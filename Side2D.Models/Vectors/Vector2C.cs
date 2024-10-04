@@ -28,6 +28,11 @@ public class Vector2C
         return $"X: {X}, Y: {Y}";
     }
     
+    public float DistanceTo(Vector2C other)
+    {
+        return (float)Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
+    }
+    
     public void SetValues(float x, float y)
     {
         X = x;

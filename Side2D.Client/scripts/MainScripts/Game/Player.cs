@@ -20,7 +20,9 @@ public partial class Player : CharacterBody2D
 	private ClientPlayer _clientPlayer;
 	public PlayerDataModel PlayerDataModel;
 	public PlayerMoveModel PlayerMoveModel;
+	
 	private readonly CPlayerMove _cPlayerMove = new();
+	private readonly CPlayerAttack _cPlayerAttack = new();
 	
 	private ulong _lastAttackTime = 0;
 	
@@ -58,6 +60,7 @@ public partial class Player : CharacterBody2D
 		ProcessPlayerGravity(delta);
 		ProcessLocalPlayerSync();
 		ProcessPlayerMovement();
+		ProcessPlayerAttack();
 		ProcessPlayerFrame();
 	}
 	
@@ -68,7 +71,7 @@ public partial class Player : CharacterBody2D
 		
 		CheckPlayerMove();
 		CheckPlayerJump();
-		CheckPlayerattack();
+		CheckPlayerAttack();
 		return;
 
 		void CheckPlayerMove()
@@ -95,21 +98,22 @@ public partial class Player : CharacterBody2D
 			}
 		}
 
-		void CheckPlayerattack()
+		void CheckPlayerAttack()
 		{
-			if (Input.IsActionPressed("attack_action"))
-			{
-				if (_isAttacking) return;
-				_isAttacking = true;
-				_lastAttackTime = Time.GetTicksMsec() + 1000;
-			}
-			else
-			{
-				if (!_isAttacking) return;
-				if (Time.GetTicksMsec() > _lastAttackTime)
-					_isAttacking = false;
-			}
+			if (!Input.IsActionPressed("attack_action")) return;
+			
+			if (_isAttacking) return;
+			SetPlayerAttack(true);
+			_clientPlayer.SendData(_cPlayerAttack, DeliveryMethod.Sequenced);
 		}
+	}
+	
+	private void SetPlayerAttack(bool isAttacking)
+	{
+		_isAttacking = isAttacking;
+		
+		if (_isAttacking)
+			_lastAttackTime = Time.GetTicksMsec() + 1000;
 	}
 	
 	private void ProcessLocalPlayerSync()
@@ -139,6 +143,14 @@ public partial class Player : CharacterBody2D
 		Velocity = _velocity;
 		
 		MoveAndSlide();
+	}
+	
+	private void ProcessPlayerAttack()
+	{
+		if (!_isAttacking) return;
+		
+		if (Time.GetTicksMsec() > _lastAttackTime)
+			_isAttacking = false;
 	}
 
 	private void ProcessPlayerGravity(double delta)
@@ -223,5 +235,14 @@ public partial class Player : CharacterBody2D
 			Log.PrintInfo($"Vocation: {vocation}");
 			_animatedSprite.SpriteFrames = GD.Load<SpriteFrames>(_spritePath);
 		}
+	}
+	
+	public void Attack(bool isAttacking, AttackType attackType)
+	{
+		if (attackType == AttackType.Basic)
+		{
+			SetPlayerAttack(isAttacking);
+		}
+		// ...
 	}
 }

@@ -40,7 +40,7 @@ public abstract class NetworkService : INetworkService
     }
 
     /// <inheritdoc />
-    public virtual void Update()
+    public virtual void Update(long currentTick)
     {
         this.NetManager?.PollEvents();
     }

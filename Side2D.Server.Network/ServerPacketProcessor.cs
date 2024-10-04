@@ -28,6 +28,7 @@ namespace Side2D.Server.Network
             this.Subscribe<CCreateCharacter>(ClientCreateCharacter);
             this.Subscribe<CPlayerUseCharacter>(ClientPlayerUseCharacter);
             this.Subscribe<CPlayerSwitchCharacter>(ClientPlayerSwitchCharacter);
+            this.Subscribe<CPlayerAttack>(ClientPlayerAttack);
         }
 
         public void SendDataToAllBut<T>(NetPeer excludePeer, T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class, new()

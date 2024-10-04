@@ -11,6 +11,7 @@
       <ProjectReference Include="..\Side2D.Logger\Side2D.Logger.csproj" />
       <ProjectReference Include="..\Side2D.Network\Side2D.Network.csproj" />
       <ProjectReference Include="..\Side2D.Server.Database\Side2D.Server.Database.csproj" />
+      <ProjectReference Include="..\Side2D.Server.TempData\Side2D.Server.TempData.csproj" />
     </ItemGroup>
 
 </Project>

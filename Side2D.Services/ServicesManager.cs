@@ -8,13 +8,12 @@ namespace Side2D.Services;
 public sealed class ServicesManager : IDisposable
 {
     private const int DefaultUpdateInterval = 5;
+    private readonly Stopwatch _tickCounter = new();
 
     private IServiceProvider? ServiceProvider { get; set; }             // --> Provider de serviços
     private List<ISingleService>? Services { get; set; }                // --> Coleção de serviços unicos
     
     private CancellationTokenSource? _updateCancellationTokenSource;    // --> Token de cancelamento
-
-    public ServicesManager() { }
 
     public void Register()
     {
@@ -44,6 +43,8 @@ public sealed class ServicesManager : IDisposable
     {
         Log.PrintInfo("Iniciando serviços...");
         
+        _tickCounter.Start();
+        
         if (Services == null) return;
         
         foreach (var service in Services)
@@ -64,6 +65,8 @@ public sealed class ServicesManager : IDisposable
         {
             service.Stop();
         }
+        
+        _tickCounter.Stop();
     }
     
     public void Restart()
@@ -76,56 +79,56 @@ public sealed class ServicesManager : IDisposable
     
     public void Update()
     {
-        //Log.PrintInfo("Atualizando serviços...");
-        
         if (Services == null) return;
-        
-        _updateCancellationTokenSource?.Cancel();
-        _updateCancellationTokenSource?.Dispose();
-        _updateCancellationTokenSource = new CancellationTokenSource();
-        
-        UpdateService(_updateCancellationTokenSource.Token);
-        return;
 
-        void UpdateService(CancellationToken cancellationToken)
+        if (_updateCancellationTokenSource == null || _updateCancellationTokenSource.IsCancellationRequested)
         {
-            Stopwatch stopwatch = new();
-            stopwatch.Start();
-            
-            while (!cancellationToken.IsCancellationRequested)
+            _updateCancellationTokenSource?.Dispose();
+            _updateCancellationTokenSource = new CancellationTokenSource();
+        }
+    
+        Task.Run(() => UpdateServiceAsync(_updateCancellationTokenSource.Token));
+    }
+    
+    private async Task UpdateServiceAsync(CancellationToken cancellationToken)
+    {
+        while (!cancellationToken.IsCancellationRequested)
+        {
+            var startTick = _tickCounter.ElapsedMilliseconds;
+
+            foreach (var service in Services)
             {
-                foreach (var service in Services)
-                {
-                    service.Update();
-                }
-                
-                // Calcula o tempo gasto no processamento e ajusta o sleep adequadamente
-                var elapsed = stopwatch.ElapsedMilliseconds;
-                var remainingTime = DefaultUpdateInterval - elapsed; // 20ms é o intervalo desejado para a thread
-                
-                if (remainingTime > 0)
-                {
-                    Thread.Sleep((int)remainingTime);
-                }
-                
-                stopwatch.Restart(); // Reinicia o cronômetro da thread
+                service.Update(startTick);  // Realiza o update no serviço
+            }
+
+            var endTick = _tickCounter.ElapsedMilliseconds;
+            var elapsed = endTick - startTick;
+            var remainingTime = DefaultUpdateInterval - elapsed;
+
+            if (remainingTime > 0)
+            {
+                // Espera o tempo necessário sem bloquear a thread
+                await Task.Delay((int)remainingTime, cancellationToken);
             }
         }
     }
+
     
     public void Dispose()
     {
         Log.PrintInfo("Finalizando serviços...");
-        
+    
         _updateCancellationTokenSource?.Cancel();
         _updateCancellationTokenSource?.Dispose();
-        
+    
         if (Services == null) return;
-        
+    
         foreach (var service in Services)
         {
-            IDisposable? disposable = service;
-            disposable.Dispose();
+            if (service is IDisposable disposable)
+            {
+                disposable.Dispose();
+            }
         }
     }
 }

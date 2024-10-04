@@ -57,12 +57,20 @@ public partial class Players : Node, IPacketHandler
 		
 		player.CallDeferred(nameof(player.UpdatePlayerMove));
 	}
+	
+	public void PlayerAttack(SPlayerAttack attack)
+	{
+		var player = _players.Find(x => x.PlayerDataModel.Index == attack.Index);
+
+		player?.CallDeferred(nameof(player.Attack), true, (byte)attack.AttackType);
+	}
 
 	public void RegisterPacketHandlers()
 	{
 		ClientPacketProcessor.RegisterPacket<SPlayerData>(ServerPlayerData);
 		ClientPacketProcessor.RegisterPacket<SPlayerMove>(ServerPlayerMove);
 		ClientPacketProcessor.RegisterPacket<SPlayerLeft>(ServerLeft);
+		ClientPacketProcessor.RegisterPacket<SPlayerAttack>(ServerPlayerAttack);
 	}
 	public override void _ExitTree()
 	{
@@ -85,6 +93,12 @@ public partial class Players : Node, IPacketHandler
 	{
 		PlayerMove(obj.PlayerMoveModel);
 	}
+
+	private void ServerPlayerAttack(SPlayerAttack attack)
+	{
+		PlayerAttack(attack);
+	}
+	
 	private void ServerLeft(SPlayerLeft obj)
 	{
 		RemovePlayer(obj.Index);

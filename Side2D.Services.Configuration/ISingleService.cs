@@ -7,5 +7,5 @@ public interface ISingleService : IDisposable
     void Start();
     void Stop();
     void Restart();
-    void Update();
+    void Update(long currentTick);
 }

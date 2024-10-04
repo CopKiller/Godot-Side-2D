@@ -73,54 +73,7 @@ namespace Side2D.Server.Network
             
             player.PlayerModels.Add(newPlayer);
 
-            // Cria uma nova lista para os PlayerModels
-            var myPlayerDataModel = new List<PlayerDataModel>();
-            myPlayerDataModel.AddRange(player.PlayerModels.Select(a => new PlayerDataModel(netPeer.Id, a)));
-
-            // Ordena os jogadores existentes por SlotNumber
-            //myPlayerDataModel = myPlayerDataModel.OrderBy(p => p.SlotNumber).ToList();
-
-            // Conta quantos jogadores estão na lista
-            var slotsCount = myPlayerDataModel.Count;
-
-            // Preenche os slots vazios, se necessário
-            if (slotsCount < EntityValidator.MaxCharacters)
-            {
-                var slots = EntityValidator.MaxCharacters - slotsCount;
-
-                // Encontrar o próximo SlotNumber disponível
-                var usedSlots = myPlayerDataModel.Select(p => p.SlotNumber).ToHashSet();
-                var nextSlotNumber = 1;
-
-                for (var i = 0; i < slots; i++)
-                {
-                    // Encontra o próximo SlotNumber disponível que não esteja em uso
-                    while (usedSlots.Contains(nextSlotNumber))
-                    {
-                        nextSlotNumber++;
-                    }
-
-                    // Adiciona um PlayerDataModel vazio com o próximo SlotNumber disponível
-                    var emptyPlayer = new PlayerDataModel { SlotNumber = nextSlotNumber };
-                    myPlayerDataModel.Add(emptyPlayer);
-        
-                    // Marca o SlotNumber como usado
-                    usedSlots.Add(nextSlotNumber);
-                }
-            }
-
-            // Ordena a lista final pela ordem dos SlotNumbers
-            myPlayerDataModel = myPlayerDataModel.OrderBy(p => p.SlotNumber).ToList();
-
-            // Cria o pacote com a lista de PlayerDataModel
-            var packet = new SCharacter
-            {
-                PlayerDataModel = myPlayerDataModel
-            };
-
-            Log.Print($"SCharacter slots: {myPlayerDataModel.Count}");
-            
-            SendDataTo(netPeer, packet, DeliveryMethod.ReliableOrdered);
+            ServerSendCharacters(netPeer);
         }
     }
 }

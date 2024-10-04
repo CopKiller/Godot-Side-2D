@@ -5,6 +5,6 @@ public interface ITransientService
     void Register();
     void Start();
     void Stop();
-    void Update();
+    void Update(long currentTick);
     void Dispose();
 }

@@ -6,7 +6,7 @@ namespace Side2D.Network;
 public class NetworkManager : INetworkManager
 {
     private INetworkService? NetworkService { get; set; }
-    public bool _isRunning;
+    public bool IsRunning;
     
     public int DefaultUpdateInterval = 15;
     private readonly Stopwatch _stopwatch = new();
@@ -23,7 +23,7 @@ public class NetworkManager : INetworkManager
         if (DefaultUpdateInterval > 0) 
             _stopwatch.Start();
         
-        _isRunning = true;
+        IsRunning = true;
     }
     
     public void Register()
@@ -32,7 +32,7 @@ public class NetworkManager : INetworkManager
     }
     public void Stop()
     {
-        _isRunning = false;
+        IsRunning = false;
         NetworkService?.Stop();
     }
 
@@ -42,14 +42,14 @@ public class NetworkManager : INetworkManager
         Start();
     }
 
-    public void Update()
+    public void Update(long currentTick)
     {
-        if (!_isRunning) return;
+        if (!IsRunning) return;
         
         if (DefaultUpdateInterval > 0) 
             if (_stopwatch.ElapsedMilliseconds < DefaultUpdateInterval) return;
         
-        NetworkService?.Update();
+        NetworkService?.Update(currentTick);
         
         if (DefaultUpdateInterval > 0) 
             _stopwatch.Restart();

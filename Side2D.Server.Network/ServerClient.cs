@@ -12,18 +12,21 @@ namespace Side2D.Server.Network
 {
     public class ServerClient
     {
+        // Deixando escrito aqui, para não esquecer de implementar
+        // Preciso remover tudo que não é necessário para o network e deixar apenas o necessário
+        // jogando a maioria das coisas aqui pro novo projeto de dados temporários
+        // e deixando apenas o necessário para o network aqui, como netpeer, index, accountid, etc...
+        // no projeto dos dados temporários terá uma lista de jogadores atrelados ao index, como no network
+        // e a cada jogador terá um objeto temporário, que será atualizado a cada tick
+        
         public int Index { get; private set; }
         public NetPeer Peer { get; private set; }
         public int AccountId { get; set; }
-
+        public ClientState ClientState { get; set; }
         public List<PlayerModel> PlayerModels { get; private set; } = [];
-        
         public PlayerMoveModel PlayerMoveModel { get; set; } 
-        
         public PlayerDataModel PlayerDataModel { get; set; }
         
-        public ClientState ClientState { get; set; }
-
         private readonly ServerPacketProcessor? _serverPacketProcessor;
 
         public ServerClient(NetPeer netPeer, ServerPacketProcessor? serverPacketProcessor)

@@ -17,6 +17,7 @@
       <ProjectReference Include="..\Side2D.Network\Side2D.Network.csproj" />
       <ProjectReference Include="..\Side2D.Server.Database\Side2D.Server.Database.csproj" />
       <ProjectReference Include="..\Side2D.Server.Network\Side2D.Server.Network.csproj" />
+      <ProjectReference Include="..\Side2D.Server.TempData\Side2D.Server.TempData.csproj" />
       <ProjectReference Include="..\Side2D.Services.Configuration\Side2D.Services.Configuration.csproj" />
     </ItemGroup>
 

@@ -1,5 +1,7 @@
 using System;
+using System.Diagnostics;
 using System.Threading;
+using System.Threading.Tasks;
 using Godot;
 using Side2D.Cryptography;
 using Side2D.Models.Enum;
@@ -19,7 +21,7 @@ public partial class ClientManager : Node, IPacketHandler
     private readonly CryptoManager _cryptoManager;
     
     private Thread _networkThread;
-    private CancellationTokenSource _cancellationTokenSource;
+    private CancellationTokenSource? _cancellationTokenSource;
     
     public ClientPlayer ClientPlayer { get; }
     
@@ -54,30 +56,41 @@ public partial class ClientManager : Node, IPacketHandler
         _cancellationTokenSource = new CancellationTokenSource();
         _cancellationTokenSource.Token.Register(() => _networkManager.Stop());
         
-        _networkThread = new Thread(() =>
-        {
-            _networkManager.DefaultUpdateInterval = 0;
-            
-            while (!_cancellationTokenSource.Token.IsCancellationRequested)
-            {
-                _networkManager.Update();
-                Thread.Sleep(15);
-            }
-        });
+        _networkThread = new Thread(ThreadStart);
         _networkThread.Start();
     }
-    
+
+    private async void ThreadStart()
+    {
+        _networkManager.DefaultUpdateInterval = 0;
+        
+        var stopwatch = new Stopwatch();
+        stopwatch.Start();
+        
+        try
+        {
+            while (!_cancellationTokenSource.Token.IsCancellationRequested)
+            {
+                _networkManager.Update(stopwatch.ElapsedMilliseconds);
+                await Task.Delay(15, _cancellationTokenSource.Token);
+            }
+        }
+        catch (Exception ex)
+        {
+            GD.PrintErr("Error in network thread: ", ex);
+        }
+    }
+
     private void Stop()
     {
-        if (_cancellationTokenSource != null && !_cancellationTokenSource.IsCancellationRequested)
-        {
-            _cancellationTokenSource.Cancel();  // Sinaliza que o loop deve parar
-            _networkThread.Join();  // Aguarda a thread terminar
-            GD.Print("Network stopped successfully.");
+        if (_cancellationTokenSource is not { IsCancellationRequested: false }) return;
+        
+        _cancellationTokenSource.Cancel();  // Sinaliza que o loop deve parar
+        _networkThread.Join();  // Aguarda a thread terminar
+        GD.Print("Network stopped successfully.");
             
-            _cancellationTokenSource.Dispose();
-            _cancellationTokenSource = null;
-        }
+        _cancellationTokenSource.Dispose();
+        _cancellationTokenSource = null;
     }
     
     public void RestartNetwork()
@@ -132,6 +145,14 @@ public partial class ClientManager : Node, IPacketHandler
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
     }
+    
+    public override void _Notification(int what)
+    {
+        if (what == NotificationPredelete || what == NotificationCrash || what == NotificationExitTree)
+        {
+            Stop();
+        }
+    }
 
     public void RegisterPacketHandlers()
     {
@@ -146,6 +167,8 @@ public partial class ClientManager : Node, IPacketHandler
 
     public override void _ExitTree()
     {
+        Stop();
         ClientPacketProcessor.UnregisterPacket<SClientState>();
+        base._ExitTree();
     }
 }

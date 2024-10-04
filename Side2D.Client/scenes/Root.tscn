@@ -10,3 +10,11 @@ script = ExtResource("1_4ii42")
 offset_right = 40.0
 offset_bottom = 40.0
 texture = ExtResource("2_qpco2")
+
+[node name="lblInfo" type="Label" parent="."]
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 289.0
+offset_bottom = 33.0
+text = "Tap the screen or press esc to skip..."
+horizontal_alignment = 1

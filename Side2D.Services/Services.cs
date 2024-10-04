@@ -6,6 +6,8 @@ using Side2D.Server.Database.Interfaces;
 using Side2D.Server.Database.Repositorys;
 using Side2D.Server.Network;
 using Side2D.Server.Network.Interfaces;
+using Side2D.Server.TempData;
+using Side2D.Server.TempData.Interface;
 
 namespace Side2D.Services;
 
@@ -17,6 +19,7 @@ public class Services
         
         ConfigureNetworkService(services);
         ConfigureDatabaseService(services);
+        ConfigureTempDataService(services);
         
         return services;
     }
@@ -32,5 +35,10 @@ public class Services
         services.AddDbContext<DatabaseContext>();
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IPlayerRepository, PlayerRepository>();
+    }
+    
+    private void ConfigureTempDataService(IServiceCollection services)
+    {
+        services.AddSingleton<ITempDataService, TempDataService>();
     }
 }
