@@ -32,7 +32,7 @@ public class Vitals
         Mana = MaxMana;
     }
     
-    public void SetValues(Vitals vitals)
+    public void SetValues(Vitals? vitals)
     {
         Health = vitals.Health;
         MaxHealth = vitals.MaxHealth;

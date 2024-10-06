@@ -8,6 +8,15 @@ namespace Side2D.Network.Packet.Server
     {
         public int Index { get; set; }
         public AttackType AttackType { get; set; }
+        
+        public static SPlayerAttack Create(int index, AttackType attackType)
+        {
+            return new SPlayerAttack
+            {
+                Index = index,
+                AttackType = attackType
+            };
+        }
     }
 
 }

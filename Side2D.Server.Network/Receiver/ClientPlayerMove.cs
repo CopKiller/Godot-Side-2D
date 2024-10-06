@@ -18,6 +18,8 @@ namespace Side2D.Server.Network
             
             if (player.TempPlayer.ClientState != ClientState.Game) return;
             
+            if (player.TempPlayer.Move == null) return;
+            
             if ( ! player.TempPlayer.Move.CanMove(obj.PlayerMoveModel.Position))
             {
                 ServerAlert(netPeer, "Invalid move!");
@@ -30,11 +32,8 @@ namespace Side2D.Server.Network
             
             player.PlayerMoveModel = receivedMove;
             
-            var packet = new SPlayerMove
-            {
-                PlayerMoveModel = player.PlayerMoveModel,
-            };
-            
+            var packet = SPlayerMove.Create(player.PlayerMoveModel);
+
             SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableSequenced);
         }
     }

@@ -14,8 +14,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Network", "..\Side2D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Network", "..\Side2D.Server.Network\Side2D.Server.Network.csproj", "{D7D1E955-098A-4415-9E07-003BBD8FE606}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteNetLib", "..\External\LiteNet\LiteNetLib\LiteNetLib.csproj", "{F776E7E6-9848-4AE9-AD66-9303A8B283B5}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "External", "External", "{2A69FAD0-BC78-4F13-B109-C1DBD4AE715C}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Models", "..\Side2D.Models\Side2D.Models.csproj", "{C6900FEC-A945-4587-9FE6-7F35B5646809}"
@@ -29,6 +27,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Tests", "..\Side2D.Tests\Side2D.Tests.csproj", "{CB4166CB-6763-479E-A352-B835C383975D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.TempData", "..\Side2D.Server.TempData\Side2D.Server.TempData.csproj", "{0E41D83B-470C-4A21-A628-A4E15B72425E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteNetLib", "..\External\LiteNetLib\LiteNetLib\LiteNetLib.csproj", "{2ED01F10-1A62-471A-9ECB-E55681C4BD0C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,12 +79,6 @@ Global
 		{D7D1E955-098A-4415-9E07-003BBD8FE606}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
 		{D7D1E955-098A-4415-9E07-003BBD8FE606}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
 		{D7D1E955-098A-4415-9E07-003BBD8FE606}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
-		{F776E7E6-9848-4AE9-AD66-9303A8B283B5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F776E7E6-9848-4AE9-AD66-9303A8B283B5}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F776E7E6-9848-4AE9-AD66-9303A8B283B5}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F776E7E6-9848-4AE9-AD66-9303A8B283B5}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
-		{F776E7E6-9848-4AE9-AD66-9303A8B283B5}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
-		{F776E7E6-9848-4AE9-AD66-9303A8B283B5}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 		{C6900FEC-A945-4587-9FE6-7F35B5646809}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{C6900FEC-A945-4587-9FE6-7F35B5646809}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C6900FEC-A945-4587-9FE6-7F35B5646809}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -121,9 +115,15 @@ Global
 		{0E41D83B-470C-4A21-A628-A4E15B72425E}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
 		{0E41D83B-470C-4A21-A628-A4E15B72425E}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
 		{0E41D83B-470C-4A21-A628-A4E15B72425E}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{2ED01F10-1A62-471A-9ECB-E55681C4BD0C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ED01F10-1A62-471A-9ECB-E55681C4BD0C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2ED01F10-1A62-471A-9ECB-E55681C4BD0C}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ED01F10-1A62-471A-9ECB-E55681C4BD0C}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{2ED01F10-1A62-471A-9ECB-E55681C4BD0C}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{2ED01F10-1A62-471A-9ECB-E55681C4BD0C}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{F776E7E6-9848-4AE9-AD66-9303A8B283B5} = {2A69FAD0-BC78-4F13-B109-C1DBD4AE715C}
 		{BBF5F784-9BD5-4E8E-860B-88F80AEAD5FB} = {2A69FAD0-BC78-4F13-B109-C1DBD4AE715C}
+		{2ED01F10-1A62-471A-9ECB-E55681C4BD0C} = {2A69FAD0-BC78-4F13-B109-C1DBD4AE715C}
 	EndGlobalSection
 EndGlobal

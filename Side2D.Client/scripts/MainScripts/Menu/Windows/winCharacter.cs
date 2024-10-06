@@ -291,7 +291,7 @@ public partial class winCharacter : BaseWindow, IPacketHandler
     private void HandleCharacter(SCharacter packet)
     {
         GD.Print("Handling character packet");
-        ResetState();
+        CallDeferred(nameof(ResetState));
         if (packet.PlayerDataModel != null) 
             _addCharacters(packet.PlayerDataModel);
     }

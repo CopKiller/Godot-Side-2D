@@ -12,11 +12,21 @@ namespace Side2D.Network.CustomDataSerializable
     {
         public int Index { get; set; }
         public bool IsMoving { get; set; }
-        public Vector2C Velocity { get; set; } = new Vector2C();
+        public Vector2C? Velocity { get; set; } = new Vector2C();
         public Direction Direction { get; set; }
-        public Vector2C Position { get; set; } = new Vector2C();
+        public Vector2C? Position { get; set; } = new Vector2C();
         
         public PlayerMoveModel() { }
+        
+        public void Clear()
+        {
+            Index = 0;
+            IsMoving = false;
+            Velocity = null;
+            Direction = Direction.Right;
+            Position = null;
+        }
+        
         public PlayerMoveModel(int index, PlayerModel playerModel)
         {
             Index = index;

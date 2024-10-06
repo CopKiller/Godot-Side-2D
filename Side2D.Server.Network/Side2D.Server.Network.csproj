@@ -7,6 +7,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\External\LiteNetLib\LiteNetLib\LiteNetLib.csproj" />
       <ProjectReference Include="..\External\LiteNet\LiteNetLib\LiteNetLib.csproj" />
       <ProjectReference Include="..\Side2D.Logger\Side2D.Logger.csproj" />
       <ProjectReference Include="..\Side2D.Network\Side2D.Network.csproj" />

@@ -34,7 +34,7 @@ public class Attributes
         Willpower = 1;
     }
     
-    public void SetValues(Attributes attributes)
+    public void SetValues(Attributes? attributes)
     {
         Strength = attributes.Strength;
         Defense = attributes.Defense;

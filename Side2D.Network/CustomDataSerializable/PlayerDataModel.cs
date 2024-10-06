@@ -21,15 +21,30 @@ public struct PlayerDataModel : INetSerializable
     
     public Gender Gender { get; set; }
 
-    public Vitals Vitals { get; set; } = new Vitals();
+    public Vitals? Vitals { get; set; } = new Vitals();
     
-    public Attributes Attributes { get; set; } = new Attributes();
+    public Attributes? Attributes { get; set; } = new Attributes();
     
     public float JumpVelocity { get; set; }
     
     public float Speed { get; set; }
     
     public PlayerDataModel() { }
+
+    public void Clear()
+    {
+        Index = 0;
+        SlotNumber = 0;
+        Name = string.Empty;
+        Level = 0;
+        Vocation = Vocation.None;
+        Gender = Gender.Undefined;
+        Vitals = null;
+        Attributes = null;
+        JumpVelocity = 0;
+        Speed = 0;
+    }
+
     public PlayerDataModel(int index, PlayerModel playerModel)
     {
         Index = index;

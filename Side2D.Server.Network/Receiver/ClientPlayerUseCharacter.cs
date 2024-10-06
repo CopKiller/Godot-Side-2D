@@ -9,7 +9,7 @@ namespace Side2D.Server.Network
 {
     public partial class ServerPacketProcessor
     {
-        public async void ClientPlayerUseCharacter(CPlayerUseCharacter obj, NetPeer netPeer)
+        public void ClientPlayerUseCharacter(CPlayerUseCharacter obj, NetPeer netPeer)
         {
             if (ServerNetworkService.Players == null) return;
 
@@ -33,18 +33,14 @@ namespace Side2D.Server.Network
                 return;
             }
             
-            // Cria os modelos de dados do jogador
             player.PlayerDataModel = new PlayerDataModel(netPeer.Id, playerModel);
             player.PlayerMoveModel = new PlayerMoveModel(netPeer.Id, playerModel);
 
             // Atualiza o estado do jogador
             player.TempPlayer.ChangeState(ClientState.Game, obj.SlotNumber);
-            
-            var changeClientState = new SClientState
-            {
-                ClientState = player.TempPlayer.ClientState
-            };
-            SendDataTo(netPeer, changeClientState, DeliveryMethod.ReliableOrdered);
+
+            var state = SClientState.Create(player.TempPlayer.ClientState);
+            SendDataTo(netPeer, state, DeliveryMethod.ReliableOrdered);
 
             // Cria o pacote com os dados do jogador
             var packet = new SPlayerData();

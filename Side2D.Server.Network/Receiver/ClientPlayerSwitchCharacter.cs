@@ -24,11 +24,6 @@ namespace Side2D.Server.Network
             
             if (player.TempPlayer.CountCharacters() == 0) return;
             
-            // Clear the player data model
-            player.PlayerDataModel = new PlayerDataModel();
-            // Clear the player move model
-            player.PlayerMoveModel = new PlayerMoveModel();
-            
             player.PlayerSwitchCharacter(netPeer.Id);
             
             ServerSendCharacters(netPeer);

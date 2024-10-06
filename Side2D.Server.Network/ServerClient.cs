@@ -17,9 +17,9 @@ namespace Side2D.Server.Network
         public int Index { get; }
         public readonly ITempPlayer TempPlayer;
         public NetPeer Peer { get; }
-        public PlayerMoveModel PlayerMoveModel { get; set; }  = new();
-        public PlayerDataModel PlayerDataModel { get; set; } = new();
-        public UpdatePlayerDelegate? UpdatePlayerInDatabase { get; set; } = null;
+        public PlayerMoveModel PlayerMoveModel { get; set; }
+        public PlayerDataModel PlayerDataModel { get; set; }
+        public UpdatePlayerDelegate? UpdatePlayerInDatabase { get; set; }
         
         private readonly ServerPacketProcessor? _serverPacketProcessor;
 
@@ -53,22 +53,23 @@ namespace Side2D.Server.Network
         
         public void PlayerSwitchCharacter(int index)
         {
-            var left = new SPlayerLeft
-            {
-                Index = index
-            };
+            
+            var left = SPlayerLeft.Create(index);
             
             SavePlayerData();
             
-            // Notifica jogadores ingame sobre a saida deste player e faz a limpeza no client deles.
             _serverPacketProcessor?.ServerLeft(Peer, left, false);
+            
+            // Clear the player data model
+            PlayerDataModel.Clear();
+            // Clear the player move model
+            PlayerMoveModel.Clear();
             
             TempPlayer.ChangeState(ClientState.Character);
         }
 
         public void SavePlayerData()
         {
-            // Lógica para salvar jogador no banco de dados
             
             if (TempPlayer.ClientState != ClientState.Game) return;
             

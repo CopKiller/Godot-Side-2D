@@ -18,17 +18,15 @@ namespace Side2D.Server.Network
             
             if (player.TempPlayer.ClientState != ClientState.Game) return;
             
-            if ( ! player.TempPlayer.Attack.CanAttack())
+            if (player.TempPlayer.Attack == null) return;
+            
+            if (player.TempPlayer.Attack.CanAttack() == false)
             {
                 ServerAlert(netPeer, "Invalid attack!");
                 return;
             }
 
-            var packet = new SPlayerAttack
-            {
-                Index = player.Index,
-                AttackType = AttackType.Basic
-            };
+            var packet = SPlayerAttack.Create(player.Index, AttackType.Basic);
             
             SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableSequenced);
         }
