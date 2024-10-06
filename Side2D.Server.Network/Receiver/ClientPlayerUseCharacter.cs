@@ -16,32 +16,33 @@ namespace Side2D.Server.Network
             if (!ServerNetworkService.Players.TryGetValue(netPeer.Id, out var player))
                 return;
 
-            if (player.ClientState != ClientState.Character) return;
+            if (player.TempPlayer.ClientState != ClientState.Character) return;
 
-            if (player.PlayerModels.Count == 0)
+            if (player.TempPlayer.CountCharacters() == 0)
             {
                 ServerAlert(netPeer, "You don't have any characters!");
                 return;
             }
 
             // Buscar o PlayerDataModel diretamente
-            var playerModel = player.PlayerModels.FirstOrDefault(p => p.SlotNumber == obj.SlotNumber);
-
+            var playerModel = player.TempPlayer.GetCharacter(obj.SlotNumber);
+            
             if (playerModel == null)
             {
                 ServerAlert(netPeer, "Character not found!");
                 return;
             }
             
+            // Cria os modelos de dados do jogador
             player.PlayerDataModel = new PlayerDataModel(netPeer.Id, playerModel);
             player.PlayerMoveModel = new PlayerMoveModel(netPeer.Id, playerModel);
 
             // Atualiza o estado do jogador
-            player.ClientState = ClientState.Game;
+            player.TempPlayer.ChangeState(ClientState.Game, obj.SlotNumber);
             
             var changeClientState = new SClientState
             {
-                ClientState = player.ClientState
+                ClientState = player.TempPlayer.ClientState
             };
             SendDataTo(netPeer, changeClientState, DeliveryMethod.ReliableOrdered);
 
@@ -54,13 +55,15 @@ namespace Side2D.Server.Network
             SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableOrdered);
 
             var otherPlayers = ServerNetworkService.Players.Values
-                .Where(x => x.ClientState == ClientState.Game && x.Index != player.Index);
+                .Where(x => x.TempPlayer.ClientState == ClientState.Game && x.Index != player.Index);
 
             var serverClients = otherPlayers as ServerClient[] ?? otherPlayers.ToArray();
             packet.PlayersDataModels.AddRange(serverClients.Select(x => x.PlayerDataModel));
             packet.PlayersMoveModels.AddRange(serverClients.Select(x => x.PlayerMoveModel));
 
             SendDataTo(netPeer, packet, DeliveryMethod.ReliableOrdered);
+
+            player.UpdatePlayerInDatabase = ServerNetworkService.DatabaseService.PlayerRepository.UpdatePlayerAsync;
         }
     }
 }

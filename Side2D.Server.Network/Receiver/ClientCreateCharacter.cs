@@ -8,6 +8,7 @@ using Side2D.Models.Validation;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Client;
 using Side2D.Network.Packet.Server;
+using Side2D.Server.TempData.Temp;
 
 namespace Side2D.Server.Network
 {
@@ -21,15 +22,15 @@ namespace Side2D.Server.Network
 
             if (player == null) return;
             
-            if (player.ClientState != ClientState.Character) return;
+            if (player.TempPlayer.ClientState != ClientState.Character) return;
             
-            if (player.PlayerModels.Count >= EntityValidator.MaxCharacters)
+            if (player.TempPlayer.CountCharacters() >= EntityValidator.MaxCharacters)
             {
                 ServerAlert(netPeer, $"You can only have {EntityValidator.MaxCharacters} characters!");
                 return;
             }
             
-            if (player.PlayerModels.Exists(p => p.SlotNumber == obj.SlotNumber))
+            if (player.TempPlayer.ExistsCharacter(obj.SlotNumber))
             {
                 ServerAlert(netPeer, "Character already exists in slot!");
                 return;
@@ -61,7 +62,7 @@ namespace Side2D.Server.Network
                 return;
             }
 
-            var result = await ServerNetworkService.PlayerRepository.AddPlayerAsync(player.AccountId, newPlayer);
+            var result = await ServerNetworkService.DatabaseService.PlayerRepository.AddPlayerAsync(player.TempPlayer.AccountId, newPlayer);
             
             if (result != null)
             {
@@ -71,7 +72,7 @@ namespace Side2D.Server.Network
             
             ServerAlert(netPeer, $"Character {newPlayer.Name} created successfully!");
             
-            player.PlayerModels.Add(newPlayer);
+            player.TempPlayer.UpdatePlayerData(newPlayer);
 
             ServerSendCharacters(netPeer);
         }

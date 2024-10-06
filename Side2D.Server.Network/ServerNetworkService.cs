@@ -6,6 +6,7 @@ using System.Net;
 using System.Net.Sockets;
 using Side2D.Logger;
 using Side2D.Network;
+using Side2D.Server.Database;
 using Side2D.Server.Database.Interfaces;
 using Side2D.Server.Network.Interfaces;
 using Side2D.Server.TempData.Interface;
@@ -15,17 +16,13 @@ public class ServerNetworkService : NetworkService
 {
     public Dictionary<int, ServerClient>? Players { get; private set; } = new();
     private ServerPacketProcessor? ServerPacketProcessor { get; set; }
-    
-    public IAccountRepository AccountRepository { get; private set; }
-    public IPlayerRepository PlayerRepository { get; private set; }
+    public IDatabaseService DatabaseService { get; private set; }
     public ITempDataService TempDataService { get; private set; }
     
-    public ServerNetworkService(IAccountRepository accountRepository,
-                                IPlayerRepository playerRepository,
+    public ServerNetworkService(IDatabaseService databaseService,
                                 ITempDataService tempDataService)
     {
-        AccountRepository = accountRepository;
-        PlayerRepository = playerRepository;
+        DatabaseService = databaseService;
         TempDataService = tempDataService;
         ServerPacketProcessor = new ServerPacketProcessor(this);
     }
@@ -88,7 +85,10 @@ public class ServerNetworkService : NetworkService
 
     private void OnPeerConnectedEvent(NetPeer peer)
     {
-            var player = new ServerClient(peer, ServerPacketProcessor);
+            TempDataService.AddPlayerData(peer.Id);
+            var tempPlayer = TempDataService.GetPlayerData(peer.Id);
+            var player = new ServerClient(peer, tempPlayer, ServerPacketProcessor);
+            
             Players?.Add(peer.Id, player);
 
         Log.Print($"Player connected: {peer.Id}");
@@ -96,6 +96,7 @@ public class ServerNetworkService : NetworkService
     private void OnPeerDisconnectedEvent(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         Players?[peer.Id]?.Disconnect();
+        TempDataService.RemovePlayerData(peer.Id);
 
         Log.Print($"{peer.Id}: {Enum.GetName(disconnectInfo.Reason)}");
     }

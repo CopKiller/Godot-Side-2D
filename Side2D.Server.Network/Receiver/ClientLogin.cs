@@ -20,9 +20,9 @@ namespace Side2D.Server.Network
 
             if (player == null) return;
             
-            if (player.ClientState != ClientState.Menu) return;
+            if (player.TempPlayer.ClientState != ClientState.Menu) return;
             
-            var account = await ServerNetworkService.AccountRepository.GetAccountAsync(obj.Username, obj.Password);
+            var account = await ServerNetworkService.DatabaseService.AccountRepository.GetAccountAsync(obj.Username, obj.Password);
             
             if (account.Error != null)
             {
@@ -36,25 +36,22 @@ namespace Side2D.Server.Network
                 return;
             }
             
-            if (ServerNetworkService.Players.Values.Any(p => p.AccountId == account.Value.Id))
+            if (ServerNetworkService.Players.Values.Any(p => p.TempPlayer.AccountId == account.Value.Id))
             {
                 ServerAlert(netPeer, "Account already logged in!");
                 return;
             }
             
             ServerAlert(netPeer, $"Account logged in successfully! User: {account.Value.Username}");
-            
-            player.ClientState = ClientState.Character;
-            player.AccountId = account.Value.Id;
+            player.TempPlayer.UpdateAccountData(account.Value);
+            player.TempPlayer.ChangeState(ClientState.Character);
             
             var changeClientState = new SClientState()
             {
-                ClientState = player.ClientState
+                ClientState = player.TempPlayer.ClientState
             };
             
             SendDataTo(netPeer, changeClientState, DeliveryMethod.ReliableOrdered); 
-            
-            player.PlayerModels.AddRange(account.Value.Players);
             
             ServerSendCharacters(netPeer);
         }

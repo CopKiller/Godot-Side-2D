@@ -9,4 +9,5 @@ public interface IPlayerRepository
     Task<DatabaseException?> AddPlayerAsync(int accountId, PlayerModel player);
     Task<Result<List<PlayerModel>>> GetPlayersByAccountIdAsync(int accountId);
     Task<bool> NameExistsAsync(string username);
+    Task<bool> UpdatePlayerAsync(PlayerModel player);
 }

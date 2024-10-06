@@ -1,19 +1,46 @@
 using System.Diagnostics;
+using Side2D.Models;
+using Side2D.Models.Vectors;
 using Side2D.Server.TempData.Interface;
+using Side2D.Server.TempData.Temp;
+using Side2D.Server.TempData.Temp.Interface;
+using Side2D.Server.TempData.Temp.Player;
 
 namespace Side2D.Server.TempData;
 
 public class TempDataService : ITempDataService
 {
-    public Dictionary<int, ITempData> TempDataList { get; private set; } = new();
+    public int DefaultUpdateInterval { get; set; } = 1;
     
-    public int DefaultUpdateInterval = 15;
+    public Dictionary<int, ITempPlayer> TempDataList { get; private set; } = new();
     private readonly Stopwatch _stopwatch = new();
-
-    public void Register()
+    
+    public void AddPlayerData(int index)
     {
-        
+        TempDataList.Add(index, new TempPlayer(index));
     }
+    
+    public void RemovePlayerData(int index)
+    {
+        TempDataList.Remove(index);
+    }
+    
+    public ITempPlayer GetPlayerData(int index)
+    {
+        return TempDataList[index];
+    }
+    
+    public void UpdateAccountData(int index, AccountModel accountModel)
+    {
+        TempDataList[index].UpdateAccountData(accountModel);
+    }
+    
+    public void UpdatePlayerData(int index, PlayerModel playerModel)
+    {
+        TempDataList[index].UpdatePlayerData(playerModel);
+    }
+
+    public void Register() { }
 
     public void Start()
     {

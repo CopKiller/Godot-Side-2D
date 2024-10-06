@@ -15,9 +15,18 @@ namespace Side2D.Server.Network
             ServerNetworkService.Players.TryGetValue(netPeer.Id, out var player);
 
             if (player == null) return;
+            
+            if (player.TempPlayer.ClientState != ClientState.Game) return;
+            
+            if ( ! player.TempPlayer.Move.CanMove(obj.PlayerMoveModel.Position))
+            {
+                ServerAlert(netPeer, "Invalid move!");
+                return;
+            }
+            
 
             var receivedMove = obj.PlayerMoveModel;
-            receivedMove.Index = netPeer.Id;
+            receivedMove.Index = netPeer.Id;    
             
             player.PlayerMoveModel = receivedMove;
             

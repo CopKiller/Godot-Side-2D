@@ -9,6 +9,7 @@
     <ItemGroup>
       <ProjectReference Include="..\External\Database\Database.csproj" />
       <ProjectReference Include="..\Side2D.Cryptography\Side2D.Cryptography.csproj" />
+      <ProjectReference Include="..\Side2D.Services.Configuration\Side2D.Services.Configuration.csproj" />
     </ItemGroup>
 
 </Project>

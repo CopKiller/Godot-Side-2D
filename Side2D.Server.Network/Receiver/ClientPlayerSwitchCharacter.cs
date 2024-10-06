@@ -20,9 +20,9 @@ namespace Side2D.Server.Network
 
             if (player == null) return;
             
-            if (player.ClientState != ClientState.Game) return;
+            if (player.TempPlayer.ClientState != ClientState.Game) return;
             
-            if (player.PlayerModels.Count == 0) return;
+            if (player.TempPlayer.CountCharacters() == 0) return;
             
             // Clear the player data model
             player.PlayerDataModel = new PlayerDataModel();

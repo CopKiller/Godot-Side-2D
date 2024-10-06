@@ -15,4 +15,31 @@ public class Attributes
     public int PlayerModelId { get; set; }
     
     public PlayerModel PlayerModel { get; set; }
+    
+    public Attributes()
+    {
+        Strength = 1;
+        Defense = 1;
+        Agility = 1;
+        Intelligence = 1;
+        Willpower = 1;
+    }
+    
+    public void Reset()
+    {
+        Strength = 1;
+        Defense = 1;
+        Agility = 1;
+        Intelligence = 1;
+        Willpower = 1;
+    }
+    
+    public void SetValues(Attributes attributes)
+    {
+        Strength = attributes.Strength;
+        Defense = attributes.Defense;
+        Agility = attributes.Agility;
+        Intelligence = attributes.Intelligence;
+        Willpower = attributes.Willpower;
+    }
 }

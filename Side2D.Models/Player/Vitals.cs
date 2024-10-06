@@ -16,4 +16,28 @@ public class Vitals
     public int PlayerModelId { get; set; }
     
     public PlayerModel PlayerModel { get; set; }
+    
+    public Vitals()
+    {
+        Health = 100;
+        MaxHealth = 100;
+        
+        Mana = 100;
+        MaxMana = 100;
+    }
+    
+    public void Reset()
+    {
+        Health = MaxHealth;
+        Mana = MaxMana;
+    }
+    
+    public void SetValues(Vitals vitals)
+    {
+        Health = vitals.Health;
+        MaxHealth = vitals.MaxHealth;
+        
+        Mana = vitals.Mana;
+        MaxMana = vitals.MaxMana;
+    }
 }

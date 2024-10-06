@@ -1,35 +1,36 @@
-using Side2D.Server.TempData.Interface;
 using Side2D.Server.TempData.Temp.Interface;
 
-namespace Side2D.Server.TempData.Temp;
+namespace Side2D.Server.TempData.Temp.Player;
 
 public class TempAttack : ITempAttack
 {
+    private long _currentTick = 0;
     private const int AttackingSpeed = 1000; // 1 attack in one second
-    public bool IsAttacking;
-    public long LastAttackTime;
+    public bool IsAttacking = false;
+    public long LastAttackTime = 0;
     
     public void Update(long currentTick)
     {
+        _currentTick = currentTick;
         if (IsAttacking && currentTick - LastAttackTime >= AttackingSpeed)
         {
             IsAttacking = false;
         }
     }
 
-    public bool CanAttack(long currentTick)
+    public bool CanAttack()
     {
         if (IsAttacking)
         {
             return false;
         }
 
-        if (currentTick - LastAttackTime < AttackingSpeed)
+        if (_currentTick - LastAttackTime < AttackingSpeed)
         {
             return false;
         }
 
-        LastAttackTime = currentTick;
+        LastAttackTime = _currentTick;
         IsAttacking = true;
 
         return true;

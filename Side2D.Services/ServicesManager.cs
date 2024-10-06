@@ -7,7 +7,7 @@ namespace Side2D.Services;
 
 public sealed class ServicesManager : IDisposable
 {
-    private const int DefaultUpdateInterval = 5;
+    private const int DefaultUpdateInterval = 1;
     private readonly Stopwatch _tickCounter = new();
 
     private IServiceProvider? ServiceProvider { get; set; }             // --> Provider de serviços
@@ -86,20 +86,23 @@ public sealed class ServicesManager : IDisposable
             _updateCancellationTokenSource?.Dispose();
             _updateCancellationTokenSource = new CancellationTokenSource();
         }
-    
-        Task.Run(() => UpdateServiceAsync(_updateCancellationTokenSource.Token));
+
+        // Inicia a atualização em uma nova thread
+        Thread updateThread = new Thread(() => UpdateService(_updateCancellationTokenSource.Token));
+        updateThread.Start();
     }
-    
-    private async Task UpdateServiceAsync(CancellationToken cancellationToken)
+
+    private void UpdateService(CancellationToken cancellationToken)
     {
         while (!cancellationToken.IsCancellationRequested)
         {
             var startTick = _tickCounter.ElapsedMilliseconds;
 
-            foreach (var service in Services)
-            {
-                service.Update(startTick);  // Realiza o update no serviço
-            }
+            if (Services != null)
+                foreach (var service in Services)
+                {
+                    service.Update(startTick); // Realiza o update no serviço
+                }
 
             var endTick = _tickCounter.ElapsedMilliseconds;
             var elapsed = endTick - startTick;
@@ -107,11 +110,12 @@ public sealed class ServicesManager : IDisposable
 
             if (remainingTime > 0)
             {
-                // Espera o tempo necessário sem bloquear a thread
-                await Task.Delay((int)remainingTime, cancellationToken);
+                // Usa Thread.Sleep para aguardar o tempo necessário
+                Thread.Sleep((int)remainingTime);
             }
         }
     }
+
 
     
     public void Dispose()

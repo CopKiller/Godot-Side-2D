@@ -7,6 +7,7 @@ using Side2D.Server.Database.Results;
 
 namespace Side2D.Server.Database.Repositorys
 {
+    public delegate Task<bool> UpdatePlayerDelegate(PlayerModel playerModel);
     public class PlayerRepository(DatabaseContext context) : Repository<PlayerModel>(context), IPlayerRepository
     {
         public async Task<DatabaseException?> AddPlayerAsync(int accountId, PlayerModel player)
@@ -44,6 +45,15 @@ namespace Side2D.Server.Database.Repositorys
         public async Task<bool> NameExistsAsync(string name)
         {
             return await Context.Players.AsNoTracking().AnyAsync(p => p.Name == name);
+        }
+        
+        public async Task<bool> UpdatePlayerAsync(PlayerModel player)
+        {
+            Console.WriteLine($"Updating player {player.Id} {player.Name}");
+            
+            context.Players.Update(player);
+            var result = await context.SaveChangesAsync() > 0;
+            return result;
         }
     }
 }

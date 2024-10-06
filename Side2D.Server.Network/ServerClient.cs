@@ -7,63 +7,83 @@ using Side2D.Models.Enum;
 using Side2D.Models.Vectors;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Server;
+using Side2D.Server.Database.Repositorys;
+using Side2D.Server.TempData.Temp.Interface;
 
 namespace Side2D.Server.Network
 {
     public class ServerClient
     {
-        // Deixando escrito aqui, para não esquecer de implementar
-        // Preciso remover tudo que não é necessário para o network e deixar apenas o necessário
-        // jogando a maioria das coisas aqui pro novo projeto de dados temporários
-        // e deixando apenas o necessário para o network aqui, como netpeer, index, accountid, etc...
-        // no projeto dos dados temporários terá uma lista de jogadores atrelados ao index, como no network
-        // e a cada jogador terá um objeto temporário, que será atualizado a cada tick
-        
-        public int Index { get; private set; }
-        public NetPeer Peer { get; private set; }
-        public int AccountId { get; set; }
-        public ClientState ClientState { get; set; }
-        public List<PlayerModel> PlayerModels { get; private set; } = [];
-        public PlayerMoveModel PlayerMoveModel { get; set; } 
-        public PlayerDataModel PlayerDataModel { get; set; }
+        public int Index { get; }
+        public readonly ITempPlayer TempPlayer;
+        public NetPeer Peer { get; }
+        public PlayerMoveModel PlayerMoveModel { get; set; }  = new();
+        public PlayerDataModel PlayerDataModel { get; set; } = new();
+        public UpdatePlayerDelegate? UpdatePlayerInDatabase { get; set; } = null;
         
         private readonly ServerPacketProcessor? _serverPacketProcessor;
 
-        public ServerClient(NetPeer netPeer, ServerPacketProcessor? serverPacketProcessor)
+        public ServerClient(NetPeer netPeer, ITempPlayer player, ServerPacketProcessor? serverPacketProcessor)
         {
-            _serverPacketProcessor = serverPacketProcessor;
-
             Peer = netPeer;
+            
+            TempPlayer = player;
+            
+            _serverPacketProcessor = serverPacketProcessor;
 
             Index = netPeer.Id;
             
-            ClientState = ClientState.Menu;
+            TempPlayer.ChangeState(ClientState.Menu);
         }
 
         public void Disconnect()
         {
+            
             var left = new SPlayerLeft
             {
                 Index = Index
             };
             
-            if (Peer.ConnectionState == ConnectionState.Connected)
-                Peer.Disconnect();
+            SavePlayerData();
             
             _serverPacketProcessor?.ServerLeft(Peer, left);
+            
+            TempPlayer.ChangeState(ClientState.None);
         }
         
         public void PlayerSwitchCharacter(int index)
         {
-            ClientState = ClientState.Character;
-            
             var left = new SPlayerLeft
             {
                 Index = index
             };
             
+            SavePlayerData();
+            
+            // Notifica jogadores ingame sobre a saida deste player e faz a limpeza no client deles.
             _serverPacketProcessor?.ServerLeft(Peer, left, false);
+            
+            TempPlayer.ChangeState(ClientState.Character);
         }
-        
+
+        public void SavePlayerData()
+        {
+            // Lógica para salvar jogador no banco de dados
+            
+            if (TempPlayer.ClientState != ClientState.Game) return;
+            
+            // Puxa o player dos ultimos dados temporários
+            var player = TempPlayer.GetCharacter(TempPlayer.SlotNumber);
+
+            if (player == null) return;
+            
+            player.Attributes.SetValues(PlayerDataModel.Attributes);
+            player.Vitals.SetValues(PlayerDataModel.Vitals);
+            player.Position.SetPosition(PlayerMoveModel.Position);
+            player.Direction = PlayerMoveModel.Direction;
+                
+            UpdatePlayerInDatabase?.Invoke(player);
+        }
+
     }
 }

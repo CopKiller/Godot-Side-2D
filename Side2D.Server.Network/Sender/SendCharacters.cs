@@ -18,10 +18,10 @@ namespace Side2D.Server.Network
 
             if (player == null) return;
             
-            if (player.ClientState != ClientState.Character) return;
+            if (player.TempPlayer.ClientState != ClientState.Character) return;
             
             var myPlayerDataModel = new List<PlayerDataModel>();
-            myPlayerDataModel.AddRange(player.PlayerModels.Select(a => new PlayerDataModel(netPeer.Id, a)));
+            myPlayerDataModel.AddRange(player.TempPlayer.GetCharacters().Select(a => new PlayerDataModel(netPeer.Id, a)));
             
             var slotsCount = myPlayerDataModel.Count;
             

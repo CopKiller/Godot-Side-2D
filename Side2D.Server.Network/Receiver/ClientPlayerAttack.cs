@@ -15,6 +15,14 @@ namespace Side2D.Server.Network
             ServerNetworkService.Players.TryGetValue(netPeer.Id, out var player);
 
             if (player == null) return;
+            
+            if (player.TempPlayer.ClientState != ClientState.Game) return;
+            
+            if ( ! player.TempPlayer.Attack.CanAttack())
+            {
+                ServerAlert(netPeer, "Invalid attack!");
+                return;
+            }
 
             var packet = new SPlayerAttack
             {

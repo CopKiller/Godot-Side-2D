@@ -54,7 +54,7 @@ namespace Side2D.Server.Network
             if (ServerNetworkService.Players == null) return;
             
             var allPlayers = ServerNetworkService.Players.Select(allPlayers => allPlayers.Value)
-                .Where(player => player.Peer.Id != excludePeerId && player.ClientState == clientState)
+                .Where(player => player.Peer.Id != excludePeerId && player.TempPlayer.ClientState == clientState)
                 .ToList();
 
             foreach (var player in allPlayers)
@@ -76,7 +76,7 @@ namespace Side2D.Server.Network
         {
             if (ServerNetworkService.Players == null) return;
             foreach (var player in ServerNetworkService.Players
-                         .Where(player => player.Value.ClientState == clientState))
+                         .Where(player => player.Value.TempPlayer.ClientState == clientState))
             {
                 SendDataTo(player.Value.Peer, packet, deliveryMethod);
             }

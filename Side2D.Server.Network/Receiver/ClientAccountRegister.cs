@@ -19,7 +19,7 @@ namespace Side2D.Server.Network
 
             if (player == null) return;
             
-            if (player.ClientState != ClientState.Menu) return;
+            if (player.TempPlayer.ClientState != ClientState.Menu) return;
             
             var account = new AccountModel()
             {
@@ -35,7 +35,7 @@ namespace Side2D.Server.Network
                 return;
             }
 
-            var result = await ServerNetworkService.AccountRepository.AddAccountAsync(account);
+            var result = await ServerNetworkService.DatabaseService.AccountRepository.AddAccountAsync(account);
             
             if (result != null)
             {
@@ -45,7 +45,8 @@ namespace Side2D.Server.Network
             
             ServerAlert(netPeer, "Account created successfully!");
             
-            //player.ClientState = ClientState.Game;
+            var packet = CPlayerLogin.Create(obj.Username, obj.Password);
+            ClientLogin(packet, netPeer);
         }
     }
 }
