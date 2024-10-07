@@ -35,10 +35,10 @@ namespace Side2D.Network.CustomDataSerializable.Extension
         {
             var vitals = new Vitals()
             {
-                Health = reader.GetInt(),
-                Mana = reader.GetInt(),
-                MaxHealth = reader.GetInt(),
-                MaxMana = reader.GetInt()
+                Health = reader.GetDouble(),
+                Mana = reader.GetDouble(),
+                MaxHealth = reader.GetDouble(),
+                MaxMana = reader.GetDouble()
             };
             return vitals;
         }

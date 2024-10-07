@@ -4,6 +4,7 @@ using System.Numerics;
 using LiteNetLib;
 using Side2D.Models;
 using Side2D.Models.Enum;
+using Side2D.Models.Player;
 using Side2D.Models.Vectors;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Server;
@@ -84,6 +85,20 @@ namespace Side2D.Server.Network
             player.Direction = PlayerMoveModel.Direction;
                 
             UpdatePlayerInDatabase?.Invoke(player);
+        }
+
+        public Vitals? UpdatePlayerVitals()
+        {
+            if (TempPlayer.ClientState != ClientState.Game) return null;
+            
+            // Puxa o player dos ultimos dados temporários
+            var player = TempPlayer.GetCharacter(TempPlayer.SlotNumber);
+
+            if (player == null) return null;
+            
+            player.Vitals.SetValues(PlayerDataModel.Vitals);
+            
+            return player.Vitals;
         }
 
     }

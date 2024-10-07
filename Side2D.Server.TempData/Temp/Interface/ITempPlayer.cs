@@ -12,6 +12,7 @@ public interface ITempPlayer : ITempData
     ClientState ClientState { get; }
     ITempMove? Move { get; }
     ITempAttack? Attack { get; }
+    ITempUpdatePlayerVar? UpdatePlayerVar { get; set; }
     void ChangeState(ClientState state, int slotNumber = 0);
     void CreateTempData(int slotNumber);
     void UpdateAccountData(AccountModel accountModel);

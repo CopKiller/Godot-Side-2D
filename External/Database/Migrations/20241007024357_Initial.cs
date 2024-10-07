@@ -77,7 +77,7 @@ namespace Database.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Vector2C",
+                name: "Position",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
@@ -88,9 +88,9 @@ namespace Database.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Vector2C", x => x.Id);
+                    table.PrimaryKey("PK_Position", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Vector2C_Players_PlayerModelId",
+                        name: "FK_Position_Players_PlayerModelId",
                         column: x => x.PlayerModelId,
                         principalTable: "Players",
                         principalColumn: "Id",
@@ -103,10 +103,10 @@ namespace Database.Migrations
                 {
                     Id = table.Column<int>(type: "INTEGER", nullable: false)
                         .Annotation("Sqlite:Autoincrement", true),
-                    Health = table.Column<int>(type: "INTEGER", nullable: false),
-                    MaxHealth = table.Column<int>(type: "INTEGER", nullable: false),
-                    Mana = table.Column<int>(type: "INTEGER", nullable: false),
-                    MaxMana = table.Column<int>(type: "INTEGER", nullable: false),
+                    Health = table.Column<double>(type: "REAL", nullable: false),
+                    MaxHealth = table.Column<double>(type: "REAL", nullable: false),
+                    Mana = table.Column<double>(type: "REAL", nullable: false),
+                    MaxMana = table.Column<double>(type: "REAL", nullable: false),
                     PlayerModelId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
@@ -150,8 +150,8 @@ namespace Database.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_Vector2C_PlayerModelId",
-                table: "Vector2C",
+                name: "IX_Position_PlayerModelId",
+                table: "Position",
                 column: "PlayerModelId",
                 unique: true);
 
@@ -169,7 +169,7 @@ namespace Database.Migrations
                 name: "Attributes");
 
             migrationBuilder.DropTable(
-                name: "Vector2C");
+                name: "Position");
 
             migrationBuilder.DropTable(
                 name: "Vitals");

@@ -16,6 +16,8 @@ public class TempPlayer(int index) : ITempPlayer
     private List<PlayerModel?> PlayerModels { get; set; } = [];
     public ITempAttack? Attack { get; private set; }
     public ITempMove? Move { get; private set; }
+    
+    public ITempUpdatePlayerVar? UpdatePlayerVar { get; set; }
 
 
     public void ChangeState(ClientState state, int slotNumber = 0)
@@ -51,6 +53,7 @@ public class TempPlayer(int index) : ITempPlayer
         var lastPosition = PlayerModels.FirstOrDefault(x => x.SlotNumber == SlotNumber)?.Position ?? new Vector2C();
         Move = new TempMove(lastPosition);
         Attack = new TempAttack();
+        UpdatePlayerVar = new TempUpdatePlayerVar();
     }
     
     public void Dispose()
@@ -60,6 +63,7 @@ public class TempPlayer(int index) : ITempPlayer
         PlayerModels.Clear();
         Move?.Dispose();
         Attack?.Dispose();
+        UpdatePlayerVar?.Dispose();
         Move = null;
         Attack = null;
     }
@@ -111,5 +115,6 @@ public class TempPlayer(int index) : ITempPlayer
         if (ClientState != ClientState.Game) return;
         Move?.Update(currentTick);
         Attack?.Update(currentTick);
+        UpdatePlayerVar?.Update(currentTick);
     }
 }

@@ -6,6 +6,10 @@ namespace Side2D.scripts.MainScripts.Game;
 public partial class Game : Node2D, IPacketHandler
 {
 	private GameOptions _gameOptions;
+	private VirtualJoystick _virtualJoystick;
+	private GameButtons _gameButtons;
+	private GameBars _gameBars;
+	
 	public Game()
 	{
 		RegisterPacketHandlers();
@@ -14,6 +18,9 @@ public partial class Game : Node2D, IPacketHandler
 	public override void _Ready()
 	{
 		_gameOptions = GetNode<GameOptions>("%" + nameof(GameOptions));
+		_virtualJoystick = GetNode<VirtualJoystick>("%" + nameof(VirtualJoystick));
+		_gameButtons = GetNode<GameButtons>("%" + nameof(GameButtons));
+		_gameBars = GetNode<GameBars>("%" + nameof(GameBars));
 	}
 	
 

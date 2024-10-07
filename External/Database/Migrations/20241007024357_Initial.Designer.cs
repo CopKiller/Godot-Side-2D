@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Database.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    [Migration("20240925211536_FixDatas")]
-    partial class FixDatas
+    [Migration("20241007024357_Initial")]
+    partial class Initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -112,17 +112,17 @@ namespace Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
-                    b.Property<int>("Health")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Health")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("Mana")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("Mana")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("MaxHealth")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("MaxHealth")
+                        .HasColumnType("REAL");
 
-                    b.Property<int>("MaxMana")
-                        .HasColumnType("INTEGER");
+                    b.Property<double>("MaxMana")
+                        .HasColumnType("REAL");
 
                     b.Property<int>("PlayerModelId")
                         .HasColumnType("INTEGER");

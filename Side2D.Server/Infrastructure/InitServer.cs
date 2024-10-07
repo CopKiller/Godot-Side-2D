@@ -9,7 +9,7 @@ namespace Side2D.Server.Infrastructure;
 internal class InitServer
 {
     private ServicesManager? Services { get; set; }
-    private bool _isRunning { get; set; }
+    private bool IsRunning { get; set; }
 
     public void Start()
     {
@@ -19,7 +19,7 @@ internal class InitServer
         
         Log.Print("Server Started...");
 
-        _isRunning = true;
+        IsRunning = true;
     }
     
     private void StartLogger()

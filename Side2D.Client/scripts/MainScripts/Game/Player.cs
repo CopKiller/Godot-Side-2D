@@ -3,6 +3,7 @@ using LiteNetLib;
 using Side2D.Host;
 using Side2D.Logger;
 using Side2D.Models.Enum;
+using Side2D.Models.Player;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.Packet.Client;
 using Side2D.scripts.Network;
@@ -13,7 +14,6 @@ public partial class Player : CharacterBody2D
 {
 	// Seção específica de diretórios de arquivos.
 	private string _spritePath => $"res://scenes/Game/Vocation/{PlayerDataModel.Vocation.ToString()}/{PlayerDataModel.Gender.ToString().ToLower()}.tres";
-	
 	private bool Loaded { get; set; } = false;
 	public bool IsLocal { get; set; } = false;
 	
@@ -43,6 +43,12 @@ public partial class Player : CharacterBody2D
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
 		_panelBg = GetNode<Panel>("panelBg");
 		_lblName = GetNode<Label>("lblName");
+		
+		if (IsLocal){
+			var gameBars = GetTree().CurrentScene.GetNode<GameBars>("%GameBars");
+			if (PlayerDataModel.Vitals != null) gameBars.UpdateBars(PlayerDataModel.Vitals);
+		}
+
 
 		if (IsLocal)
 			_clientPlayer = ApplicationHost.Instance.GetSingleton<ClientManager>().ClientPlayer;
@@ -114,6 +120,11 @@ public partial class Player : CharacterBody2D
 		
 		if (_isAttacking)
 			_lastAttackTime = Time.GetTicksMsec() + 1000;
+	}
+	
+	private void SetPlayerVitals()
+	{
+		// ...
 	}
 	
 	private void ProcessLocalPlayerSync()

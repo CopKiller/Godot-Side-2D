@@ -27,6 +27,7 @@ public class TempAttack : ITempAttack
 
         if (_currentTick - LastAttackTime < AttackingSpeed)
         {
+            // Not enough time to attack again
             return false;
         }
 

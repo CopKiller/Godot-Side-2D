@@ -60,6 +60,9 @@ namespace Side2D.Server.Network
             SendDataTo(netPeer, packet, DeliveryMethod.ReliableOrdered);
 
             player.UpdatePlayerInDatabase = ServerNetworkService.DatabaseService.PlayerRepository.UpdatePlayerAsync;
+            
+            if (player.TempPlayer.UpdatePlayerVar != null)
+                player.TempPlayer.UpdatePlayerVar.SendVitals = () => ServerUpdateVitals(player.Index);
         }
     }
 }

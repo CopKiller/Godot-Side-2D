@@ -2,6 +2,7 @@
 using System.Numerics;
 using LiteNetLib;
 using LiteNetLib.Utils;
+using Side2D.Models.Player;
 using Side2D.Network.CustomDataSerializable;
 using Side2D.Network.CustomDataSerializable.Extension;
 
@@ -16,6 +17,7 @@ namespace Side2D.Network
             // Register Types Of Serializations
             this.RegisterNestedType<PlayerMoveModel>();
             this.RegisterNestedType<PlayerDataModel>();
+            this.RegisterNestedType<Vitals>(NetSerializerExtension.Put, NetSerializerExtension.GetVitals);
         }
 
         public virtual void SubscribePacket() { }

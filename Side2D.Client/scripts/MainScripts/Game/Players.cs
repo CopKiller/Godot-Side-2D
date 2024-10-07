@@ -22,7 +22,7 @@ public partial class Players : Node, IPacketHandler
 		RegisterPacketHandlers();
 	}
 	
-	public void AddPlayer(bool isLocal, PlayerDataModel playerData, PlayerMoveModel playerMoveModel)
+	private void AddPlayer(bool isLocal, PlayerDataModel playerData, PlayerMoveModel playerMoveModel)
 	{
 		if (_playerScene.Instantiate() is not Player player) return;
 		
@@ -36,7 +36,7 @@ public partial class Players : Node, IPacketHandler
 		CallDeferred("add_child", player);
 	}
 	
-	public void RemovePlayer(int index)
+	private void RemovePlayer(int index)
 	{
 		var player = _players.Find(x => x.PlayerDataModel.Index == index);
 		
@@ -47,7 +47,7 @@ public partial class Players : Node, IPacketHandler
 		_players.Remove(player);
 	}
 	
-	public void PlayerMove(PlayerMoveModel playerMove)
+	private void PlayerMove(PlayerMoveModel playerMove)
 	{
 		var player = _players.Find(x => x.PlayerDataModel.Index == playerMove.Index);
 		
@@ -58,7 +58,7 @@ public partial class Players : Node, IPacketHandler
 		player.CallDeferred(nameof(player.UpdatePlayerMove));
 	}
 	
-	public void PlayerAttack(SPlayerAttack attack)
+	private void PlayerAttack(SPlayerAttack attack)
 	{
 		var player = _players.Find(x => x.PlayerDataModel.Index == attack.Index);
 
@@ -77,6 +77,7 @@ public partial class Players : Node, IPacketHandler
 		ClientPacketProcessor.UnregisterPacket<SPlayerData>();
 		ClientPacketProcessor.UnregisterPacket<SPlayerMove>();
 		ClientPacketProcessor.UnregisterPacket<SPlayerLeft>();
+		ClientPacketProcessor.UnregisterPacket<SPlayerAttack>();
 	}
 	private void ServerPlayerData(SPlayerData obj)
 	{

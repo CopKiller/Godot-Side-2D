@@ -4,11 +4,11 @@ namespace Side2D.Server;
 
 public sealed class ServerManager
 {
-    private InitServer _InitServer { get; set; }
+    private InitServer? InitServer { get; set; }
     
-    public void InitServer()
+    public void Start()
     {
-        _InitServer = new InitServer();
-        _InitServer.Start();
+        InitServer = new InitServer();
+        InitServer.Start();
     }
 }

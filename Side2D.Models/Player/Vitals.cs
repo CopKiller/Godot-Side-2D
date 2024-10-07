@@ -6,37 +6,30 @@ public class Vitals
 {
     public int Id { get; set; }
     
-    public int Health { get; set; }
-    public int MaxHealth { get; set; }
+    public double Health { get; set; } = 100;
+    public double MaxHealth { get; set; } = 100;
     
-    public int Mana { get; set; }
-    public int MaxMana { get; set; }
+    public double Mana { get; set; } = 100;
+    public double MaxMana { get; set; } = 100;
     
     [ForeignKey("PlayerModelId")]
     public int PlayerModelId { get; set; }
     
-    public PlayerModel PlayerModel { get; set; }
+    public PlayerModel? PlayerModel { get; set; }
     
-    public Vitals()
+    public void Calculate(Attributes attributes)
     {
-        Health = 100;
-        MaxHealth = 100;
-        
-        Mana = 100;
-        MaxMana = 100;
-    }
-    
-    public void Reset()
-    {
-        Health = MaxHealth;
-        Mana = MaxMana;
+        MaxHealth = 100 + attributes.Strength * 2;
+        MaxMana = 100 + attributes.Intelligence * 2;
     }
     
     public void SetValues(Vitals? vitals)
     {
+        if (vitals == null) return;
+        
         Health = vitals.Health;
         MaxHealth = vitals.MaxHealth;
-        
+
         Mana = vitals.Mana;
         MaxMana = vitals.MaxMana;
     }
