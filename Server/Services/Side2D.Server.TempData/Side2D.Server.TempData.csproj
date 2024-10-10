@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <UserSecretsId>c57063d4-b4b3-4907-9199-5b3f2615b2e2</UserSecretsId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Core\Core.Game.Interfaces\Core.Game.Interfaces.csproj" />
+      <ProjectReference Include="..\..\..\Core\Core.Game.Models\Core.Game.Models.csproj" />
+    </ItemGroup>
+
+</Project>

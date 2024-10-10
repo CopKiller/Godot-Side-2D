@@ -1,3 +1,6 @@
 [submodule "External/LiteNetLib"]
-	path = External/LiteNetLib
+	path = Infrastructure/LiteNetLib
+	url = https://github.com/CopKiller/LiteNetLib
+[submodule "Infrastructure/LiteNetLib"]
+	path = Infrastructure/LiteNetLib
 	url = https://github.com/CopKiller/LiteNetLib

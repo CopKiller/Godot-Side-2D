@@ -1,0 +1,31 @@
+<Project Sdk="Godot.NET.Sdk/4.3.0">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'android' ">net8.0</TargetFramework>
+    <TargetFramework Condition=" '$(GodotTargetPlatform)' == 'ios' ">net8.0</TargetFramework>
+    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <LangVersion>latest</LangVersion>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Core\Insfrastructure.Logger\Insfrastructure.Logger.csproj" />
+    <ProjectReference Include="..\Core\Core.Game.Models\Core.Game.Models.csproj" />
+    <ProjectReference Include="..\Core\Core.Game.Network\Core.Game.Network.csproj" />
+    <ProjectReference Include="..\Core\Core.Game.Interfaces\Core.Game.Interfaces.csproj" />
+    <ProjectReference Include="..\Infrastructure\Infrastructure.Network\Infrastructure.Network.csproj" />
+    <ProjectReference Include="..\Infrastructure\Insfrastructure.Logger\Insfrastructure.Logger.csproj" />
+    <ProjectReference Include="..\Infrastructure\LiteNetLib\LiteNetLib\LiteNetLib.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="scenes\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Remove="scenes\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Environment\.env" />
+  </ItemGroup>
+</Project>

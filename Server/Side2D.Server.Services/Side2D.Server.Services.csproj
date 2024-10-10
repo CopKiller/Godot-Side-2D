@@ -1,0 +1,15 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\Core.Game.Services\Core.Game.Services.csproj" />
+      <ProjectReference Include="..\Services\Side2D.Server.Network\Side2D.Server.Network.csproj" />
+      <ProjectReference Include="..\Services\Side2D.Server.Repository\Side2D.Server.Repository.csproj" />
+    </ItemGroup>
+
+</Project>
