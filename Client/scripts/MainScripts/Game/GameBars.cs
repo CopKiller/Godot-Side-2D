@@ -9,7 +9,7 @@ public partial class GameBars : Control, IPacketHandler
 	private BaseTextureProgressBar? _hpBar;
 	private BaseTextureProgressBar? _mpBar;
 
-	private Vitals _vitals;
+	private Vitals? _vitals;
 
 	public GameBars()
 	{
@@ -38,6 +38,8 @@ public partial class GameBars : Control, IPacketHandler
 		
 		_hpBar.SetOptions(true,true);
 		_mpBar.SetOptions(true,true);
+		
+		if (_vitals == null) return;
 		
 		_hpBar.MaxValue = _vitals.MaxHealth;
 		_hpBar.CurrentValue = _vitals.Health;
