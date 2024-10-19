@@ -92,6 +92,8 @@ public partial class Players : Node, IPacketHandler
 	}
 	private void ServerPlayerMove(SPlayerMove obj)
 	{
+		GD.Print(obj.PlayerMoveModel);
+		
 		PlayerMove(obj.PlayerMoveModel);
 	}
 

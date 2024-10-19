@@ -1,19 +1,28 @@
-using Side2D.Server.TempData.Temp.Interface;
+using Core.Game.Interfaces.Attribute;
+using Core.Game.Interfaces.Combat;
+using Core.Game.Interfaces.Physic;
+using Core.Game.Interfaces.Physic.Player;
+using Side2D.Server.Physics.Entity;
 
-namespace Side2D.Server.TempData.Temp.Player;
+namespace Side2D.Server.Physics.Player;
 
-public class TempAttack : ITempAttack
+public class PhysicAttack(int index) : PhysicEntity, IPhysicAttack
 {
     private long _currentTick = 0;
     private const int AttackingSpeed = 1000; // 1 attack in one second
     public bool IsAttacking = false;
     public long LastAttackTime = 0;
     
-    public void Update(long currentTick)
+    private int Range = 32;
+    
+    public Action<int, int>? FinishAttack { get; set; }
+    
+    public override void Update(long currentTick)
     {
         _currentTick = currentTick;
         if (IsAttacking && currentTick - LastAttackTime >= AttackingSpeed)
         {
+            FinishAttack?.Invoke(index, Range);
             IsAttacking = false;
         }
     }
@@ -37,7 +46,7 @@ public class TempAttack : ITempAttack
         return true;
     }
     
-    public void Dispose()
+    public override void Dispose()
     {
         IsAttacking = false;
         LastAttackTime = 0;

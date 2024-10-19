@@ -8,9 +8,7 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Core\Insfrastructure.Logger\Insfrastructure.Logger.csproj" />
     <ProjectReference Include="..\Core\Core.Game.Models\Core.Game.Models.csproj" />
-    <ProjectReference Include="..\Core\Core.Game.Network\Core.Game.Network.csproj" />
     <ProjectReference Include="..\Core\Core.Game.Interfaces\Core.Game.Interfaces.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.Network\Infrastructure.Network.csproj" />
     <ProjectReference Include="..\Infrastructure\Insfrastructure.Logger\Insfrastructure.Logger.csproj" />

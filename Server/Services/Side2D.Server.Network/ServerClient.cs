@@ -1,10 +1,12 @@
 ﻿
+using Core.Game.Interfaces.Attribute.Player;
+using Core.Game.Interfaces.Physic.Player;
+using Core.Game.Interfaces.TempData.Player;
 using Core.Game.Models;
 using Core.Game.Models.Enum;
 using LiteNetLib;
 using Infrastructure.Network.CustomDataSerializable;
 using Infrastructure.Network.Packet.Server;
-using Side2D.Server.TempData.Temp.Interface;
 
 namespace Side2D.Server.Network
 {
@@ -13,6 +15,9 @@ namespace Side2D.Server.Network
     {
         public int Index { get; }
         public readonly ITempPlayer TempPlayer;
+        public IPhysicPlayer PhysicPlayer { get; private set; }
+        public IAttributePlayer AttributePlayer { get; private set; }
+        
         public NetPeer Peer { get; }
         public PlayerMoveModel PlayerMoveModel { get; set; }
         public PlayerDataModel PlayerDataModel { get; set; }
@@ -20,7 +25,9 @@ namespace Side2D.Server.Network
         
         private readonly ServerPacketProcessor? _serverPacketProcessor;
 
-        public ServerClient(NetPeer netPeer, ITempPlayer player, ServerPacketProcessor? serverPacketProcessor)
+        public ServerClient(NetPeer netPeer,
+                            ITempPlayer player, 
+                            ServerPacketProcessor? serverPacketProcessor)
         {
             Peer = netPeer;
             
@@ -32,10 +39,15 @@ namespace Side2D.Server.Network
             
             TempPlayer.ChangeState(ClientState.Menu);
         }
+        
+        public void AddPlayerServices(IPhysicPlayer physicPlayer, IAttributePlayer attributePlayer)
+        {
+            PhysicPlayer = physicPlayer;
+            AttributePlayer = attributePlayer;
+        }
 
         public void Disconnect()
         {
-            
             var left = new SPlayerLeft
             {
                 Index = Index
@@ -79,7 +91,7 @@ namespace Side2D.Server.Network
             //player.Attributes.SetValues(PlayerDataModel.Attributes);
             //player.Vitals.SetValues(PlayerDataModel.Vitals);
             //player.Position.SetPosition(PlayerMoveModel.Position);
-            player.Direction = PlayerMoveModel.Direction;
+            //player.Direction = PlayerMoveModel.Direction;
                 
             UpdatePlayerInDatabase?.Invoke(player);
         }

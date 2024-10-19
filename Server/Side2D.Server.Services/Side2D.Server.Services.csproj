@@ -8,7 +8,10 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Core\Core.Game.Services\Core.Game.Services.csproj" />
+      <ProjectReference Include="..\Services\Side2D.Server.Attributes\Side2D.Server.Attributes.csproj" />
+      <ProjectReference Include="..\Services\Side2D.Server.Combat\Side2D.Server.Combat.csproj" />
       <ProjectReference Include="..\Services\Side2D.Server.Network\Side2D.Server.Network.csproj" />
+      <ProjectReference Include="..\Services\Side2D.Server.Physics\Side2D.Server.Physics.csproj" />
       <ProjectReference Include="..\Services\Side2D.Server.Repository\Side2D.Server.Repository.csproj" />
     </ItemGroup>
 

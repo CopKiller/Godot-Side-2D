@@ -16,6 +16,8 @@ public class Vitals
     public int PlayerModelId { get; set; }
     
     public PlayerModel? PlayerModel { get; set; }
+
+    [NotMapped] public Action? NotifyVitalsChanged;
     
     public void Calculate(Attributes attributes)
     {
@@ -53,5 +55,12 @@ public class Vitals
         }
         
         return result;
+    }
+    
+    public void TakeDamage(double damage)
+    {
+        var newHealth = Health - damage;
+        Health = newHealth < 0 ? 0 : newHealth;
+        NotifyVitalsChanged?.Invoke();
     }
 }

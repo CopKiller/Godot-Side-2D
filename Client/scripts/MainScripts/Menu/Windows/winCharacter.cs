@@ -336,6 +336,6 @@ public partial class winCharacter : BaseWindow, IPacketHandler
     public override void _ExitTree()
     {
         base._ExitTree();
-        ClientPacketProcessor.UnregisterPacket<SCharacter>();
+        //ClientPacketProcessor.UnregisterPacket<SCharacter>();
     }
 }

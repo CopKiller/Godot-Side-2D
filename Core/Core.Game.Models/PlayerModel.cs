@@ -4,6 +4,7 @@ using Core.Game.Models.Enum;
 using Core.Game.Models.Interfaces;
 using Core.Game.Models.Player;
 using Core.Game.Models.Validation;
+using Core.Game.Models.Vectors;
 
 namespace Core.Game.Models;
 
@@ -20,8 +21,6 @@ public class PlayerModel : IEntity
     public int Level { get; set; } = 1;
     public Vocation Vocation { get; set; }
     public Gender Gender { get; set; }
-    
-    public Direction Direction { get; set; }
     
     public Position Position { get; set; }
     

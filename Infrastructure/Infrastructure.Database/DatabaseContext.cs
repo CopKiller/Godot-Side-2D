@@ -8,7 +8,6 @@ public sealed class DatabaseContext : DbContext
     public DbSet<AccountModel> Accounts { get; set; }
     public DbSet<PlayerModel> Players { get; set; }
     
-    
     public DatabaseContext()
     {
         

@@ -115,7 +115,8 @@ public partial class ClientManager : Node, IPacketHandler
             
             case ClientState.Character:
                 if (_sceneManager.CurrentScene is MainMenu mainMenu)
-                    mainMenu.MainMenuWindows.ShowCharacterWindow();
+                    mainMenu.MainMenuWindows.CallDeferred(nameof(mainMenu.MainMenuWindows.ShowCharacterWindow));
+                    //mainMenu.MainMenuWindows.ShowCharacterWindow();
                 else
                 {
                     GetTree().NodeAdded += OnMainMenuReady;

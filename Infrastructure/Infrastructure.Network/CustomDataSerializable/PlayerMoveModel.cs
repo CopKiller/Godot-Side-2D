@@ -1,5 +1,6 @@
 ﻿using Core.Game.Models;
 using Core.Game.Models.Enum;
+using Core.Game.Models.Player;
 using Core.Game.Models.Vectors;
 using Infrastructure.Network.CustomDataSerializable.Extension;
 using LiteNetLib.Utils;
@@ -11,8 +12,7 @@ public struct PlayerMoveModel : INetSerializable
     public int Index { get; set; }
     public bool IsMoving { get; set; }
     public Vector2C? Velocity { get; set; } = new Vector2C();
-    public Direction Direction { get; set; }
-    public Vector2C? Position { get; set; } = new Vector2C();
+    public Position? Position { get; set; } = new Position();
 
     public PlayerMoveModel()
     {
@@ -23,7 +23,6 @@ public struct PlayerMoveModel : INetSerializable
         Index = 0;
         IsMoving = false;
         Velocity = null;
-        Direction = Direction.Right;
         Position = null;
     }
 
@@ -32,7 +31,6 @@ public struct PlayerMoveModel : INetSerializable
         Index = index;
         IsMoving = false;
         Velocity = Vector2C.Zero;
-        Direction = playerModel.Direction;
         Position = playerModel.Position;
     }
 
@@ -41,8 +39,7 @@ public struct PlayerMoveModel : INetSerializable
         Index = reader.GetInt();
         IsMoving = reader.GetBool();
         Velocity = reader.GetVector2();
-        Direction = (Direction)reader.GetByte();
-        Position = reader.GetVector2();
+        Position = reader.GetPosition();
     }
 
     public void Serialize(NetDataWriter writer)
@@ -50,7 +47,6 @@ public struct PlayerMoveModel : INetSerializable
         writer.Put(Index);
         writer.Put(IsMoving);
         writer.Put(Velocity);
-        writer.Put((byte)Direction);
         writer.Put(Position);
     }
 
@@ -58,14 +54,13 @@ public struct PlayerMoveModel : INetSerializable
     {
         Index = playerMoveModel.Index;
         IsMoving = playerMoveModel.IsMoving;
-        Velocity.SetValues(playerMoveModel.Velocity.X, playerMoveModel.Velocity.Y);
-        Direction = playerMoveModel.Direction;
-        Position.SetValues(playerMoveModel.Position.X, playerMoveModel.Position.Y);
+        Velocity.SetValues(playerMoveModel.Velocity);
+        Position.SetPosition(playerMoveModel.Position);
     }
 
     public override string ToString()
     {
         return
-            $"Index: {Index}, IsMoving: {IsMoving}, Velocity: {Velocity.ToString()}, Direction: {Direction}, Position: {Position.ToString()}";
+            $"Index: {Index}, IsMoving: {IsMoving}, Velocity: {Velocity.ToString()}, Direction: {Position.Direction}, Position: {Position.ToString()}";
     }
 }

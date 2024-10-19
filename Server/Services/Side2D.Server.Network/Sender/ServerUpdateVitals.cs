@@ -7,12 +7,16 @@ namespace Side2D.Server.Network;
 
 public partial class ServerPacketProcessor
 {
-    public void ServerUpdateVitals(int index, Vitals vitals)
+    public void ServerUpdateVitals(int index)
     {
         players.TryGetValue(index, out var player);
             
-        var packet = SPlayerUpdateVitals.Create(index, vitals);
+        if (player == null) return;
+        
+        if (player.TempPlayer.ClientState != ClientState.Game) return;
+        
+        var packet = SPlayerUpdateVitals.Create(index, player.PlayerDataModel.Vitals);
             
-        SendDataToAll(packet, ClientState.Game, DeliveryMethod.ReliableUnordered);
+        SendDataTo(player.Peer ,packet, DeliveryMethod.ReliableUnordered);
     }
 }

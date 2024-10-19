@@ -36,7 +36,6 @@ namespace Infrastructure.Database.Migrations
                     Level = table.Column<int>(type: "INTEGER", nullable: false),
                     Vocation = table.Column<byte>(type: "INTEGER", nullable: false),
                     Gender = table.Column<byte>(type: "INTEGER", nullable: false),
-                    Direction = table.Column<byte>(type: "INTEGER", nullable: false),
                     JumpVelocity = table.Column<float>(type: "REAL", nullable: false),
                     Speed = table.Column<float>(type: "REAL", nullable: false),
                     AccountModelId = table.Column<int>(type: "INTEGER", nullable: false)
@@ -84,6 +83,7 @@ namespace Infrastructure.Database.Migrations
                         .Annotation("Sqlite:Autoincrement", true),
                     X = table.Column<float>(type: "REAL", nullable: false),
                     Y = table.Column<float>(type: "REAL", nullable: false),
+                    Direction = table.Column<byte>(type: "INTEGER", nullable: false),
                     PlayerModelId = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>

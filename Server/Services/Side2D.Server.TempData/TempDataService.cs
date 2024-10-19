@@ -1,8 +1,8 @@
 using System.Diagnostics;
+using Core.Game.Interfaces.TempData;
+using Core.Game.Interfaces.TempData.Player;
 using Core.Game.Models;
-using Side2D.Server.TempData.Interface;
 using Side2D.Server.TempData.Temp;
-using Side2D.Server.TempData.Temp.Interface;
 
 namespace Side2D.Server.TempData;
 
@@ -26,16 +26,6 @@ public class TempDataService : ITempDataService
     public ITempPlayer GetPlayerData(int index)
     {
         return TempDataList[index];
-    }
-    
-    public void UpdateAccountData(int index, AccountModel accountModel)
-    {
-        TempDataList[index].UpdateAccountData(accountModel);
-    }
-    
-    public void UpdatePlayerData(int index, PlayerModel playerModel)
-    {
-        TempDataList[index].UpdatePlayerData(playerModel);
     }
 
     public void Register() { }

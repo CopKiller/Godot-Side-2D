@@ -1,8 +1,6 @@
+using Core.Game.Interfaces.TempData.Player;
 using Core.Game.Models;
 using Core.Game.Models.Enum;
-using Core.Game.Models.Vectors;
-using Side2D.Server.TempData.Temp.Interface;
-using Side2D.Server.TempData.Temp.Player;
 
 namespace Side2D.Server.TempData.Temp;
 
@@ -14,19 +12,9 @@ public class TempPlayer(int index) : ITempPlayer
     public ClientState ClientState { get; private set; }
     private List<PlayerModel?> PlayerModels { get; set; } = [];
     
-    public ITempAttack? Attack { get; private set; }
-    public ITempMove? Move { get; private set; }
-    public ITempUpdatePlayerVar? UpdatePlayerVar { get; set; }
-
-
     public void ChangeState(ClientState state, int slotNumber = 0)
     {
         ClientState = state;
-        
-        if (slotNumber > 0)
-        {
-            SlotNumber = slotNumber;
-        }
 
         switch (state)
         {
@@ -37,23 +25,14 @@ public class TempPlayer(int index) : ITempPlayer
                 Dispose();
                 break;
             case ClientState.Game:
-                CreateTempData(SlotNumber);
+                SlotNumber = slotNumber;
                 break;
             case ClientState.Character:
+                SlotNumber = 0;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
-    }
-    
-    private void CreateTempData(int slotNum)
-    {
-        SlotNumber = slotNum;
-        var lastPosition = PlayerModels.FirstOrDefault(x => x.SlotNumber == SlotNumber)?.Position ?? new Vector2C();
-        Move = new TempMove(lastPosition);
-        Attack = new TempAttack();
-        var vitals = PlayerModels.FirstOrDefault(x => x.SlotNumber == SlotNumber)?.Vitals;
-        UpdatePlayerVar = new TempUpdatePlayerVar(vitals);
     }
     
     public void Dispose()
@@ -61,11 +40,6 @@ public class TempPlayer(int index) : ITempPlayer
         AccountId = 0;
         SlotNumber = 0;
         PlayerModels.Clear();
-        Move?.Dispose();
-        Attack?.Dispose();
-        UpdatePlayerVar?.Dispose();
-        Move = null;
-        Attack = null;
     }
     
     public void UpdateAccountData(AccountModel accountModel)
@@ -78,16 +52,12 @@ public class TempPlayer(int index) : ITempPlayer
     
     public void UpdatePlayerData(PlayerModel playerModel)
     {
-        var player = PlayerModels.FirstOrDefault(x => x.Id == playerModel.Id);
+        var player = PlayerModels.FirstOrDefault(x => x != null && x.Id == playerModel.Id);
+
+        if (player != null) return;
         
-        if (player == null)
-        {
-            PlayerModels.Add(playerModel);
-        }
-        else
-        {
-            player = playerModel;
-        }
+        PlayerModels.Remove(player);
+        PlayerModels.Add(playerModel);
     }
     
     public int CountCharacters()
@@ -113,8 +83,6 @@ public class TempPlayer(int index) : ITempPlayer
     public void Update(long currentTick)
     {
         if (ClientState != ClientState.Game) return;
-        Move?.Update(currentTick);
-        Attack?.Update(currentTick);
-        UpdatePlayerVar?.Update(currentTick);
+        
     }
 }

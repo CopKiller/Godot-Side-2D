@@ -1,17 +1,23 @@
-﻿using Core.Game.Interfaces.Repositories;
+﻿using Core.Game.Interfaces.Attribute;
+using Core.Game.Interfaces.Combat;
+using Core.Game.Interfaces.Physic;
+using Core.Game.Interfaces.Repositories;
+using Core.Game.Interfaces.TempData;
 using Core.Game.Models.Enum;
 using Infrastructure.Logger;
 using Infrastructure.Network;
 using Infrastructure.Network.Packet.Client;
 using LiteNetLib;
 using Side2D.Server.Network.Interfaces;
-using Side2D.Server.TempData.Interface;
 
 namespace Side2D.Server.Network;
 
 public partial class ServerPacketProcessor(IAccountRepository accountRepository,
     IPlayerRepository playerRepository,
     ITempDataService tempDataService,
+    IPhysicService physicService,
+    IAttributeService attributeService,
+    ICombatService combatService,
     Dictionary<int, ServerClient> players)
     :PacketProcessor, IServerPacketProcessor
 {

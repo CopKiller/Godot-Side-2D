@@ -5,39 +5,32 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Game.Services;
 
-public sealed class ServicesManager : IServicesManager
+public sealed class ServicesManager(IServiceCollection collection) : IServicesManager
 {
     private const int DefaultUpdateInterval = 1;
     private readonly Stopwatch _tickCounter = new();
 
-    private IServiceCollection? ServiceColletion { get; set; }          // --> Coleção de serviços
+    //private IServiceCollection? ServiceColletion { get; set; } = collection; // --> Coleção de serviços
     private IServiceProvider? ServiceProvider { get; set; }             // --> Provider de serviços
-    private List<ISingleService> Services { get; set; }                // --> Coleção de serviços unicos
+    private List<ISingleService> Services { get; set; } = [];           // --> Coleção de serviços unicos
     
     private CancellationTokenSource? _updateCancellationTokenSource;    // --> Token de cancelamento
-    
-    public ServicesManager(IServiceCollection collection)
-    {
-        ServiceColletion = collection;
-        
-        Services ??= [];
-    }
 
     public void Register()
     {
         Log.PrintInfo("Registrando serviços...");
         
-        if (ServiceColletion == null) return;
+        var servicesTypes = collection.Select(x => x.ServiceType);
         
-        var servicesTypes = ServiceColletion.Select(x => x.ServiceType);
+        ServiceProvider = collection.BuildServiceProvider();
+        Services ??= [];
         
-        ServiceProvider = ServiceColletion.BuildServiceProvider();
-        
-        ServiceColletion = null;
-        
+        Log.PrintInfo("Obtendo serviços registrados como ISingleService que sao singletons...");
         foreach (var serviceType in servicesTypes)
         {
-            var instance = ServiceProvider.GetService(serviceType);
+            //var instance = ServiceProvider.GetService(serviceType);
+            
+            var instance = ServiceProvider.GetRequiredService(serviceType);
 
             if (instance is not ISingleService singletonService) continue;
              

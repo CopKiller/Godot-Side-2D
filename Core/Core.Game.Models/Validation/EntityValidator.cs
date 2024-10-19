@@ -7,5 +7,6 @@ public static class EntityValidator
 {
     public const int MaxCharacters = 3;
 
-    public static Position DefaultPosition = new Position(new Vector2C(400, 300));
+    public const float DefaultPositionX = 400;
+    public const float DefaultPositionY = 400;
 }

@@ -16,8 +16,6 @@ public partial class ServerPacketProcessor
 
         if (!isDisconnect) return;
                 
-        players.Remove(netPeer.Id);
-                
         player.Peer.Disconnect();
     }
 }

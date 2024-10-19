@@ -1,4 +1,5 @@
 ﻿
+using Core.Game.Models.Enum;
 using Core.Game.Models.Player;
 using Core.Game.Models.Vectors;
 using LiteNetLib.Utils;
@@ -63,6 +64,24 @@ namespace Infrastructure.Network.CustomDataSerializable.Extension
                 Willpower = reader.GetInt()
             };
             return attributes;
+        }
+        
+        public static void Put(this NetDataWriter writer, Position vector)
+        {
+            writer.Put(vector.X);
+            writer.Put(vector.Y);
+            writer.Put((byte)vector.Direction);
+        }
+
+        public static Position GetPosition(this NetDataReader reader)
+        {
+            var vector2 = new Position
+            {
+                X = reader.GetFloat(),
+                Y = reader.GetFloat(),
+                Direction = (Direction)reader.GetByte()
+            };
+            return vector2;
         }
     }
 }

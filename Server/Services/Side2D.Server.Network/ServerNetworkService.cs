@@ -3,10 +3,13 @@ using LiteNetLib;
 using LiteNetLib.Utils;
 using System.Net;
 using System.Net.Sockets;
+using Core.Game.Interfaces.Attribute;
+using Core.Game.Interfaces.Combat;
+using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Repositories;
+using Core.Game.Interfaces.TempData;
 using Infrastructure.Logger;
 using Infrastructure.Network;
-using Side2D.Server.TempData.Interface;
 
 namespace Side2D.Server.Network;
 public class ServerNetworkService : NetworkService
@@ -18,14 +21,32 @@ public class ServerNetworkService : NetworkService
     public IPlayerRepository PlayerRepository { get; private set; }
     public ITempDataService TempDataService { get; private set; }
     
+    private IPhysicService PhysicService { get; set; }
+    
+    private IAttributeService AttributeService { get; set; }
+    
+    private ICombatService CombatService { get; set; }
+    
     public ServerNetworkService(IAccountRepository accountRepository,
                                 IPlayerRepository playerRepository,
-                                ITempDataService tempDataService)
+                                ITempDataService tempDataService,
+                                IPhysicService physicService,
+                                IAttributeService attributeService,
+                                ICombatService combatService)
     {
         AccountRepository = accountRepository;
         PlayerRepository = playerRepository;
         TempDataService = tempDataService;
-        ServerPacketProcessor = new ServerPacketProcessor(AccountRepository, PlayerRepository, TempDataService, Players);
+        PhysicService = physicService;
+        AttributeService = attributeService;
+        CombatService = combatService;
+        ServerPacketProcessor = new ServerPacketProcessor(AccountRepository, 
+                                                            PlayerRepository, 
+                                                            TempDataService,
+                                                            PhysicService,
+                                                            AttributeService,
+                                                            CombatService,
+                                                            Players);
     }
 
     public override void Register()
@@ -94,11 +115,12 @@ public class ServerNetworkService : NetworkService
     }
     private void OnPeerDisconnectedEvent(NetPeer peer, DisconnectInfo disconnectInfo)
     {
-        
-        
-        
         Players[peer.Id].Disconnect();
         TempDataService.RemovePlayerData(peer.Id);
+        PhysicService.RemovePlayerPhysic(peer.Id);
+        AttributeService.RemovePlayerAttribute(peer.Id);
+        CombatService.RemovePlayerCombat(peer.Id);
+        Players.Remove(peer.Id);
 
         Log.Print($"{peer.Id}: {Enum.GetName(disconnectInfo.Reason)}");
     }

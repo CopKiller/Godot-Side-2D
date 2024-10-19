@@ -1,8 +1,8 @@
-
+using Core.Game.Interfaces.TempData.Player.Attribute;
 using Core.Game.Models;
 using Core.Game.Models.Enum;
 
-namespace Side2D.Server.TempData.Temp.Interface;
+namespace Core.Game.Interfaces.TempData.Player;
 
 public interface ITempPlayer : ITempData
 {
@@ -10,9 +10,7 @@ public interface ITempPlayer : ITempData
     int AccountId { get; }
     int SlotNumber { get; }
     ClientState ClientState { get; }
-    ITempMove? Move { get; }
-    ITempAttack? Attack { get; }
-    ITempUpdatePlayerVar? UpdatePlayerVar { get; set; }
+    
     void ChangeState(ClientState state, int slotNumber = 0);
     void UpdateAccountData(AccountModel accountModel);
     void UpdatePlayerData(PlayerModel playerModel);

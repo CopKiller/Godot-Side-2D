@@ -1,27 +1,30 @@
+using Core.Game.Interfaces.Physic.Player;
+using Core.Game.Models;
+using Core.Game.Models.Enum;
+using Core.Game.Models.Player;
 using Core.Game.Models.Vectors;
-using Side2D.Server.TempData.Temp.Interface;
+using Side2D.Server.Physics.Entity;
 
-namespace Side2D.Server.TempData.Temp.Player;
+namespace Side2D.Server.Physics.Player;
 
-public class TempMove(Vector2C lastPosition) : ITempMove
+public class PhysicMove(Position position) : PhysicEntity, IPhysicMove
 {
     private long _lastTick = 0;
-    public Vector2C LastPosition { get; private set; } = lastPosition;
     private const double MovementMaxSpeed = 1.2; // 1.2 px per tick
     public long LastMovementTick { get; private set; } = 0;
 
-    public void Update(long currentTick)
+    public override void Update(long currentTick)
     {
         _lastTick = currentTick;
     }
 
-    public bool CanMove(Vector2C newPosition)
+    public bool CanMove(Position newPosition)
     {
         if (_lastTick <= LastMovementTick)
             return true;
         
         var timeElapsed = _lastTick - LastMovementTick;
-        var distance = newPosition.DistanceTo(LastPosition);
+        var distance = newPosition.DistanceTo(position);
         var maxDistanceAllowed = timeElapsed * MovementMaxSpeed;
         
         if (distance > maxDistanceAllowed)
@@ -29,16 +32,14 @@ public class TempMove(Vector2C lastPosition) : ITempMove
             // Movement too fast
             return false;
         }
-
-        LastPosition.SetValues(newPosition);
+        
         LastMovementTick = _lastTick;
 
         return true;
     }
     
-    public void Dispose()
+    public override void Dispose()
     {
-        LastPosition = Vector2C.Zero;
         LastMovementTick = 0;
     }
 }

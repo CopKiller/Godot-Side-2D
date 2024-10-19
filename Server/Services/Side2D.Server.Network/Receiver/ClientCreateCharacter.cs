@@ -41,10 +41,9 @@ public partial class ServerPacketProcessor
             Name = obj.Name,
             Attributes = new Attributes(),
             Vitals = new Vitals(),
-            Direction = Direction.Right,
             Gender = obj.Gender,
             Vocation = obj.Vocation,
-            Position = EntityValidator.DefaultPosition
+            Position = new Position(EntityValidator.DefaultPositionX, EntityValidator.DefaultPositionY)
         };
 
         var res = newPlayer.Validate();

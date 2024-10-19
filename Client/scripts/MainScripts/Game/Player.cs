@@ -134,13 +134,13 @@ public partial class Player : CharacterBody2D
 		var hasPositionChanged = Position != new Vector2(PlayerMoveModel.Position.X, PlayerMoveModel.Position.Y);
 		var hasVelocityChanged = _velocity != new Vector2(PlayerMoveModel.Velocity.X, PlayerMoveModel.Velocity.Y);
 
-		if (!hasPositionChanged && !hasVelocityChanged && _direction == PlayerMoveModel.Direction &&
+		if (!hasPositionChanged && !hasVelocityChanged && _direction == PlayerMoveModel.Position.Direction &&
 		    _isMoving == PlayerMoveModel.IsMoving) return;
 		
 		// Atualiza PlayerMoveModel
 		PlayerMoveModel.Velocity.SetValues(_velocity.X, _velocity.Y);
-		PlayerMoveModel.Position.SetValues(Position.X, Position.Y);
-		PlayerMoveModel.Direction = _direction;
+		PlayerMoveModel.Position.SetPosition(Position.X, Position.Y);
+		PlayerMoveModel.Position.Direction = _direction;
 		PlayerMoveModel.IsMoving = _isMoving;
 
 		// Envia a atualização
@@ -180,6 +180,8 @@ public partial class Player : CharacterBody2D
 		{
 			prefix = "move";
 			_direction = _velocity.X > 0 ? Direction.Right : Direction.Left;
+			
+			prefix = _isAttacking ? "attack" : prefix;
 		}
 		else
 		{
@@ -209,7 +211,7 @@ public partial class Player : CharacterBody2D
 			: new Vector2(PlayerMoveModel.Position.X, PlayerMoveModel.Position.Y);
 
 		_velocity = new Vector2(PlayerMoveModel.Velocity.X, PlayerMoveModel.Velocity.Y);
-		_direction = PlayerMoveModel.Direction;
+		_direction = PlayerMoveModel.Position.Direction;
 		_isMoving = PlayerMoveModel.IsMoving;
 	}
 	

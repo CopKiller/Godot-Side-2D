@@ -1,4 +1,5 @@
 ﻿using Core.Game.Models.Enum;
+using Core.Game.Models.Vectors;
 using Infrastructure.Network.Packet.Client;
 using Infrastructure.Network.Packet.Server;
 using LiteNetLib;
@@ -14,22 +15,18 @@ public partial class ServerPacketProcessor
         if (player == null) return;
             
         if (player.TempPlayer.ClientState != ClientState.Game) return;
-            
-        if (player.TempPlayer.Move == null) return;
-            
-        if ( ! player.TempPlayer.Move.CanMove(obj.PlayerMoveModel.Position))
+        
+        if ( !player.PhysicPlayer.MovePlayer(obj.PlayerMoveModel.Position))
         {
             ServerAlert(netPeer, "Invalid move!");
             return;
         }
-
-        var receivedMove = obj.PlayerMoveModel;
-        receivedMove.Index = netPeer.Id;    
-            
-        player.PlayerMoveModel = receivedMove;
-            
-        var packet = SPlayerMove.Create(player.PlayerMoveModel);
-
-        SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableSequenced);
+        
+        var playerMoveModel = player.PlayerMoveModel;
+        playerMoveModel.IsMoving = obj.PlayerMoveModel.IsMoving;
+        playerMoveModel.Velocity = obj.PlayerMoveModel.Velocity;
+        player.PlayerMoveModel = playerMoveModel;
+        
+        player.PlayerMoveModel.Position?.NotifyPositionChanged?.Invoke();
     }
 }

@@ -15,6 +15,8 @@ public class Attributes
     public int PlayerModelId { get; set; }
     
     public PlayerModel PlayerModel { get; set; }
+
+    [NotMapped] public Action? NotifyAttributesChanged;
     
     public Attributes()
     {
@@ -41,5 +43,10 @@ public class Attributes
         Agility = attributes.Agility;
         Intelligence = attributes.Intelligence;
         Willpower = attributes.Willpower;
+    }
+    
+    public double GetDamage()
+    {
+        return Strength * 1.5;
     }
 }

@@ -16,11 +16,6 @@ public class Vector2C
     public float X { get; set; }
     public float Y { get; set; }
     
-    [ForeignKey("PlayerModelId")]
-    public int PlayerModelId { get; set; }
-    
-    public PlayerModel PlayerModel { get; set; }
-    
     public static Vector2C Zero => new(0,0);
     
     public override string ToString()

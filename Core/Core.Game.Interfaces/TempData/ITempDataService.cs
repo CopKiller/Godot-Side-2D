@@ -1,7 +1,7 @@
 using Core.Game.Interfaces.Service;
-using Side2D.Server.TempData.Temp.Interface;
+using Core.Game.Interfaces.TempData.Player;
 
-namespace Side2D.Server.TempData.Interface;
+namespace Core.Game.Interfaces.TempData;
 
 public interface ITempDataService : ISingleService
 {

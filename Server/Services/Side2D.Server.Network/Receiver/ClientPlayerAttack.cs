@@ -14,17 +14,20 @@ public partial class ServerPacketProcessor
         if (player == null) return;
             
         if (player.TempPlayer.ClientState != ClientState.Game) return;
+        
+        var playerPhysic = physicService.GetPlayerPhysic(player.Index);
+        
+        if (playerPhysic == null) return;
+
+        if (playerPhysic.Attack())
+        {
+            var packet = SPlayerAttack.Create(player.Index, AttackType.Basic);
             
-        if (player.TempPlayer.Attack == null) return;
-            
-        if (player.TempPlayer.Attack.CanAttack() == false)
+            SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableSequenced);
+        }
+        else
         {
             ServerAlert(netPeer, "Invalid attack!");
-            return;
         }
-
-        var packet = SPlayerAttack.Create(player.Index, AttackType.Basic);
-            
-        SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableSequenced);
     }
 }

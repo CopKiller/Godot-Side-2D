@@ -17,6 +17,9 @@ public partial class ServerPacketProcessor
         if (player.TempPlayer.CountCharacters() == 0) return;
             
         player.PlayerSwitchCharacter(netPeer.Id);
+        physicService.RemovePlayerPhysic(player.Index);
+        attributeService.RemovePlayerAttribute(player.Index);
+        combatService.RemovePlayerCombat(player.Index);
             
         ServerSendCharacters(netPeer);
     }

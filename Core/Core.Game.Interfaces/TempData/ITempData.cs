@@ -1,4 +1,4 @@
-namespace Side2D.Server.TempData.Temp.Interface;
+namespace Core.Game.Interfaces.TempData;
 
 public interface ITempData
 {
