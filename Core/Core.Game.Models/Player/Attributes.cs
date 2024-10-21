@@ -15,8 +15,6 @@ public class Attributes
     public int PlayerModelId { get; set; }
     
     public PlayerModel PlayerModel { get; set; }
-
-    [NotMapped] public Action? NotifyAttributesChanged;
     
     public Attributes()
     {

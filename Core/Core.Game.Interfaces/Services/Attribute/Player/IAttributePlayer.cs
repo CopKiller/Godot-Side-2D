@@ -6,4 +6,5 @@ public interface IAttributePlayer : IAttributeEntity
 {
     void TakeDamage(double damage);
     double GetDamage();
+    void SetCombatState(bool inCombat);
 }

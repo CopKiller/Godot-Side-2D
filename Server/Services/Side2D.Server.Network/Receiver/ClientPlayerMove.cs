@@ -22,11 +22,10 @@ public partial class ServerPacketProcessor
             return;
         }
         
+        // TODO: Preciso jogar a velocity, ismoving, pra dentro do MovePlayer do servidor de física, deixar apenas o modelo do network.
         var playerMoveModel = player.PlayerMoveModel;
         playerMoveModel.IsMoving = obj.PlayerMoveModel.IsMoving;
         playerMoveModel.Velocity = obj.PlayerMoveModel.Velocity;
         player.PlayerMoveModel = playerMoveModel;
-        
-        player.PlayerMoveModel.Position?.NotifyPositionChanged?.Invoke();
     }
 }

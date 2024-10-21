@@ -7,10 +7,10 @@ using Core.Game.Models.Enum;
 using LiteNetLib;
 using Infrastructure.Network.CustomDataSerializable;
 using Infrastructure.Network.Packet.Server;
+using Side2D.Server.TempData;
 
 namespace Side2D.Server.Network
 {
-    public delegate Task<bool> UpdatePlayerDelegate(PlayerModel playerModel);
     public class ServerClient
     {
         public int Index { get; }
@@ -21,7 +21,6 @@ namespace Side2D.Server.Network
         public NetPeer Peer { get; }
         public PlayerMoveModel PlayerMoveModel { get; set; }
         public PlayerDataModel PlayerDataModel { get; set; }
-        public UpdatePlayerDelegate? UpdatePlayerInDatabase { get; set; }
         
         private readonly ServerPacketProcessor? _serverPacketProcessor;
 
@@ -53,19 +52,15 @@ namespace Side2D.Server.Network
                 Index = Index
             };
             
-            SavePlayerData();
+            TempPlayer.ChangeState(ClientState.None);
             
             _serverPacketProcessor?.ServerLeft(Peer, left);
-            
-            TempPlayer.ChangeState(ClientState.None);
         }
         
         public void PlayerSwitchCharacter(int index)
         {
             
             var left = SPlayerLeft.Create(index);
-            
-            SavePlayerData();
             
             TempPlayer.ChangeState(ClientState.Character);
             
@@ -75,25 +70,6 @@ namespace Side2D.Server.Network
             PlayerDataModel.Clear();
             // Clear the player move model
             PlayerMoveModel.Clear();
-        }
-
-        public void SavePlayerData()
-        {
-            
-            if (TempPlayer.ClientState != ClientState.Game) return;
-            
-            // Puxa o player model dos ultimos dados temporários, apenas para atualizar dados que não foram por referencia.
-            var player = TempPlayer.GetCharacter(TempPlayer.SlotNumber);
-
-            if (player == null) return;
-            
-            // Atributos comentados ja possuem referencia de classe
-            //player.Attributes.SetValues(PlayerDataModel.Attributes);
-            //player.Vitals.SetValues(PlayerDataModel.Vitals);
-            //player.Position.SetPosition(PlayerMoveModel.Position);
-            //player.Direction = PlayerMoveModel.Direction;
-                
-            UpdatePlayerInDatabase?.Invoke(player);
         }
 
     }

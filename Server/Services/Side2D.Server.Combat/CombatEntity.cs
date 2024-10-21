@@ -5,13 +5,15 @@ namespace Side2D.Server.Combat;
 
 public class CombatEntity : ICombatEntity
 {
-    public EntityType Type { get; } = EntityType.None;
+    public virtual EntityType Type { get; } = EntityType.None;
     
     private long _currentTick = 0;
     
     public bool _inCombat = false;
     private long _lastCombatTime = 0;
     private const int CombatTime = 30000; // 30 seconds
+    
+    public Action<bool> NotifyCombatStateChanged { get; set; }
     
     public bool GetCombatState()
     {
@@ -24,8 +26,10 @@ public class CombatEntity : ICombatEntity
         
         if (_inCombat)
             _lastCombatTime = _currentTick + CombatTime;
+        
+        NotifyCombatStateChanged?.Invoke(_inCombat);
     }
-    
+
     public virtual void Update(long currentTick)
     {
         _currentTick = currentTick;
@@ -33,6 +37,7 @@ public class CombatEntity : ICombatEntity
         if (_inCombat && _lastCombatTime < _currentTick)
         {
             _inCombat = false;
+            NotifyCombatStateChanged?.Invoke(_inCombat);
         }
     }
 

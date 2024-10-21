@@ -3,7 +3,9 @@ using Core.Game.Interfaces.Attribute;
 using Core.Game.Interfaces.Combat;
 using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Physic.Player;
+using Core.Game.Interfaces.Services.Network.NetworkEventServices.Physic;
 using Core.Game.Models;
+using Core.Game.Models.Enum;
 using Core.Game.Models.Player;
 using Side2D.Server.Physics.Player;
 
@@ -15,6 +17,8 @@ public class PhysicService(ICombatService combatService) : IPhysicService
     // This service will be responsible for handling all physics related tasks
     
     public int DefaultUpdateInterval { get; set; } = 1;
+    
+    public INetworkPhysic NetworkEvents { get; } = new NetworkPhysic();
     
     private List<IPhysicEntity> PhysicEntities { get; } = [];
     private Dictionary<int, IPhysicPlayer?> PhysicPlayers { get; } = new();
@@ -42,7 +46,10 @@ public class PhysicService(ICombatService combatService) : IPhysicService
 
     public void Update(long currentTick)
     {
-        PhysicEntities.ForEach(entity => entity.Update(currentTick));
+        foreach (var physicPlayer in PhysicPlayers.Values)
+        {
+            physicPlayer?.Update(currentTick);
+        }
     }
     
     public void Dispose()
@@ -54,7 +61,7 @@ public class PhysicService(ICombatService combatService) : IPhysicService
     
     public void AddPlayerPhysic(int index, PlayerModel playerModel)
     {
-        var physicPlayer = new PhysicPlayer(index, playerModel, this);
+        var physicPlayer = new PhysicPlayer(index, playerModel, NetworkEvents, CheckPlayerAttack);
         
         PhysicEntities.Add(physicPlayer);
         PhysicPlayers.Add(index, physicPlayer);
@@ -89,6 +96,10 @@ public class PhysicService(ICombatService combatService) : IPhysicService
             if (player.Index == index) continue;
             
             combatService.ReceivePlayerAttack(index, player.Index);
+
+            var direction = physicPlayer.GetPosition().Direction;
+            player.ReceiveImpact(32, direction);
+            
         }
     }
     

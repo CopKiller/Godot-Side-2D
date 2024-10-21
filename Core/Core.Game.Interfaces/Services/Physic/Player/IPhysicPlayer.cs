@@ -12,4 +12,5 @@ public interface IPhysicPlayer : IPhysicEntity
     bool Attack();
     float DistanceTo(Position position);
     Position GetPosition();
+    void ReceiveImpact(int range, Direction direction);
 }

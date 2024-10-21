@@ -2,6 +2,7 @@ using Core.Game.Interfaces.Attribute;
 using Core.Game.Interfaces.Combat;
 using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Physic.Player;
+using Core.Game.Interfaces.Services.Network.NetworkEventServices.Physic;
 using Side2D.Server.Physics.Entity;
 
 namespace Side2D.Server.Physics.Player;
@@ -13,7 +14,7 @@ public class PhysicAttack(int index) : PhysicEntity, IPhysicAttack
     public bool IsAttacking = false;
     public long LastAttackTime = 0;
     
-    private int Range = 32;
+    private int Range = 64;
     
     public Action<int, int>? FinishAttack { get; set; }
     

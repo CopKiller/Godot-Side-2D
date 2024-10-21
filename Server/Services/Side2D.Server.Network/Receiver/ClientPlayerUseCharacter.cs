@@ -31,13 +31,6 @@ public partial class ServerPacketProcessor
         
         // Atualiza o estado do jogador
         player.TempPlayer.ChangeState(ClientState.Game, obj.SlotNumber);
-        var state = SClientState.Create(player.TempPlayer.ClientState);
-        SendDataTo(netPeer, state, DeliveryMethod.ReliableOrdered);
-        
-        // Ligar os callbacks
-        playerModel.Position.NotifyPositionChanged = () => ServerUpdatePosition(player.Index);
-        playerModel.Vitals.NotifyVitalsChanged = () => ServerUpdateVitals(player.Index);
-        player.UpdatePlayerInDatabase = playerRepository.UpdatePlayerAsync;
             
         player.PlayerDataModel = new PlayerDataModel(netPeer.Id, playerModel);
         player.PlayerMoveModel = new PlayerMoveModel(netPeer.Id, playerModel);
@@ -54,6 +47,7 @@ public partial class ServerPacketProcessor
         player.AddPlayerServices(playerPhysic, playerAttribute);
         
         
+        // TODO: Preciso desacoplar a necessidade de usar um PlayerDataModel... deixar pro servidor de dados temporários tratar deste envio.
         // Cria o pacote com os dados do jogador
         var packet = new SPlayerData();
         packet.PlayersDataModels.Add(player.PlayerDataModel);

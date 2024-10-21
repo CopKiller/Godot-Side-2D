@@ -58,6 +58,13 @@ public partial class Players : Node, IPacketHandler
 		player.CallDeferred(nameof(player.UpdatePlayerMove));
 	}
 	
+	private void PlayerImpact(SPlayerImpact impact)
+	{
+		var player = _players.Find(x => x.PlayerDataModel.Index == impact.Index);
+		
+		player?.CallDeferred(nameof(player.UpdateImpact), new Vector2(impact.ImpactVelocity.X, impact.ImpactVelocity.Y));
+	}
+	
 	private void PlayerAttack(SPlayerAttack attack)
 	{
 		var player = _players.Find(x => x.PlayerDataModel.Index == attack.Index);
@@ -71,6 +78,7 @@ public partial class Players : Node, IPacketHandler
 		ClientPacketProcessor.RegisterPacket<SPlayerMove>(ServerPlayerMove);
 		ClientPacketProcessor.RegisterPacket<SPlayerLeft>(ServerLeft);
 		ClientPacketProcessor.RegisterPacket<SPlayerAttack>(ServerPlayerAttack);
+		ClientPacketProcessor.RegisterPacket<SPlayerImpact>(ServerPlayerImpact);
 	}
 	public override void _ExitTree()
 	{
@@ -78,6 +86,7 @@ public partial class Players : Node, IPacketHandler
 		ClientPacketProcessor.UnregisterPacket<SPlayerMove>();
 		ClientPacketProcessor.UnregisterPacket<SPlayerLeft>();
 		ClientPacketProcessor.UnregisterPacket<SPlayerAttack>();
+		ClientPacketProcessor.UnregisterPacket<SPlayerImpact>();
 	}
 	private void ServerPlayerData(SPlayerData obj)
 	{
@@ -105,5 +114,10 @@ public partial class Players : Node, IPacketHandler
 	private void ServerLeft(SPlayerLeft obj)
 	{
 		RemovePlayer(obj.Index);
+	}
+	
+	private void ServerPlayerImpact(SPlayerImpact obj)
+	{
+		PlayerImpact(obj);
 	}
 }

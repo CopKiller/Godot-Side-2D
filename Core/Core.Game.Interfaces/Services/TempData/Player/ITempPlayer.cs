@@ -12,8 +12,8 @@ public interface ITempPlayer : ITempData
     ClientState ClientState { get; }
     
     void ChangeState(ClientState state, int slotNumber = 0);
-    void UpdateAccountData(AccountModel accountModel);
-    void UpdatePlayerData(PlayerModel playerModel);
+    void AddAccountData(AccountModel accountModel);
+    void AddPlayerData(PlayerModel playerModel);
     int CountCharacters();
     bool ExistsCharacter(int slotNumber);
     PlayerModel? GetCharacter(int slotNumber);

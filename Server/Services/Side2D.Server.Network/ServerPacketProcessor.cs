@@ -2,6 +2,7 @@
 using Core.Game.Interfaces.Combat;
 using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Repositories;
+using Core.Game.Interfaces.Services.Network.NetworkEventServices.Attribute;
 using Core.Game.Interfaces.TempData;
 using Core.Game.Models.Enum;
 using Infrastructure.Logger;
@@ -12,33 +13,56 @@ using Side2D.Server.Network.Interfaces;
 
 namespace Side2D.Server.Network;
 
-public partial class ServerPacketProcessor(IAccountRepository accountRepository,
+public partial class ServerPacketProcessor(
+    IAccountRepository accountRepository,
     IPlayerRepository playerRepository,
     ITempDataService tempDataService,
     IPhysicService physicService,
     IAttributeService attributeService,
     ICombatService combatService,
     Dictionary<int, ServerClient> players)
-    :PacketProcessor, IServerPacketProcessor
+    : PacketProcessor, IServerPacketProcessor
 {
-    
+
     public void Initialize()
     {
-        this.RegisterCustomTypes();
+        RegisterCustomTypes();
 
         SubscribePacket();
+        
+        AssignNetworkSendersOnServices();
     }
 
-    public override void SubscribePacket()
+    public void SubscribePacket()
     {
         // Register to receive packets  
-        this.Subscribe<CPlayerLogin>(ClientLogin);
-        this.Subscribe<CPlayerMove>(ClientPlayerMove);
-        this.Subscribe<CAccountRegister>(ClientAccountRegister);
-        this.Subscribe<CCreateCharacter>(ClientCreateCharacter);
-        this.Subscribe<CPlayerUseCharacter>(ClientPlayerUseCharacter);
-        this.Subscribe<CPlayerSwitchCharacter>(ClientPlayerSwitchCharacter);
-        this.Subscribe<CPlayerAttack>(ClientPlayerAttack);
+        Subscribes<CPlayerLogin>(ClientLogin);
+        Subscribes<CPlayerMove>(ClientPlayerMove);
+        Subscribes<CAccountRegister>(ClientAccountRegister);
+        Subscribes<CCreateCharacter>(ClientCreateCharacter);
+        Subscribes<CPlayerUseCharacter>(ClientPlayerUseCharacter);
+        Subscribes<CPlayerSwitchCharacter>(ClientPlayerSwitchCharacter);
+        Subscribes<CPlayerAttack>(ClientPlayerAttack);
+
+        return;
+        
+        void Subscribes<T>(Action<T, NetPeer> onReceive) where T : class, new()
+        {
+            SubscribeReusable(onReceive);
+
+            //Log.PrintError(onReceive.Method.Username + " Subscribed");
+        }
+    }
+    
+    private void AssignNetworkSendersOnServices()
+    {
+        //attributeService.NetworkEvents.ServerUpdateAttributes += ServerUpdateAttributes;
+        attributeService.NetworkEvents.OnServerUpdateVitals += ServerUpdateVitals;
+        physicService.NetworkEvents.OnServerUpdatePosition += ServerUpdatePosition;
+        physicService.NetworkEvents.OnServerPlayerImpact += ServerPlayerImpact;
+        tempDataService.NetworkEvents.OnDbSavePlayer += playerRepository.UpdatePlayerAsync;
+        tempDataService.NetworkEvents.OnServerClientState += ServerClientState;
+        physicService.NetworkEvents.OnServerPlayerAttack += ServerPlayerAttack;
     }
 
     public void SendDataToAllBut<T>(NetPeer excludePeer, T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class, new()

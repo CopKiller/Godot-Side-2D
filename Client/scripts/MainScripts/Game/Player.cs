@@ -1,4 +1,5 @@
 using Core.Game.Models.Enum;
+using Core.Game.Models.Vectors;
 using Godot;
 using LiteNetLib;
 using Side2D.Host;
@@ -213,6 +214,12 @@ public partial class Player : CharacterBody2D
 		_velocity = new Vector2(PlayerMoveModel.Velocity.X, PlayerMoveModel.Velocity.Y);
 		_direction = PlayerMoveModel.Position.Direction;
 		_isMoving = PlayerMoveModel.IsMoving;
+	}
+	
+	public void UpdateImpact(Vector2 impact)
+	{
+		Velocity += impact;
+		MoveAndCollide(Velocity);
 	}
 	
 	private void UpdatePlayerData()

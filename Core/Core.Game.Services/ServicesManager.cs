@@ -9,8 +9,7 @@ public sealed class ServicesManager(IServiceCollection collection) : IServicesMa
 {
     private const int DefaultUpdateInterval = 1;
     private readonly Stopwatch _tickCounter = new();
-
-    //private IServiceCollection? ServiceColletion { get; set; } = collection; // --> Coleção de serviços
+    
     private IServiceProvider? ServiceProvider { get; set; }             // --> Provider de serviços
     private List<ISingleService> Services { get; set; } = [];           // --> Coleção de serviços unicos
     
@@ -22,14 +21,17 @@ public sealed class ServicesManager(IServiceCollection collection) : IServicesMa
         
         var servicesTypes = collection.Select(x => x.ServiceType);
         
-        ServiceProvider = collection.BuildServiceProvider();
+        ServiceProvider = collection.BuildServiceProvider(new ServiceProviderOptions()
+        {
+            ValidateOnBuild = false,
+            ValidateScopes = false
+        });
+        
         Services ??= [];
         
         Log.PrintInfo("Obtendo serviços registrados como ISingleService que sao singletons...");
         foreach (var serviceType in servicesTypes)
         {
-            //var instance = ServiceProvider.GetService(serviceType);
-            
             var instance = ServiceProvider.GetRequiredService(serviceType);
 
             if (instance is not ISingleService singletonService) continue;

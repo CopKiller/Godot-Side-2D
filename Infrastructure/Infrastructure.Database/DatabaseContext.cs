@@ -10,12 +10,12 @@ public sealed class DatabaseContext : DbContext
     
     public DatabaseContext()
     {
-        
+        //Database.Migrate();
     }
 
     public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options)
     {
-        Database.Migrate();
+        //Database.Migrate();
     }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)

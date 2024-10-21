@@ -1,12 +1,12 @@
 using Core.Game.Interfaces.Attribute.Player;
-using Core.Game.Interfaces.Combat;
+using Core.Game.Interfaces.Services.Network.NetworkEventServices.Attribute;
 using Core.Game.Models.Enum;
 using Core.Game.Models.Player;
-using Side2D.Server.Attributes.Entity;
+using Side2D.Server.Attribute.Entity;
 
-namespace Side2D.Server.Attributes.Player;
+namespace Side2D.Server.Attribute.Player;
 
-public class AttributePlayer(int index, Core.Game.Models.Player.Attributes attributes, Vitals vitals)
+public class AttributePlayer(int index, Attributes attributes, Vitals vitals, INetworkAttribute networkEvents)
     : AttributeEntity, IAttributePlayer
 {
     public override EntityType Type { get; } = EntityType.Player;
@@ -16,14 +16,23 @@ public class AttributePlayer(int index, Core.Game.Models.Player.Attributes attri
     private const int UpdateVitalsMs = 10000; // 10 seconds
     private long _lastVitalsUpdate = 0;
     
+    private bool _inCombat = false;
+    
     public void TakeDamage(double damage)
     {
         vitals.TakeDamage(damage);
+        
+        networkEvents.ServerUpdateVitals(Index);
     }
     
     public double GetDamage()
     {
         return attributes.GetDamage();
+    }
+    
+    public void SetCombatState(bool inCombat)
+    {
+        _inCombat = inCombat;
     }
     
     public override void Update(long currentTick)
@@ -40,10 +49,12 @@ public class AttributePlayer(int index, Core.Game.Models.Player.Attributes attri
         
         // TODO: Implement vitals.RegenVitalsTemp() AND Process percents by attributes
         
+        if (_inCombat) return;
+        
         var hasUpdate = vitals.RegenVitalsTemp();
         if (!hasUpdate) return;
         
-        vitals.NotifyVitalsChanged?.Invoke();
+        networkEvents.ServerUpdateVitals(Index);
     }
     
     public override void Dispose()

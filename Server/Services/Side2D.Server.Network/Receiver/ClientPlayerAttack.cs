@@ -18,14 +18,8 @@ public partial class ServerPacketProcessor
         var playerPhysic = physicService.GetPlayerPhysic(player.Index);
         
         if (playerPhysic == null) return;
-
-        if (playerPhysic.Attack())
-        {
-            var packet = SPlayerAttack.Create(player.Index, AttackType.Basic);
-            
-            SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableSequenced);
-        }
-        else
+        
+        if (!playerPhysic.Attack())
         {
             ServerAlert(netPeer, "Invalid attack!");
         }

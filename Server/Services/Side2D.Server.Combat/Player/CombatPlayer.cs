@@ -1,10 +1,13 @@
+using Core.Game.Interfaces.Attribute.Player;
 using Core.Game.Interfaces.Combat.Player;
 using Core.Game.Models;
+using Core.Game.Models.Enum;
 
 namespace Side2D.Server.Combat.Player;
 
 public class CombatPlayer : CombatEntity, ICombatPlayer
 {
+    public override EntityType Type { get; } = EntityType.Player;
     public int Index { get; }
     private PlayerModel PlayerModel { get; }
     
@@ -13,5 +16,4 @@ public class CombatPlayer : CombatEntity, ICombatPlayer
         Index = index;
         PlayerModel = playerModel;
     }
-
 }

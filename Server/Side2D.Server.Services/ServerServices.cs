@@ -2,14 +2,14 @@
 
 using Core.Game.Interfaces.Attribute;
 using Core.Game.Interfaces.Combat;
-using Core.Game.Interfaces.Network;
 using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Repositories;
+using Core.Game.Interfaces.Services.Network;
 using Core.Game.Interfaces.TempData;
 using Infrastructure.Database;
 using Infrastructure.Network;
 using Microsoft.Extensions.DependencyInjection;
-using Side2D.Server.Attributes;
+using Side2D.Server.Attribute;
 using Side2D.Server.Combat;
 using Side2D.Server.Network;
 using Side2D.Server.Physics;

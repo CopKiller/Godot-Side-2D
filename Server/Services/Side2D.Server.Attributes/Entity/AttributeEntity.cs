@@ -1,7 +1,7 @@
 using Core.Game.Interfaces.Attribute;
 using Core.Game.Models.Enum;
 
-namespace Side2D.Server.Attributes.Entity;
+namespace Side2D.Server.Attribute.Entity;
 
 public class AttributeEntity : IAttributeEntity
 {

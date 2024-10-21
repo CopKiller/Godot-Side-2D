@@ -66,7 +66,7 @@ public partial class ServerPacketProcessor
 
         ServerAlert(netPeer, $"Character {newPlayer.Name} created successfully!");
 
-        player.TempPlayer.UpdatePlayerData(newPlayer);
+        player.TempPlayer.AddPlayerData(newPlayer);
 
         ServerSendCharacters(netPeer);
     }

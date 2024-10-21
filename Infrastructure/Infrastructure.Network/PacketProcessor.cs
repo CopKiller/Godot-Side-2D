@@ -1,5 +1,6 @@
 ﻿
 using Core.Game.Models.Player;
+using Core.Game.Models.Vectors;
 using LiteNetLib;
 using LiteNetLib.Utils;
 using Infrastructure.Network.CustomDataSerializable;
@@ -17,15 +18,7 @@ namespace Infrastructure.Network
             this.RegisterNestedType<PlayerMoveModel>();
             this.RegisterNestedType<PlayerDataModel>();
             this.RegisterNestedType<Vitals>(NetSerializerExtension.Put, NetSerializerExtension.GetVitals);
-        }
-
-        public virtual void SubscribePacket() { }
-
-        public void Subscribe<T>(Action<T, NetPeer> onReceive) where T : class, new()
-        {
-            this.SubscribeReusable(onReceive);
-            
-            //Log.PrintError(onReceive.Method.Username + " Subscribed");
+            this.RegisterNestedType<Vector2C>(NetSerializerExtension.Put, NetSerializerExtension.GetVector2);
         }
     }
 }

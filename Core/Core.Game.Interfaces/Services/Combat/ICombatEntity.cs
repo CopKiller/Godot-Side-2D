@@ -6,4 +6,5 @@ public interface ICombatEntity : IEntity
 {
     bool GetCombatState();
     void SetCombatState(bool inCombat);
+    Action<bool> NotifyCombatStateChanged { get; set; }
 }

@@ -15,8 +15,6 @@ public class Position
     public int PlayerModelId { get; set; }
     
     public PlayerModel PlayerModel { get; set; }
-    
-    [NotMapped] public Action? NotifyPositionChanged;
 
     public Position(Vector2C vector2C)
     {

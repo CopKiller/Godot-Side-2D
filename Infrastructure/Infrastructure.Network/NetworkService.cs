@@ -1,5 +1,4 @@
-﻿
-using Core.Game.Interfaces.Network;
+﻿using Core.Game.Interfaces.Services.Network;
 using Infrastructure.Logger;
 using LiteNetLib;
 

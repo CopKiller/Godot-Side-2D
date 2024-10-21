@@ -36,15 +36,8 @@ public partial class ServerPacketProcessor
         }
             
         ServerAlert(netPeer, $"Account logged in successfully! User: {account.Value.Username}");
-        player.TempPlayer.UpdateAccountData(account.Value);
+        player.TempPlayer.AddAccountData(account.Value);
         player.TempPlayer.ChangeState(ClientState.Character);
-            
-        var changeClientState = new SClientState()
-        {
-            ClientState = player.TempPlayer.ClientState
-        };
-            
-        SendDataTo(netPeer, changeClientState, DeliveryMethod.ReliableOrdered); 
             
         ServerSendCharacters(netPeer);
     }

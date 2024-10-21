@@ -1,4 +1,5 @@
 using System.Diagnostics;
+using Core.Game.Interfaces.Services.Network.NetworkEventServices.TempData;
 using Core.Game.Interfaces.TempData;
 using Core.Game.Interfaces.TempData.Player;
 using Core.Game.Models;
@@ -8,6 +9,8 @@ namespace Side2D.Server.TempData;
 
 public class TempDataService : ITempDataService
 {
+    
+    public INetworkTempData NetworkEvents { get; } = new NetworkTempData();
     public int DefaultUpdateInterval { get; set; } = 1;
     
     public Dictionary<int, ITempPlayer> TempDataList { get; private set; } = new();
@@ -15,7 +18,7 @@ public class TempDataService : ITempDataService
     
     public void AddPlayerData(int index)
     {
-        TempDataList.Add(index, new TempPlayer(index));
+        TempDataList.Add(index, new TempPlayer(index, NetworkEvents.UpdatePlayer, NetworkEvents.ServerClientState));
     }
     
     public void RemovePlayerData(int index)

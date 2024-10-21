@@ -6,7 +6,7 @@ using Side2D.Server.Combat.Player;
 
 namespace Side2D.Server.Combat;
 
-public class CombatService(IAttributeService attributeService) : ICombatService, ICombatStatusProvider
+public class CombatService(IAttributeService attributeService) : ICombatService
 {
     private List<ICombatEntity> _entities = [];
     
@@ -20,7 +20,7 @@ public class CombatService(IAttributeService attributeService) : ICombatService,
         
         foreach (var player in _players)
         {
-            if (player.Key == victimIndex || player.Key == attackerIndex)
+            if (player.Key == attackerIndex)
                 player.Value.SetCombatState(true);
 
             if (player.Key == victimIndex)
@@ -31,7 +31,10 @@ public class CombatService(IAttributeService attributeService) : ICombatService,
     }
     public void AddPlayerCombat(int index, PlayerModel playerModel)
     {
-        var combatPlayer = new CombatPlayer(index, playerModel);
+        var combatPlayer = new CombatPlayer(index, playerModel)
+        {
+            NotifyCombatStateChanged = inCombat => attributeService.SetPlayerCombatState(index, inCombat)
+        };
         _entities.Add(combatPlayer);
         _players.Add(index, combatPlayer);
     }
@@ -66,17 +69,14 @@ public class CombatService(IAttributeService attributeService) : ICombatService,
 
     public void Update(long currentTick)
     {
-        _entities.ForEach(a => a.Update(currentTick));
+        foreach (var entity in _entities)
+        {
+            entity.Update(currentTick);
+        }
     }
     
     public void Dispose()
     {
         _entities.ForEach(a => a.Dispose());
-    }
-
-    public bool GetCombatState(int index)
-    {
-        var player = _players.GetValueOrDefault(index);
-        return player?.GetCombatState() ?? false;
     }
 }

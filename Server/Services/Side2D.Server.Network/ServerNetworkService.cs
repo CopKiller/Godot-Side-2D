@@ -8,6 +8,7 @@ using Core.Game.Interfaces.Combat;
 using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Repositories;
 using Core.Game.Interfaces.TempData;
+using Core.Game.Models.Enum;
 using Infrastructure.Logger;
 using Infrastructure.Network;
 

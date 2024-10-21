@@ -1,10 +1,11 @@
+using Core.Game.Interfaces.Services.Network.NetworkEventServices.TempData;
 using Core.Game.Interfaces.TempData.Player;
 using Core.Game.Models;
 using Core.Game.Models.Enum;
 
 namespace Side2D.Server.TempData.Temp;
 
-public class TempPlayer(int index) : ITempPlayer
+public class TempPlayer(int index, Action<PlayerModel> saveOnDatabase, Action<int, ClientState> changeClientState) : ITempPlayer
 {
     public int Index { get; private set; } = index;
     public int AccountId { get; private set; }
@@ -15,24 +16,42 @@ public class TempPlayer(int index) : ITempPlayer
     public void ChangeState(ClientState state, int slotNumber = 0)
     {
         ClientState = state;
+        
+        changeClientState(Index, state);
 
         switch (state)
         {
             case ClientState.None:
+                Save();
                 Dispose();
                 break;
             case ClientState.Menu:
+                Save();
                 Dispose();
                 break;
             case ClientState.Game:
                 SlotNumber = slotNumber;
                 break;
             case ClientState.Character:
+                Save();
                 SlotNumber = 0;
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(state), state, null);
         }
+    }
+
+    private void Save()
+    {
+        if (ClientState != ClientState.Game) return;
+        
+        if (SlotNumber == 0) return;
+            
+        var player = PlayerModels.FirstOrDefault(x => x != null && x.SlotNumber == SlotNumber);
+
+        if (player == null) return;
+
+        saveOnDatabase(player);
     }
     
     public void Dispose()
@@ -42,7 +61,7 @@ public class TempPlayer(int index) : ITempPlayer
         PlayerModels.Clear();
     }
     
-    public void UpdateAccountData(AccountModel accountModel)
+    public void AddAccountData(AccountModel accountModel)
     {
         AccountId = accountModel.Id;
         
@@ -50,7 +69,7 @@ public class TempPlayer(int index) : ITempPlayer
         PlayerModels.AddRange(accountModel.Players);
     }
     
-    public void UpdatePlayerData(PlayerModel playerModel)
+    public void AddPlayerData(PlayerModel playerModel)
     {
         var player = PlayerModels.FirstOrDefault(x => x != null && x.Id == playerModel.Id);
 

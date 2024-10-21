@@ -164,6 +164,10 @@ public partial class ClientManager : Node, IPacketHandler
         
         void ChangeState(SClientState obj)
         {
+            
+            if (obj.Index != ClientPlayer.PlayerIndex)
+                return;
+            
             ChangeClientState(obj.ClientState);
         }
     }

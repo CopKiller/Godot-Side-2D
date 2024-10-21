@@ -6,6 +6,9 @@ namespace Side2D.Server.Network;
 
 public partial class ServerPacketProcessor
 {
+    // TODO: Falta jogar o pacote para dentro do servidor de dados temporários do player...
+    
+    // TODO: Provavelmente vou remover isso aqui, e deixar apenas o SClientState responsável por isso...
     public void ServerLeft(NetPeer netPeer, SPlayerLeft sPlayerLeft, bool isDisconnect = true)
     {
         players.TryGetValue(netPeer.Id, out var player);

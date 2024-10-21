@@ -1,6 +1,6 @@
 ﻿
 using System.Diagnostics;
-using Core.Game.Interfaces.Network;
+using Core.Game.Interfaces.Services.Network;
 
 namespace Infrastructure.Network;
 

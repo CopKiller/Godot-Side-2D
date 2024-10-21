@@ -10,4 +10,8 @@
       <ProjectReference Include="..\Core.Game.Models\Core.Game.Models.csproj" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Services\" />
+    </ItemGroup>
+
 </Project>

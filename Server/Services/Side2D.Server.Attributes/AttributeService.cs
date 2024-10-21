@@ -1,10 +1,11 @@
 ﻿using Core.Game.Interfaces.Attribute;
 using Core.Game.Interfaces.Attribute.Player;
 using Core.Game.Interfaces.Combat;
+using Core.Game.Interfaces.Services.Network.NetworkEventServices.Attribute;
 using Core.Game.Models;
-using Side2D.Server.Attributes.Player;
+using Side2D.Server.Attribute.Player;
 
-namespace Side2D.Server.Attributes;
+namespace Side2D.Server.Attribute;
 
 public class AttributeService() : IAttributeService
 {
@@ -12,8 +13,11 @@ public class AttributeService() : IAttributeService
     // This service will be responsible for handling all Attribute related tasks
     
     public int DefaultUpdateInterval { get; set; } = 1;
+
+    public INetworkAttribute NetworkEvents { get; } = new NetworkAttribute();
     
     private List<IAttributeEntity> AttributeEntities { get; } = [];
+    
     private Dictionary<int, IAttributePlayer?> AttributePlayers { get; } = new();
     
     public void ReceiveCombatDamage(int attackerIndex, int victimIndex)
@@ -27,6 +31,14 @@ public class AttributeService() : IAttributeService
         var damage = attacker.GetDamage();
         
         victim?.TakeDamage(damage);
+    }
+    
+    public void SetPlayerCombatState(int index, bool inCombat)
+    {
+        var player = AttributePlayers.GetValueOrDefault(index);
+        if (player == null) return;
+        
+        player.SetCombatState(inCombat);
     }
     
 
@@ -53,7 +65,10 @@ public class AttributeService() : IAttributeService
 
     public void Update(long currentTick)
     {
-        AttributeEntities.ForEach(entity => entity.Update(currentTick));
+        foreach (var entity in AttributeEntities)
+        {
+            entity.Update(currentTick);
+        }
     }
     
     public void Dispose()
@@ -65,7 +80,7 @@ public class AttributeService() : IAttributeService
     
     public void AddPlayerAttribute(int index, PlayerModel playerModel)
     {
-        var physicPlayer = new AttributePlayer(index, playerModel.Attributes, playerModel.Vitals);
+        var physicPlayer = new AttributePlayer(index, playerModel.Attributes, playerModel.Vitals, NetworkEvents);
         
         AttributeEntities.Add(physicPlayer);
         AttributePlayers.Add(index, physicPlayer);
