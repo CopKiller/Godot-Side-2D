@@ -1,17 +1,18 @@
-﻿using Infrastructure.Network.CustomDataSerializable;
+﻿using Core.Game.Models.Player;
+using Infrastructure.Network.CustomDataSerializable;
 using LiteNetLib.Utils;
 
 namespace Infrastructure.Network.Packet.Server
 {
     public class SPlayerMove
     {
-        public PlayerMoveModel PlayerMoveModel { get; set; }
+        public Position Position { get; set; }
         
-        public static SPlayerMove Create(PlayerMoveModel playerMoveModel)
+        public static SPlayerMove Create(Position playerMoveModel)
         {
             return new SPlayerMove
             {
-                PlayerMoveModel = playerMoveModel
+                Position = playerMoveModel
             };
         }
     }

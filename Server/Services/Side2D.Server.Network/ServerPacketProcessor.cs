@@ -59,10 +59,10 @@ public partial class ServerPacketProcessor(
         //attributeService.NetworkEvents.ServerUpdateAttributes += ServerUpdateAttributes;
         attributeService.NetworkEvents.OnServerUpdateVitals += ServerUpdateVitals;
         physicService.NetworkEvents.OnServerUpdatePosition += ServerUpdatePosition;
-        physicService.NetworkEvents.OnServerPlayerImpact += ServerPlayerImpact;
+        physicService.NetworkEvents.OnServerUpdateKnockback += ServerUpdateKnockback;
         tempDataService.NetworkEvents.OnDbSavePlayer += playerRepository.UpdatePlayerAsync;
         tempDataService.NetworkEvents.OnServerClientState += ServerClientState;
-        physicService.NetworkEvents.OnServerPlayerAttack += ServerPlayerAttack;
+        physicService.NetworkEvents.OnServerUpdateAttack += ServerUpdateAttack;
     }
 
     public void SendDataToAllBut<T>(NetPeer excludePeer, T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class, new()

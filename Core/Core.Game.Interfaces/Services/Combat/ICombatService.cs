@@ -8,5 +8,5 @@ public interface ICombatService : ISingleService
 {
     public void AddPlayerCombat(int index, PlayerModel playerModel);
     public void RemovePlayerCombat(int index);
-    public void ReceivePlayerAttack(int attackerIndex, int victimIndex);
+    public void NotifyReceivePlayerAttack(int attackerIndex, int victimIndex);
 }

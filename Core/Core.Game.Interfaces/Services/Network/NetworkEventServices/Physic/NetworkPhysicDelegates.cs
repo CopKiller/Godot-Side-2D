@@ -5,6 +5,6 @@ namespace Core.Game.Interfaces.Services.Network.NetworkEventServices.Physic;
 
 
 
-public delegate void ServerUpdatePosition(int playerIndex, bool includeSelf);
-public delegate void ServerPlayerImpact(int playerIndex, Vector2C impactVelocity);
-public delegate void ServerPlayerAttack(int playerIndex, AttackType attackType);
+public delegate void ServerUpdatePosition(int index, EntityType type, bool includeSelf);
+public delegate void ServerUpdateKnockback(int index, EntityType type, bool includeSelf, VectorTwo impactVelocity);
+public delegate void ServerUpdateAttack(int index, EntityType type, bool includeSelf, AttackType attackType);

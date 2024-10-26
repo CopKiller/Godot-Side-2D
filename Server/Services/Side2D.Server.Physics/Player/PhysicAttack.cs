@@ -7,24 +7,36 @@ using Side2D.Server.Physics.Entity;
 
 namespace Side2D.Server.Physics.Player;
 
-public class PhysicAttack(int index) : PhysicEntity, IPhysicAttack
+public partial class PhysicPlayer
 {
-    private long _currentTick = 0;
-    private const int AttackingSpeed = 1000; // 1 attack in one second
     public bool IsAttacking = false;
     public long LastAttackTime = 0;
+
+    private const int AttackingSpeed = 1000; // 1 attack in one second
+    private const int Range = 64;
     
-    private int Range = 64;
-    
-    public Action<int, int>? FinishAttack { get; set; }
-    
-    public override void Update(long currentTick)
+    private void UpdateAttack()
     {
-        _currentTick = currentTick;
-        if (IsAttacking && currentTick - LastAttackTime >= AttackingSpeed)
+        if (IsAttacking && _currentTick - LastAttackTime >= AttackingSpeed)
         {
-            FinishAttack?.Invoke(index, Range);
+            CheckAttack();
             IsAttacking = false;
+        }
+    }
+
+    private void CheckAttack()
+    {
+        // Buscar jogadores no range de ataque
+        var playersInRadius = physicService.GetPlayersInRadius(playerModel.Position, Range);
+        
+        foreach (var player in playersInRadius)
+        {
+            if (player == null) continue;
+            if (player.Index == Index) continue;
+            physicService.NotifyCombatService(Index, player.Index);
+            
+            player.ApplyKnockback(playerModel.Position, 1.0f);
+            
         }
     }
 
@@ -45,11 +57,5 @@ public class PhysicAttack(int index) : PhysicEntity, IPhysicAttack
         IsAttacking = true;
 
         return true;
-    }
-    
-    public override void Dispose()
-    {
-        IsAttacking = false;
-        LastAttackTime = 0;
     }
 }

@@ -6,8 +6,11 @@ namespace Side2D.Server.Network;
 
 public partial class ServerPacketProcessor
 {
-    public void ServerPlayerAttack(int index, AttackType attackType)
+    public void ServerUpdateAttack(int index, EntityType type, bool includeSelf, AttackType attackType)
     {
+        
+        if (type != EntityType.Player) return;
+        
         players.TryGetValue(index, out var player);
         
         if (player == null) return;
@@ -16,6 +19,9 @@ public partial class ServerPacketProcessor
         
         var packet = SPlayerAttack.Create(index, attackType);
         
-        SendDataToAllBut(player.Peer, packet, ClientState.Game, DeliveryMethod.ReliableUnordered);
+        if (includeSelf)
+            SendDataToAll(packet, ClientState.Game, DeliveryMethod.ReliableUnordered);
+        else
+            SendDataToAllBut(player.Peer, packet, ClientState.Game, DeliveryMethod.ReliableUnordered);
     }
 }

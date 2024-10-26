@@ -8,15 +8,15 @@ namespace Infrastructure.Network.CustomDataSerializable.Extension
 {
     public static class NetSerializerExtension
     {
-        public static void Put(this NetDataWriter writer, Vector2C vector)
+        public static void Put(this NetDataWriter writer, VectorTwo vector)
         {
             writer.Put(vector.X);
             writer.Put(vector.Y);
         }
 
-        public static Vector2C GetVector2(this NetDataReader reader)
+        public static VectorTwo GetVector2(this NetDataReader reader)
         {
-            var vector2 = new Vector2C
+            var vector2 = new VectorTwo
             {
                 X = reader.GetFloat(),
                 Y = reader.GetFloat()
@@ -71,6 +71,9 @@ namespace Infrastructure.Network.CustomDataSerializable.Extension
             writer.Put(vector.X);
             writer.Put(vector.Y);
             writer.Put((byte)vector.Direction);
+            writer.Put(vector.Index);
+            writer.Put(vector.IsMoving);
+            writer.Put(vector.Velocity);
         }
 
         public static Position GetPosition(this NetDataReader reader)
@@ -79,7 +82,10 @@ namespace Infrastructure.Network.CustomDataSerializable.Extension
             {
                 X = reader.GetFloat(),
                 Y = reader.GetFloat(),
-                Direction = (Direction)reader.GetByte()
+                Direction = (Direction)reader.GetByte(),
+                Index = reader.GetInt(),
+                IsMoving = reader.GetBool(),
+                Velocity = reader.GetVector2()
             };
             return vector2;
         }

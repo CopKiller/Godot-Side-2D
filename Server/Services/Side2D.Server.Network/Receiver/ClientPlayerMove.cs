@@ -16,16 +16,9 @@ public partial class ServerPacketProcessor
             
         if (player.TempPlayer.ClientState != ClientState.Game) return;
         
-        if ( !player.PhysicPlayer.MovePlayer(obj.PlayerMoveModel.Position))
+        if ( !player.PhysicPlayer.PlayerMove(obj.Position))
         {
-            ServerAlert(netPeer, "Invalid move!");
             return;
         }
-        
-        // TODO: Preciso jogar a velocity, ismoving, pra dentro do MovePlayer do servidor de física, deixar apenas o modelo do network.
-        var playerMoveModel = player.PlayerMoveModel;
-        playerMoveModel.IsMoving = obj.PlayerMoveModel.IsMoving;
-        playerMoveModel.Velocity = obj.PlayerMoveModel.Velocity;
-        player.PlayerMoveModel = playerMoveModel;
     }
 }

@@ -35,16 +35,7 @@ public partial class ServerPacketProcessor
             return;
         }
 
-        var newPlayer = new PlayerModel()
-        {
-            SlotNumber = obj.SlotNumber,
-            Name = obj.Name,
-            Attributes = new Attributes(),
-            Vitals = new Vitals(),
-            Gender = obj.Gender,
-            Vocation = obj.Vocation,
-            Position = new Position(EntityValidator.DefaultPositionX, EntityValidator.DefaultPositionY)
-        };
+        var newPlayer = new PlayerModel(obj.SlotNumber, obj.Name, obj.Vocation, obj.Gender);
 
         var res = newPlayer.Validate();
 

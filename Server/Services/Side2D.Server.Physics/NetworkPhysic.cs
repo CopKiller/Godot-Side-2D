@@ -7,21 +7,21 @@ namespace Side2D.Server.Physics;
 public class NetworkPhysic : INetworkPhysic
 {
     public event ServerUpdatePosition? OnServerUpdatePosition;
-    public event ServerPlayerImpact? OnServerPlayerImpact;
-    public event ServerPlayerAttack? OnServerPlayerAttack;
+    public event ServerUpdateKnockback? OnServerUpdateKnockback;
+    public event ServerUpdateAttack? OnServerUpdateAttack;
 
-    public void ServerUpdatePosition(int playerIndex, bool includeSelf)
+    public void ServerUpdatePosition(int index, EntityType type, bool includeSelf)
     {
-        OnServerUpdatePosition?.Invoke(playerIndex, includeSelf);
-    }
-    
-    public void ServerPlayerImpact(int playerIndex, Vector2C impactVelocity)
-    {
-        OnServerPlayerImpact?.Invoke(playerIndex, impactVelocity);
+        OnServerUpdatePosition?.Invoke(index, type, includeSelf);
     }
 
-    public void ServerPlayerAttack(int playerIndex, AttackType attackType)
+    public void ServerUpdateKnockback(int index, EntityType type, bool includeSelf, VectorTwo newPosition)
     {
-        OnServerPlayerAttack?.Invoke(playerIndex, attackType);
+        OnServerUpdateKnockback?.Invoke(index, type, includeSelf, newPosition);
+    }
+
+    public void ServerUpdateAttack(int index, EntityType type, bool includeSelf, AttackType attackType)
+    {
+        OnServerUpdateAttack?.Invoke(index, type, includeSelf, attackType);
     }
 }

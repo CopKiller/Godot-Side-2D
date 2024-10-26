@@ -6,11 +6,11 @@ public class Vitals
 {
     public int Id { get; set; }
     
-    public double Health { get; set; } = 100;
-    public double MaxHealth { get; set; } = 100;
+    public double Health { get; set; } = 70;
+    public double MaxHealth { get; set; } = 70;
     
-    public double Mana { get; set; } = 100;
-    public double MaxMana { get; set; } = 100;
+    public double Mana { get; set; } = 70;
+    public double MaxMana { get; set; } = 70;
     
     [ForeignKey("PlayerModelId")]
     public int PlayerModelId { get; set; }
@@ -23,10 +23,8 @@ public class Vitals
         MaxMana = 100 + attributes.Intelligence * 2;
     }
     
-    public void SetValues(Vitals? vitals)
+    public void SetValues(Vitals vitals)
     {
-        if (vitals == null) return;
-        
         Health = vitals.Health;
         MaxHealth = vitals.MaxHealth;
 

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.Game.Models.Player;
 using Godot;
 using Infrastructure.Network.CustomDataSerializable;
 using Infrastructure.Network.Packet.Server;
@@ -22,14 +23,13 @@ public partial class Players : Node, IPacketHandler
 		RegisterPacketHandlers();
 	}
 	
-	private void AddPlayer(bool isLocal, PlayerDataModel playerData, PlayerMoveModel playerMoveModel)
+	private void AddPlayer(bool isLocal, PlayerDataModel playerData)
 	{
 		if (_playerScene.Instantiate() is not Player player) return;
 		
 		player.IsLocal = isLocal;
 		
 		player.PlayerDataModel = playerData;
-		player.PlayerMoveModel = playerMoveModel;
 		
 		_players.Add(player);
 		
@@ -47,13 +47,13 @@ public partial class Players : Node, IPacketHandler
 		_players.Remove(player);
 	}
 	
-	private void PlayerMove(PlayerMoveModel playerMove)
+	private void PlayerMove(Position playerMove)
 	{
 		var player = _players.Find(x => x.PlayerDataModel.Index == playerMove.Index);
 		
 		if (player == null) return;
 
-		player.PlayerMoveModel.SetValues(playerMove);
+		player.PlayerDataModel.Position.SetValues(playerMove);
 		
 		player.CallDeferred(nameof(player.UpdatePlayerMove));
 	}
@@ -94,16 +94,15 @@ public partial class Players : Node, IPacketHandler
 
 		foreach (var playerDataModel in obj.PlayersDataModels)
 		{
-			var playerMoveModel = obj.PlayersMoveModels.Find(x => x.Index == playerDataModel.Index);
 			var isLocal = playerDataModel.Index == localIndex;
-			AddPlayer(isLocal, playerDataModel, playerMoveModel);
+			AddPlayer(isLocal, playerDataModel);
 		}
 	}
 	private void ServerPlayerMove(SPlayerMove obj)
 	{
-		GD.Print(obj.PlayerMoveModel);
+		GD.Print(obj.Position);
 		
-		PlayerMove(obj.PlayerMoveModel);
+		PlayerMove(obj.Position);
 	}
 
 	private void ServerPlayerAttack(SPlayerAttack attack)

@@ -4,52 +4,52 @@ using Core.Game.Models.Vectors;
 
 namespace Core.Game.Models.Player;
 
-public class Position
+public class Position : VectorTwo
 {
-    public int Id { get; set; }
-    public float X { get; set; }
-    public float Y { get; set; }
     public Direction Direction { get; set; } = Direction.Right;
     
     [ForeignKey("PlayerModelId")]
     public int PlayerModelId { get; set; }
     
     public PlayerModel PlayerModel { get; set; }
-
-    public Position(Vector2C vector2C)
-    {
-        X = vector2C.X;
-        Y = vector2C.Y;
-    }
     
-    public Position(float x, float y)
+    [NotMapped] public int Index { get; set; }
+    [NotMapped] public bool IsMoving { get; set; } = false;
+    [NotMapped] public VectorTwo Velocity { get; set; } = VectorTwo.Zero;
+    
+    public Position(float x, float y, Direction direction)
     {
         X = x;
         Y = y;
+        Direction = direction;
     }
 
     public Position() { }
     
-    public void SetPosition(Position position)
+    public void SetValues(Position position)
     {
         X = position.X;
         Y = position.Y;
         Direction = position.Direction;
+        Index = position.Index;
+        IsMoving = position.IsMoving;
+        Velocity = position.Velocity;
     }
     
-    public void SetPosition(float x, float y)
+    public void SetValues(float x, float y, Direction direction)
     {
         X = x;
         Y = y;
+        Direction = direction;
     }
     
-    public override string ToString()
+    /*public override string ToString()
     {
         return $"X: {X}, Y: {Y}";
-    }
+    }*/
     
-    public float DistanceTo(Position other)
+    /*public float DistanceTo(Position other)
     {
         return (float)Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
-    }
+    }*/
 }

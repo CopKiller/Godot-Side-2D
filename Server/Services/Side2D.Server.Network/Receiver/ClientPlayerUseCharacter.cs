@@ -33,7 +33,6 @@ public partial class ServerPacketProcessor
         player.TempPlayer.ChangeState(ClientState.Game, obj.SlotNumber);
             
         player.PlayerDataModel = new PlayerDataModel(netPeer.Id, playerModel);
-        player.PlayerMoveModel = new PlayerMoveModel(netPeer.Id, playerModel);
         
         // Services
         physicService.AddPlayerPhysic(player.Index, playerModel);
@@ -51,7 +50,6 @@ public partial class ServerPacketProcessor
         // Cria o pacote com os dados do jogador
         var packet = new SPlayerData();
         packet.PlayersDataModels.Add(player.PlayerDataModel);
-        packet.PlayersMoveModels.Add(player.PlayerMoveModel);
         // Envia os dados do jogador para todos os outros jogadores
         SendDataToAllBut(netPeer, packet, ClientState.Game, DeliveryMethod.ReliableOrdered);
         
@@ -61,7 +59,6 @@ public partial class ServerPacketProcessor
             .Where(x => x.TempPlayer.ClientState == ClientState.Game && x.Index != player.Index);
         var serverClients = otherPlayers as ServerClient[] ?? otherPlayers.ToArray();
         packet.PlayersDataModels.AddRange(serverClients.Select(x => x.PlayerDataModel));
-        packet.PlayersMoveModels.AddRange(serverClients.Select(x => x.PlayerMoveModel));
         SendDataTo(netPeer, packet, DeliveryMethod.ReliableOrdered);
         
         // Envia uma atualização de vitals, pra carregar na game bars

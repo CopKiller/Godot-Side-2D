@@ -19,7 +19,6 @@ namespace Side2D.Server.Network
         public IAttributePlayer AttributePlayer { get; private set; }
         
         public NetPeer Peer { get; }
-        public PlayerMoveModel PlayerMoveModel { get; set; }
         public PlayerDataModel PlayerDataModel { get; set; }
         
         private readonly ServerPacketProcessor? _serverPacketProcessor;
@@ -68,8 +67,6 @@ namespace Side2D.Server.Network
             
             // Clear the player data model
             PlayerDataModel.Clear();
-            // Clear the player move model
-            PlayerMoveModel.Clear();
         }
 
     }

@@ -13,5 +13,4 @@ public interface IPhysicService : ISingleService
     void AddPlayerPhysic(int index, PlayerModel playerModel);
     void RemovePlayerPhysic(int index);
     IPhysicPlayer? GetPlayerPhysic(int index);
-    void CheckPlayerAttack(int index, int range);
 }

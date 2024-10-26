@@ -61,7 +61,7 @@ public class PhysicService(ICombatService combatService) : IPhysicService
     
     public void AddPlayerPhysic(int index, PlayerModel playerModel)
     {
-        var physicPlayer = new PhysicPlayer(index, playerModel, NetworkEvents, CheckPlayerAttack);
+        var physicPlayer = new PhysicPlayer(index, playerModel, NetworkEvents, this);
         
         PhysicEntities.Add(physicPlayer);
         PhysicPlayers.Add(index, physicPlayer);
@@ -80,31 +80,13 @@ public class PhysicService(ICombatService combatService) : IPhysicService
         return PhysicPlayers.GetValueOrDefault(index);
     }
     
-    public void CheckPlayerAttack(int index, int range)
+    public List<IPhysicPlayer?> GetPlayersInRadius(Position position, int range)
     {
-        var physicPlayer = PhysicPlayers.GetValueOrDefault(index);
-        
-        if (physicPlayer == null) return;
-        
-        var position = physicPlayer.GetPosition();
-        // Buscar jogadores no range de ataque
-        var playersInRadius = GetPlayersInRadius(position, range);
-        
-        foreach (var player in playersInRadius)
-        {
-            if (player == null) continue;
-            if (player.Index == index) continue;
-            
-            combatService.ReceivePlayerAttack(index, player.Index);
-
-            var direction = physicPlayer.GetPosition().Direction;
-            player.ReceiveImpact(32, direction);
-            
-        }
+        return PhysicPlayers.Values.Where(player => player?.DistanceTo(position) <= range).ToList();
     }
     
-    private List<IPhysicPlayer?> GetPlayersInRadius(Position position, int radius)
+    public void NotifyCombatService(int attackerIndex, int targetIndex)
     {
-        return PhysicPlayers.Values.Where(player => player?.DistanceTo(position) <= radius).ToList();
+        combatService.NotifyReceivePlayerAttack(attackerIndex, targetIndex);
     }
 }

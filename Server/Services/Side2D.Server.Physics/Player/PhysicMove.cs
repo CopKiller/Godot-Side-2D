@@ -7,39 +7,37 @@ using Side2D.Server.Physics.Entity;
 
 namespace Side2D.Server.Physics.Player;
 
-public class PhysicMove(Position position) : PhysicEntity, IPhysicMove
+public partial class PhysicPlayer
 {
-    private long _lastTick = 0;
     private const double MovementMaxSpeed = 1.2; // 1.2 px per tick
-    public long LastMovementTick { get; private set; } = 0;
+    private long LastMovementTick { get; set; } = 0;
 
-    public override void Update(long currentTick)
+    public bool CanMove(Position newPosition, long currentTick)
     {
-        _lastTick = currentTick;
-    }
+        // Verificar se o tick atual é válido
+        if (currentTick <= LastMovementTick)
+            return false; // Evita movimentos repetidos ou fora de ordem
 
-    public bool CanMove(Position newPosition)
-    {
-        if (_lastTick <= LastMovementTick)
-            return true;
-        
-        var timeElapsed = _lastTick - LastMovementTick;
-        var distance = newPosition.DistanceTo(position);
+        // Calcular o tempo decorrido em ticks
+        var timeElapsed = currentTick - LastMovementTick;
+
+        // Calcular a distância entre a posição atual e a nova posição
+        var distance = newPosition.DistanceTo(playerModel.Position);
+
+        // Calcular a distância máxima permitida com base no tempo decorrido
         var maxDistanceAllowed = timeElapsed * MovementMaxSpeed;
-        
+
+        // Verificar se a distância excede o permitido
         if (distance > maxDistanceAllowed)
         {
-            // Movement too fast
+            // Movimento muito rápido
             return false;
         }
-        
-        LastMovementTick = _lastTick;
+
+        // Atualizar o tick do último movimento e a posição do jogador
+        LastMovementTick = currentTick;
+        playerModel.Position.SetValues(newPosition);
 
         return true;
-    }
-    
-    public override void Dispose()
-    {
-        LastMovementTick = 0;
     }
 }

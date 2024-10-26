@@ -19,7 +19,6 @@ public partial class Player : CharacterBody2D
 	
 	private ClientPlayer _clientPlayer;
 	public PlayerDataModel PlayerDataModel;
-	public PlayerMoveModel PlayerMoveModel;
 	
 	private readonly CPlayerMove _cPlayerMove = new();
 	private readonly CPlayerAttack _cPlayerAttack = new();
@@ -132,20 +131,20 @@ public partial class Player : CharacterBody2D
 		if (!IsLocal) return;
 
 		// Checar mudanças pequenas também
-		var hasPositionChanged = Position != new Vector2(PlayerMoveModel.Position.X, PlayerMoveModel.Position.Y);
-		var hasVelocityChanged = _velocity != new Vector2(PlayerMoveModel.Velocity.X, PlayerMoveModel.Velocity.Y);
+		var hasPositionChanged = Position != new Vector2(PlayerDataModel.Position.X, PlayerDataModel.Position.Y);
+		var hasVelocityChanged = _velocity != new Vector2(PlayerDataModel.Position.Velocity.X, PlayerDataModel.Position.Velocity.Y);
 
-		if (!hasPositionChanged && !hasVelocityChanged && _direction == PlayerMoveModel.Position.Direction &&
-		    _isMoving == PlayerMoveModel.IsMoving) return;
+		if (!hasPositionChanged && !hasVelocityChanged && _direction == PlayerDataModel.Position.Direction &&
+		    _isMoving == PlayerDataModel.Position.IsMoving) return;
 		
-		// Atualiza PlayerMoveModel
-		PlayerMoveModel.Velocity.SetValues(_velocity.X, _velocity.Y);
-		PlayerMoveModel.Position.SetPosition(Position.X, Position.Y);
-		PlayerMoveModel.Position.Direction = _direction;
-		PlayerMoveModel.IsMoving = _isMoving;
+		// Atualiza Position
+		PlayerDataModel.Position.Velocity.SetValues(_velocity.X, _velocity.Y);
+		PlayerDataModel.Position.SetValues(Position.X, Position.Y);
+		PlayerDataModel.Position.Direction = _direction;
+		PlayerDataModel.Position.IsMoving = _isMoving;
 
 		// Envia a atualização
-		_cPlayerMove.PlayerMoveModel = PlayerMoveModel;
+		_cPlayerMove.Position = PlayerDataModel.Position;
 		_clientPlayer.SendData(_cPlayerMove, DeliveryMethod.Sequenced);
 	}
 	
@@ -208,18 +207,19 @@ public partial class Player : CharacterBody2D
 	public void UpdatePlayerMove()
 	{
 		Position = Loaded 
-			? Position.Lerp(new Vector2(PlayerMoveModel.Position.X, PlayerMoveModel.Position.Y), 0.1f) 
-			: new Vector2(PlayerMoveModel.Position.X, PlayerMoveModel.Position.Y);
+			? Position.Lerp(new Vector2(PlayerDataModel.Position.X, PlayerDataModel.Position.Y), 0.1f) 
+			: new Vector2(PlayerDataModel.Position.X, PlayerDataModel.Position.Y);
 
-		_velocity = new Vector2(PlayerMoveModel.Velocity.X, PlayerMoveModel.Velocity.Y);
-		_direction = PlayerMoveModel.Position.Direction;
-		_isMoving = PlayerMoveModel.IsMoving;
+		_velocity = new Vector2(PlayerDataModel.Position.Velocity.X, PlayerDataModel.Position.Velocity.Y);
+		_direction = PlayerDataModel.Position.Direction;
+		_isMoving = PlayerDataModel.Position.IsMoving;
 	}
 	
 	public void UpdateImpact(Vector2 impact)
 	{
-		Velocity += impact;
-		MoveAndCollide(Velocity);
+		PlayerDataModel.Position?.SetValues(impact.X, impact.Y);
+		
+		Position = impact;
 	}
 	
 	private void UpdatePlayerData()

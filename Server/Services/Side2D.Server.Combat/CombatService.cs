@@ -14,7 +14,7 @@ public class CombatService(IAttributeService attributeService) : ICombatService
     
     private int _defaultUpdateInterval = 1;
     
-    public void ReceivePlayerAttack(int attackerIndex, int victimIndex)
+    public void NotifyReceivePlayerAttack(int attackerIndex, int victimIndex)
     {
         Console.WriteLine($"Player {attackerIndex} attacked player {victimIndex}");
         

@@ -7,10 +7,8 @@ namespace Core.Game.Interfaces.Physic.Player;
 
 public interface IPhysicPlayer : IPhysicEntity
 {
-    int Index { get; }
-    bool MovePlayer(Position position);
-    bool Attack();
+    bool PlayerMove(Position position);
+    bool PlayerAttack();
     float DistanceTo(Position position);
     Position GetPosition();
-    void ReceiveImpact(int range, Direction direction);
 }

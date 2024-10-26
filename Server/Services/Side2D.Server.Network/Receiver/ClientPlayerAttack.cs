@@ -19,7 +19,7 @@ public partial class ServerPacketProcessor
         
         if (playerPhysic == null) return;
         
-        if (!playerPhysic.Attack())
+        if (!playerPhysic.PlayerAttack())
         {
             ServerAlert(netPeer, "Invalid attack!");
         }

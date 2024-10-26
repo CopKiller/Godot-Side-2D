@@ -6,5 +6,7 @@ namespace Core.Game.Interfaces.Physic;
 
 public interface IPhysicEntity : IEntity
 {
-    void Move(Vector2C newPosition);
+    int Index { get; }
+    void Move(VectorTwo newPosition, bool isServer = false);
+    void ApplyKnockback(Position attackerPosition, float impactForce);
 }
