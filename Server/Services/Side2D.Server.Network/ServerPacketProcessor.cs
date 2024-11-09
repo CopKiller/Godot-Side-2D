@@ -58,6 +58,7 @@ public partial class ServerPacketProcessor(
     {
         //attributeService.NetworkEvents.ServerUpdateAttributes += ServerUpdateAttributes;
         attributeService.NetworkEvents.OnServerUpdateVitals += ServerUpdateVitals;
+        attributeService.NetworkEvents.OnServerVitalsNotify += ServerVitalsNotification;
         physicService.NetworkEvents.OnServerUpdatePosition += ServerUpdatePosition;
         physicService.NetworkEvents.OnServerUpdateKnockback += ServerUpdateKnockback;
         tempDataService.NetworkEvents.OnDbSavePlayer += playerRepository.UpdatePlayerAsync;

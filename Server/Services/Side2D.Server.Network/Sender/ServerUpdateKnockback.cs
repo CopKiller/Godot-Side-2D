@@ -19,7 +19,7 @@ public partial class ServerPacketProcessor
         
         if (player.TempPlayer.ClientState != ClientState.Game) return;
         
-        var packet = SPlayerImpact.Create(index, newPosition);
+        var packet = SUpdateKnockback.Create(index, newPosition);
         
         if (includeSelf)
             SendDataToAll(packet, ClientState.Game, DeliveryMethod.ReliableSequenced);

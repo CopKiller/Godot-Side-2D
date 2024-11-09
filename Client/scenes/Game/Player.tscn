@@ -4,10 +4,12 @@
 [ext_resource type="SpriteFrames" uid="uid://cx6ewfmcm3q6w" path="res://scenes/Game/Vocation/Knight/male.tres" id="2_esc38"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_3rior"]
-height = 32.0
+radius = 12.0
+height = 54.0
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 2
+collision_mask = 3
 script = ExtResource("1_e116c")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -16,7 +18,7 @@ sprite_frames = ExtResource("2_esc38")
 animation = &"idle_right"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, 15)
+position = Vector2(0, 5)
 scale = Vector2(1.5, 1.5)
 shape = SubResource("CapsuleShape2D_3rior")
 

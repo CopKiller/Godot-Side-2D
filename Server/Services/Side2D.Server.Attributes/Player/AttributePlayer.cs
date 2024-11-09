@@ -23,6 +23,8 @@ public class AttributePlayer(int index, Attributes attributes, Vitals vitals, IN
         vitals.TakeDamage(damage);
         
         networkEvents.ServerUpdateVitals(Index);
+        
+        networkEvents.ServerVitalsNotify(Index, VitalType.Health, -damage);
     }
     
     public double GetDamage()

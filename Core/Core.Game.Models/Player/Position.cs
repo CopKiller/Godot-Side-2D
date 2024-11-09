@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations.Schema;
 using Core.Game.Models.Enum;
 using Core.Game.Models.Vectors;
+using Microsoft.Xna.Framework;
 
 namespace Core.Game.Models.Player;
 
@@ -10,7 +11,6 @@ public class Position : VectorTwo
     
     [ForeignKey("PlayerModelId")]
     public int PlayerModelId { get; set; }
-    
     public PlayerModel PlayerModel { get; set; }
     
     [NotMapped] public int Index { get; set; }
@@ -36,20 +36,14 @@ public class Position : VectorTwo
         Velocity = position.Velocity;
     }
     
-    public void SetValues(float x, float y, Direction direction)
+    public void SetValues(Vector2 position)
     {
-        X = x;
-        Y = y;
-        Direction = direction;
+        X = position.X;
+        Y = position.Y;
     }
-    
-    /*public override string ToString()
+
+    public Vector2 GetVector2()
     {
-        return $"X: {X}, Y: {Y}";
-    }*/
-    
-    /*public float DistanceTo(Position other)
-    {
-        return (float)Math.Sqrt(Math.Pow(X - other.X, 2) + Math.Pow(Y - other.Y, 2));
-    }*/
+        return new Vector2(X, Y);
+    }
 }

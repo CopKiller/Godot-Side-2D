@@ -6,4 +6,8 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Infrastructure\VelcroPhysics.Models\VelcroPhysics.Models.csproj" />
+    </ItemGroup>
+
 </Project>

@@ -4,3 +4,6 @@
 [submodule "Infrastructure/LiteNetLib"]
 	path = Infrastructure/LiteNetLib
 	url = https://github.com/CopKiller/LiteNetLib
+[submodule "Infrastructure/VelcroPhysics"]
+	path = Infrastructure/VelcroPhysics
+	url = https://github.com/Genbox/VelcroPhysics

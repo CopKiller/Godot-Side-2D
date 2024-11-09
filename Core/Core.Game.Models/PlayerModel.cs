@@ -3,9 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using Core.Game.Models.Enum;
 using Core.Game.Models.Interfaces;
 using Core.Game.Models.Player;
-using Core.Game.Models.Player.NewPlayer;
 using Core.Game.Models.Validation;
-using Core.Game.Models.Vectors;
 
 namespace Core.Game.Models;
 
@@ -20,12 +18,12 @@ public class PlayerModel : IEntity
         Gender = gender;
         
         // Set default values based on the vocation
-        var playerValues = new PlayerValues(vocation);
+        /* var playerValues = new PlayerValues(vocation);
         Position = playerValues.Position;
         Vitals = playerValues.Vitals;
         Attributes = playerValues.Attributes;
         JumpVelocity = playerValues.JumpVelocity;
-        Speed = playerValues.Speed;
+        Speed = playerValues.Speed; */
     }
     
     [NotMapped] public int Index { get; set; }

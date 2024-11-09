@@ -5,17 +5,17 @@ using LiteNetLib.Utils;
 
 namespace Infrastructure.Network.Packet.Server
 {
-    public class SPlayerImpact
+    public class SUpdateKnockback
     {
         public int Index { get; set; }
-        public VectorTwo ImpactVelocity { get; set; }
+        public VectorTwo Position { get; set; }
         
-        public static SPlayerImpact Create(int index, VectorTwo impactVelocity)
+        public static SUpdateKnockback Create(int index, VectorTwo position)
         {
-            return new SPlayerImpact
+            return new SUpdateKnockback
             {
                 Index = index,
-                ImpactVelocity = impactVelocity
+                Position = position
             };
         }
     }

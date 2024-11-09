@@ -3,21 +3,20 @@ using Core.Game.Models.Player;
 using Infrastructure.Logger;
 using Infrastructure.Network.Packet.Server;
 using LiteNetLib;
+using Microsoft.Xna.Framework;
 
 namespace Side2D.Server.Network;
 
 public partial class ServerPacketProcessor
 {
-    public void ServerUpdatePosition(int index, EntityType type, bool includeSelf = false)
+    public void ServerUpdatePosition(int index, EntityType type, Vector2 position, Vector2 velocity, 
+        int rotation, bool includeSelf = false)
     {
-        
-        if (type != EntityType.Player) return;
-        
         players.TryGetValue(index, out var player);
         
         if (player == null) return;
         
-        var packet = SPlayerMove.Create(player.PlayerDataModel.Position);
+        var packet = SUpdateBody.Create(index, type, position, velocity, rotation);
         
         if (includeSelf)
             SendDataToAll(packet, ClientState.Game, DeliveryMethod.Sequenced);

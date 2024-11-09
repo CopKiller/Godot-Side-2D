@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.Xna.Framework;
 
 namespace Core.Game.Models.Vectors;
 
@@ -119,6 +120,12 @@ public class VectorTwo
     }
     
     public void SetValues(VectorTwo vector)
+    {
+        X = vector.X;
+        Y = vector.Y;
+    }
+    
+    public void SetValues(Vector2 vector)
     {
         X = vector.X;
         Y = vector.Y;
