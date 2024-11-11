@@ -1,8 +1,10 @@
-﻿using Core.Game.Models.Enum;
+﻿using Core.Game.Interfaces.Physic.Player;
+using Core.Game.Models.Enum;
 using Infrastructure.Network.CustomDataSerializable;
 using Infrastructure.Network.Packet.Client;
 using Infrastructure.Network.Packet.Server;
 using LiteNetLib;
+using Microsoft.Xna.Framework;
 
 namespace Side2D.Server.Network;
 
@@ -35,12 +37,12 @@ public partial class ServerPacketProcessor
         player.PlayerDataModel = new PlayerDataModel(netPeer.Id, playerModel);
         
         // Services
-        physicService.AddPlayerPhysic(player.Index, playerModel);
+        physicService.AddPhysicEntity(1, player.Index, EntityType.Player, new Vector2(playerModel.Position.X, playerModel.Position.Y));
         attributeService.AddPlayerAttribute(player.Index, playerModel);
         combatService.AddPlayerCombat(player.Index, playerModel);
         
         // Get
-        var playerPhysic = physicService.GetPlayerPhysic(player.Index);
+        var playerPhysic = physicService.GetPhysicEntity(1, player.Index, EntityType.Player) as IPhysicPlayer;
         var playerAttribute = attributeService.GetPlayerAttribute(player.Index);
         //var playerCombat = combatService.GetPlayerCombat...
         player.AddPlayerServices(playerPhysic, playerAttribute);

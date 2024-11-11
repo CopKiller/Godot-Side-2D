@@ -3,27 +3,12 @@ using Core.Game.Models.Enum;
 using Core.Game.Models.Player;
 using Core.Game.Models.Vectors;
 using LiteNetLib.Utils;
+using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Network.CustomDataSerializable.Extension
 {
     public static class NetSerializerExtension
     {
-        public static void Put(this NetDataWriter writer, VectorTwo vector)
-        {
-            writer.Put(vector.X);
-            writer.Put(vector.Y);
-        }
-
-        public static VectorTwo GetVector2(this NetDataReader reader)
-        {
-            var vector2 = new VectorTwo
-            {
-                X = reader.GetFloat(),
-                Y = reader.GetFloat()
-            };
-            return vector2;
-        }
-        
         public static void Put(this NetDataWriter writer, Vitals val)
         {
             writer.Put(val.Health);
@@ -86,6 +71,22 @@ namespace Infrastructure.Network.CustomDataSerializable.Extension
                 Index = reader.GetInt(),
                 IsMoving = reader.GetBool(),
                 Velocity = reader.GetVector2()
+            };
+            return vector2;
+        }
+        
+        public static void Put(this NetDataWriter writer, Vector2 vector)
+        {
+            writer.Put(vector.X);
+            writer.Put(vector.Y);
+        }
+
+        public static Vector2 GetVector2(this NetDataReader reader)
+        {
+            var vector2 = new Vector2()
+            {
+                X = reader.GetFloat(),
+                Y = reader.GetFloat(),
             };
             return vector2;
         }

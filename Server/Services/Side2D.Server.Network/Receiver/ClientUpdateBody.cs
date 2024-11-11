@@ -8,7 +8,7 @@ namespace Side2D.Server.Network;
 
 public partial class ServerPacketProcessor
 {
-    public void ClientPlayerMove(CPlayerMove obj, NetPeer netPeer)
+    public void ClientUpdateBody(CPlayerMove obj, NetPeer netPeer)
     {
         players.TryGetValue(netPeer.Id, out var player);
 
@@ -16,9 +16,6 @@ public partial class ServerPacketProcessor
             
         if (player.TempPlayer.ClientState != ClientState.Game) return;
         
-        if ( !player.PhysicPlayer.PlayerMove(obj.Position))
-        {
-            return;
-        }
+        player.PhysicPlayer.Move(obj.Velocity);
     }
 }

@@ -22,35 +22,24 @@ namespace Side2D.Server.Physics;
 public class PhysicService(ICombatService combatService) : IPhysicService
 {
     // TODO: Implement physics service
-    
     public int DefaultUpdateInterval { get; set; } = 1;
     public INetworkPhysic NetworkEvents { get; } = new NetworkPhysic();
-    
-    private Dictionary<int, IPhysicWorld> Worlds { get; } = new();
+    private Dictionary<int, PhysicWorld> Worlds { get; } = new();
     
     private float _lastUpdateTime;
     
-    public void Register()
-    {
-        
-    }
+    public void Register() { }
 
-    public void Start()
-    {
-        
-    }
+    public void Start() { }
 
-    public void Stop()
-    {
-        Dispose();
-    }
-
+    public void Stop() { Dispose(); }
+    
     public void Restart()
     {
         Dispose();
         Start();
     }
-
+    
     public void Update(long currentTick)
     {
         // Calcula o deltaTime com base no tempo decorrido
@@ -62,44 +51,43 @@ public class PhysicService(ICombatService combatService) : IPhysicService
         {
             value.Step(deltaTime);
         }
-        
+
         _lastUpdateTime = currentTime;
     }
     
     public void AddWorldPhysic(int index, Vector2 gravity, List<CustomVertices> vertices, int density)
     {
-        
-        var verticesList = new List<Vertices>();
-        foreach (var customVertices in vertices)
-        {
-            verticesList.Add(new Vertices(customVertices));
-        }
-        
+        var verticesList = vertices.Select(customVertices => new Vertices(customVertices)).ToList();
+
         Worlds.Add(index, new PhysicWorld(index, gravity, verticesList, density));
     }
 
-    public void AddWorldPhysic(int index, Vector2 gravity)
+    public void AddWorldPhysic(int worldIndex, Vector2 gravity)
     {
+        var world = new PhysicWorld(worldIndex, gravity);
         
+        Worlds.Add(worldIndex, world);
     }
     
-    public void AddPhysicToWorld(int index, List<CustomVertices> vertices, int density)
+    public void AddPhysicToWorld(int worldIndex, List<CustomVertices> vertices, int density)
     {
+        var verticesList = vertices.Select(customVertices => new Vertices(customVertices)).ToList();
         
+        Worlds[worldIndex].AddWorldPhysic(verticesList, density);
     }
 
-    public void RemoveWorldPhysic(int index)
+    public void RemoveWorldPhysic(int worldIndex)
     {
-        
+        Worlds[worldIndex].RemoveWorldPhysic();
     }
 
-    public void AddPhysicEntity(int index, int worldIndex, EntityType type, Vector2 position)
+    public void AddPhysicEntity(int worldIndex, int entityIndex, EntityType type, Vector2 position)
     {
         switch (type)
         {
             case EntityType.Player:
             {
-                var result = Worlds[worldIndex].AddPhysicEntity(index, position);
+                var result = Worlds[worldIndex].AddPhysicEntity(entityIndex, position);
             
                 if (!result)
                 {
@@ -110,7 +98,7 @@ public class PhysicService(ICombatService combatService) : IPhysicService
             }
             case EntityType.Monster:
             {
-                var result = Worlds[worldIndex].AddPhysicEntity(index, position);
+                var result = Worlds[worldIndex].AddPhysicEntity(entityIndex, position);
             
                 if (!result)
                 {
@@ -126,36 +114,31 @@ public class PhysicService(ICombatService combatService) : IPhysicService
         }
     }
 
-    public void RemovePhysicEntity(int index, EntityType type)
-    {
-        
-    }
-
-    public IPhysicEntity? GetPhysicEntity(int worldIndex, int entityIndex, EntityType type)
+    public bool RemovePhysicEntity(int worldIndex, int entityIndex, EntityType type)
     {
         Worlds.TryGetValue(worldIndex, out var world);
         
         if (world == null)
         {
-            return null;
+            throw new Exception("Failed to remove physic entity from world, check if the world exists.");
         }
         
-        if (world is PhysicWorld physicWorld)
-        {
-            return physicWorld.GetPhysicEntity(entityIndex);
-        }
-        
-        return null;
+        return world.RemovePhysicEntity(entityIndex);
     }
-    
+
+    public IPhysicEntity? GetPhysicEntity(int worldIndex, int entityIndex, EntityType type)
+    {
+        Worlds.TryGetValue(worldIndex, out var world);
+
+        return world?.GetPhysicEntity(entityIndex);
+    }
+
+    /// <summary>Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.</summary>
     public void Dispose()
     {
         foreach (var value in Worlds.Values)
         {
-            if (value is PhysicWorld disposable)
-            {
-                disposable.RemoveWorldPhysic();
-            }
+            value.RemoveWorldPhysic();
         }
         
         Worlds.Clear();

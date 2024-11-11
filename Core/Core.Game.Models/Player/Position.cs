@@ -15,7 +15,7 @@ public class Position : VectorTwo
     
     [NotMapped] public int Index { get; set; }
     [NotMapped] public bool IsMoving { get; set; } = false;
-    [NotMapped] public VectorTwo Velocity { get; set; } = VectorTwo.Zero;
+    [NotMapped] public Vector2 Velocity { get; set; } = Vector2.Zero;
     
     public Position(float x, float y, Direction direction)
     {

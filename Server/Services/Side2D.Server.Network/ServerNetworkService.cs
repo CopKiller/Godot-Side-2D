@@ -118,7 +118,7 @@ public class ServerNetworkService : NetworkService
     {
         Players[peer.Id].Disconnect();
         TempDataService.RemovePlayerData(peer.Id);
-        PhysicService.RemovePlayerPhysic(peer.Id);
+        //PhysicService.RemovePhysicEntity(N, peer.Id, EntityType.Player);
         AttributeService.RemovePlayerAttribute(peer.Id);
         CombatService.RemovePlayerCombat(peer.Id);
         Players.Remove(peer.Id);

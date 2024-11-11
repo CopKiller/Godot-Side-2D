@@ -1,8 +1,5 @@
-using System.Numerics;
 using Core.Game.Interfaces.Physic;
-using Core.Game.Models.Enum;
-using Core.Game.Models.Player;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
+using Microsoft.Xna.Framework;
 
 namespace Core.Game.Interfaces.Services.Physic.World;
 

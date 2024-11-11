@@ -9,7 +9,7 @@ namespace Side2D.Server.Network;
 
 public partial class ServerPacketProcessor
 {
-    public void ServerUpdatePosition(int index, EntityType type, Vector2 position, Vector2 velocity, 
+    public void ServerUpdateBody(int index, EntityType type, Vector2 position, Vector2 velocity, 
         int rotation, bool includeSelf = false)
     {
         players.TryGetValue(index, out var player);

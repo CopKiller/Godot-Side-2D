@@ -14,7 +14,7 @@ using Side2D.Server.Physics.Entity;
 
 namespace Side2D.Server.Physics.Player;
 
-public class PhysicPlayer(int index, Body body) : PhysicEntity (index, EntityType.Player, body) , IPhysicPlayer
+public class PhysicPlayer(int index, Body body) : PhysicEntity (index, EntityType.Player, body), IPhysicPlayer
 {
-    
+    public readonly Body PlayerBody = body;
 }

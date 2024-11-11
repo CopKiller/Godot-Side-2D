@@ -57,7 +57,7 @@ public partial class Players : Node, IPacketHandler
 		if (player == null) return;
 
 		player.PlayerDataModel.Position.SetValues(obj.Position);
-		player.PlayerDataModel.Position.Velocity.SetValues(obj.Velocity);
+		player.PlayerDataModel.Position.Velocity = new Microsoft.Xna.Framework.Vector2(obj.Velocity.X, obj.Velocity.Y);
 		//player.PlayerDataModel.Position.Rotation = obj.Rotation;
 		
 		player.CallDeferred(nameof(player.UpdatePlayerMove));

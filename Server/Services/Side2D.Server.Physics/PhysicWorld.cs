@@ -1,7 +1,5 @@
 ﻿using Core.Game.Interfaces.Physic;
-using Core.Game.Interfaces.Physic.Player;
 using Core.Game.Interfaces.Services.Physic.World;
-using Core.Game.Models.Enum;
 using Genbox.VelcroPhysics.Dynamics;
 using Genbox.VelcroPhysics.Factories;
 using Genbox.VelcroPhysics.Shared;

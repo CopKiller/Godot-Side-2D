@@ -71,7 +71,6 @@ public partial class Player : CharacterBody2D
 	
 	private void ProcessPlayerInput()
 	{
-
 		if (!IsLocal) return;
 		
 		CheckPlayerMove();
@@ -138,13 +137,13 @@ public partial class Player : CharacterBody2D
 		    _isMoving == PlayerDataModel.Position.IsMoving) return;
 		
 		// Atualiza Position
-		PlayerDataModel.Position.Velocity.SetValues(_velocity.X, _velocity.Y);
+		PlayerDataModel.Position.Velocity = new Microsoft.Xna.Framework.Vector2(_velocity.X, _velocity.Y);
 		PlayerDataModel.Position.SetValues(Position.X, Position.Y);
 		PlayerDataModel.Position.Direction = _direction;
 		PlayerDataModel.Position.IsMoving = _isMoving;
 
 		// Envia a atualização
-		_cPlayerMove.Position = PlayerDataModel.Position;
+		_cPlayerMove.Position = new Microsoft.Xna.Framework.Vector2(Position.X, Position.Y);
 		_clientPlayer.SendData(_cPlayerMove, DeliveryMethod.Sequenced);
 	}
 	

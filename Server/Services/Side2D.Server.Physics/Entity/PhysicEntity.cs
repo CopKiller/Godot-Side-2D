@@ -24,7 +24,7 @@ public class PhysicEntity : IPhysicEntity
         Body = body;
     }
     
-    protected void Move(Vector2 velocity, bool isServer = false)
+    public void Move(Vector2 velocity, bool isServer = false)
     {
         Body.ApplyForce(velocity);
     }

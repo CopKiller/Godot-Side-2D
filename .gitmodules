@@ -7,3 +7,6 @@
 [submodule "Infrastructure/VelcroPhysics"]
 	path = Infrastructure/VelcroPhysics
 	url = https://github.com/Genbox/VelcroPhysics
+[submodule "Infrastructure/Aether.Physics"]
+	path = Infrastructure/Aether.Physics
+	url = https://github.com/CopKiller/Aether.Physics2D

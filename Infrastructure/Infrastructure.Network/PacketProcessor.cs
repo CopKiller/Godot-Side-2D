@@ -5,6 +5,7 @@ using LiteNetLib;
 using LiteNetLib.Utils;
 using Infrastructure.Network.CustomDataSerializable;
 using Infrastructure.Network.CustomDataSerializable.Extension;
+using Microsoft.Xna.Framework;
 
 namespace Infrastructure.Network
 {
@@ -17,8 +18,8 @@ namespace Infrastructure.Network
             // Register Types Of Serializations
             this.RegisterNestedType<PlayerDataModel>();
             this.RegisterNestedType<Vitals>(NetSerializerExtension.Put, NetSerializerExtension.GetVitals);
-            this.RegisterNestedType<VectorTwo>(NetSerializerExtension.Put, NetSerializerExtension.GetVector2);
             this.RegisterNestedType<Position>(NetSerializerExtension.Put, NetSerializerExtension.GetPosition);
+            this.RegisterNestedType<Vector2>(NetSerializerExtension.Put, NetSerializerExtension.GetVector2);
         }
     }
 }

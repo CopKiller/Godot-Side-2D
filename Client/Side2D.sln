@@ -54,6 +54,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Data", "..\I
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VelcroPhysics.Models", "..\Infrastructure\VelcroPhysics.Models\VelcroPhysics.Models.csproj", "{BEE18D28-B150-45BD-A64D-E5240023A042}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aether.Physics2D", "..\Infrastructure\Aether.Physics\Physics2D\Aether.Physics2D.csproj", "{FF178597-6727-4FF7-98B1-EBFC9A18EDF0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 	Debug|Any CPU = Debug|Any CPU
@@ -187,6 +189,12 @@ Global
 		{BEE18D28-B150-45BD-A64D-E5240023A042}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
 		{BEE18D28-B150-45BD-A64D-E5240023A042}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
 		{BEE18D28-B150-45BD-A64D-E5240023A042}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{FF178597-6727-4FF7-98B1-EBFC9A18EDF0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF178597-6727-4FF7-98B1-EBFC9A18EDF0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FF178597-6727-4FF7-98B1-EBFC9A18EDF0}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF178597-6727-4FF7-98B1-EBFC9A18EDF0}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{FF178597-6727-4FF7-98B1-EBFC9A18EDF0}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{FF178597-6727-4FF7-98B1-EBFC9A18EDF0}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B58098CF-A3B8-4721-9CB2-E151386034A1} = {4ED8C8FA-D7FA-45EE-AA13-46B01ACEAD7E}
@@ -212,5 +220,6 @@ Global
 		{9CE2DA16-D568-4E3F-9A23-27F0249DF120} = {518007E6-3067-4310-A5A1-6AB51AFBF0C8}
 		{0FDD55E7-4E43-4E54-BF39-0383B60291A8} = {2FE82369-702B-4AF4-BBE5-8FB7CC54D0D0}
 		{BEE18D28-B150-45BD-A64D-E5240023A042} = {518007E6-3067-4310-A5A1-6AB51AFBF0C8}
+		{FF178597-6727-4FF7-98B1-EBFC9A18EDF0} = {518007E6-3067-4310-A5A1-6AB51AFBF0C8}
 	EndGlobalSection
 EndGlobal

@@ -13,11 +13,11 @@ public interface IPhysicService : ISingleService
 {
     INetworkPhysic NetworkEvents { get; }
     int DefaultUpdateInterval { get; set; }
-    void AddWorldPhysic(int index, Vector2 gravity, List<CustomVertices> vertices, int density);
-    void AddWorldPhysic(int index, Vector2 gravity);
-    void AddPhysicToWorld(int index, List<CustomVertices> vertices, int density);
-    void RemoveWorldPhysic(int index);
-    void AddPhysicEntity(int index, int worldIndex, EntityType type, Vector2 position);
-    void RemovePhysicEntity(int index, EntityType type);
+    void AddWorldPhysic(int worldIndex, Vector2 gravity, List<CustomVertices> vertices, int density);
+    void AddWorldPhysic(int worldIndex, Vector2 gravity);
+    void AddPhysicToWorld(int worldIndex, List<CustomVertices> vertices, int density);
+    void RemoveWorldPhysic(int worldIndex);
+    void AddPhysicEntity(int worldIndex, int entityIndex, EntityType type, Vector2 position);
+    bool RemovePhysicEntity(int worldIndex, int entityIndex, EntityType type);
     IPhysicEntity? GetPhysicEntity(int worldIndex, int entityIndex, EntityType type);
 }

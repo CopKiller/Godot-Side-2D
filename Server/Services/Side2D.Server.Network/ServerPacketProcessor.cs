@@ -37,7 +37,7 @@ public partial class ServerPacketProcessor(
     {
         // Register to receive packets  
         Subscribes<CPlayerLogin>(ClientLogin);
-        Subscribes<CPlayerMove>(ClientPlayerMove);
+        Subscribes<CPlayerMove>(ClientUpdateBody);
         Subscribes<CAccountRegister>(ClientAccountRegister);
         Subscribes<CCreateCharacter>(ClientCreateCharacter);
         Subscribes<CPlayerUseCharacter>(ClientPlayerUseCharacter);
@@ -59,11 +59,9 @@ public partial class ServerPacketProcessor(
         //attributeService.NetworkEvents.ServerUpdateAttributes += ServerUpdateAttributes;
         attributeService.NetworkEvents.OnServerUpdateVitals += ServerUpdateVitals;
         attributeService.NetworkEvents.OnServerVitalsNotify += ServerVitalsNotification;
-        physicService.NetworkEvents.OnServerUpdatePosition += ServerUpdatePosition;
-        physicService.NetworkEvents.OnServerUpdateKnockback += ServerUpdateKnockback;
+        physicService.NetworkEvents.OnServerUpdateBody += ServerUpdateBody;
         tempDataService.NetworkEvents.OnDbSavePlayer += playerRepository.UpdatePlayerAsync;
         tempDataService.NetworkEvents.OnServerClientState += ServerClientState;
-        physicService.NetworkEvents.OnServerUpdateAttack += ServerUpdateAttack;
     }
 
     public void SendDataToAllBut<T>(NetPeer excludePeer, T packet, DeliveryMethod deliveryMethod = DeliveryMethod.ReliableOrdered) where T : class, new()

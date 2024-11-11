@@ -12,16 +12,16 @@ public partial class ServerPacketProcessor
         players.TryGetValue(netPeer.Id, out var player);
 
         if (player == null) return;
-            
+        
         if (player.TempPlayer.ClientState != ClientState.Game) return;
         
-        var playerPhysic = physicService.GetPlayerPhysic(player.Index);
+        /*var playerPhysic = physicService.GetPlayerPhysic(player.Index);
         
         if (playerPhysic == null) return;
         
         if (!playerPhysic.PlayerAttack())
         {
             ServerAlert(netPeer, "Invalid attack!");
-        }
+        }*/
     }
 }

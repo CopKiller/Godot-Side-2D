@@ -1,5 +1,6 @@
 ﻿
 using Core.Game.Interfaces.Attribute.Player;
+using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Physic.Player;
 using Core.Game.Interfaces.TempData.Player;
 using Core.Game.Models;
