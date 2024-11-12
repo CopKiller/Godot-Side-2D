@@ -23,8 +23,25 @@ internal class InitServer
         IsRunning = true;
     }
     
+    public void Stop()
+    {
+        if (!IsRunning) return;
+        
+        ServicesManager?.Stop();
+        
+        Log.Print("Server Stopped...");
+        
+        IsRunning = false;
+    }
+    
+    public void Dispose()
+    {
+        ServicesManager?.Dispose();
+    }
+    
     private void StartLogger()
     {
+        
         Log.LogInstance = new ServerLogger();
         Log.Print("Logs Initialized...");
     }

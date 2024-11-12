@@ -6,9 +6,9 @@ namespace Infrastructure.Logger
 {
     public sealed class Log
     {
-        public static ILogger LogInstance = null;
+        public static ILogger? LogInstance { get; set; }
         
-        public Log(ILogger logger)
+        public Log(ILogger? logger)
         {
             LogInstance = logger;
         }
@@ -20,22 +20,22 @@ namespace Infrastructure.Logger
 
         public static void Print(string message)
         {
-            LogInstance.Print($"{GetTimestamp()}: {message}");
+            LogInstance?.Print($"{GetTimestamp()}: {message}");
         }
 
         public static void PrintInfo(string message)
         {
-            LogInstance.Print($"[INFO]{GetTimestamp()}: {message}");
+            LogInstance?.Print($"[INFO]{GetTimestamp()}: {message}");
         }
 
         public static void PrintWarning(string message)
         {
-            LogInstance.PrintError($"[WARNING]{GetTimestamp()}: {message}");
+            LogInstance?.PrintError($"[WARNING]{GetTimestamp()}: {message}");
         }
 
         public static void PrintError(string message)
         {
-            LogInstance.PrintError($"[ERROR]{GetTimestamp()}: {message}");
+            LogInstance?.PrintError($"[ERROR]{GetTimestamp()}: {message}");
         }
     }
 }

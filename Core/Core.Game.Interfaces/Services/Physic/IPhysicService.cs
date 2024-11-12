@@ -12,7 +12,6 @@ namespace Core.Game.Interfaces.Physic;
 public interface IPhysicService : ISingleService
 {
     INetworkPhysic NetworkEvents { get; }
-    int DefaultUpdateInterval { get; set; }
     void AddWorldPhysic(int worldIndex, Vector2 gravity, List<CustomVertices> vertices, int density);
     void AddWorldPhysic(int worldIndex, Vector2 gravity);
     void AddPhysicToWorld(int worldIndex, List<CustomVertices> vertices, int density);

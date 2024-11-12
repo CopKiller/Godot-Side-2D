@@ -11,24 +11,24 @@ namespace Infrastructure.Data.World.Contract;
     [DataMember] public int StartY { get; set; } = 100;
     [DataMember] public int WorldWidth { get; set; } = 500;
     [DataMember] public int WorldHeight { get; set; } = 500;
-    [DataMember] public List<LayerContractData> layerDataList { get; set; } = [];
-    [IgnoreDataMember] public LayerContractData[,] layerDataArray { get; set; }
+    [DataMember] public List<ILayerContractData> LayerDataList { get; set; } = [];
+    [IgnoreDataMember] private ILayerContractData[,]? LayerDataArray { get; set; }
 
     public void AddLayerData(LayerContractData data)
     {
-        if (layerDataList.FindIndex(x => x.X == data.X && x.Y == data.Y) == -1) layerDataList.Add(data);
+        if (LayerDataList.FindIndex(x => x.X == data.X && x.Y == data.Y) == -1) LayerDataList.Add(data);
     }
 
     public void SyncListToArray() //--> Utilizado no servidor, para otimizar a busca de dados
     {
-        if (layerDataList.Count == 0)
+        if (LayerDataList.Count == 0)
             return;
 
-        var maxX = layerDataList.Max(x => x.X);
-        var maxY = layerDataList.Max(x => x.Y);
+        var maxX = LayerDataList.Max(x => x.X);
+        var maxY = LayerDataList.Max(x => x.Y);
 
-        layerDataArray = new LayerContractData[maxX + 1, maxY + 1];
+        LayerDataArray = new ILayerContractData[maxX + 1, maxY + 1];
 
-        foreach (var data in layerDataList) layerDataArray[data.X, data.Y] = data;
+        foreach (var data in LayerDataList) LayerDataArray[data.X, data.Y] = data;
     }
 }

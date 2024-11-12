@@ -9,6 +9,5 @@ namespace Core.Game.Interfaces.Physic;
 public interface IPhysicEntity : IEntity
 {
     int Index { get; }
-    EntityType Type { get; }
     void Move(Vector2 velocity, bool isServer = false);
 }

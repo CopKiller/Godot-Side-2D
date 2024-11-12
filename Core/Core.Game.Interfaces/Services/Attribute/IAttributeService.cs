@@ -8,7 +8,6 @@ namespace Core.Game.Interfaces.Attribute;
 public interface IAttributeService : ISingleService
 {
     INetworkAttribute NetworkEvents { get; }
-    int DefaultUpdateInterval { get; set; }
     void AddPlayerAttribute(int index, PlayerModel playerModel);
     void RemovePlayerAttribute(int index);
     IAttributePlayer? GetPlayerAttribute(int index);

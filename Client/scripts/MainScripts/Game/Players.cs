@@ -97,7 +97,7 @@ public partial class Players : Node, IPacketHandler
 		tween?.TweenProperty(customLabel, "position:y", -64, 1.5f);
 		tween?.TweenProperty(customLabel, "modulate:a", 0, 1.5f);
 		
-		tween?.Connect("finished", Callable.From(() =>
+		tween?.Connect(Tween.SignalName.Finished, Callable.From(() =>
 		{
 			customLabel.QueueFree();
 		}));

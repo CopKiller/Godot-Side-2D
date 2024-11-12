@@ -21,8 +21,9 @@ public class BaseData<T> where T : class, IContractData, new()
     {
         for (var i = 1; i <= MaxValues; i++)
         {
-            CheckArchive(i, _currentDirectory);
-            DataObject.Add(XmlSerializer.DeserializeObjectFromPath<T>(_currentDirectory));
+            var path = _currentDirectory.ToIndex(i);
+            CheckArchive(i, path);
+            DataObject.Add(XmlSerializer.DeserializeObjectFromPath<T>(path));
         }
     }
     

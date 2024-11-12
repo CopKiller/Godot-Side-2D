@@ -28,7 +28,6 @@ public abstract class NetworkService : INetworkService
     /// <inheritdoc />
     public virtual void Unregister()
     {
-        this.Stop();
         this.listener = null;
         this.NetManager = null;
     }
@@ -49,11 +48,10 @@ public abstract class NetworkService : INetworkService
     public virtual void Stop()
     {
         this.NetManager?.Stop();
-        Log.Print("Shutdown.");
     }
 
     public void Dispose()
     {
-        this.Stop();
+        
     }
 }

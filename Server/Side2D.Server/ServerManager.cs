@@ -11,4 +11,14 @@ public sealed class ServerManager
         InitServer = new InitServer();
         InitServer.Start();
     }
+    
+    public void Stop()
+    {
+        InitServer?.Stop();
+    }
+    
+    public void Dispose()
+    {
+        InitServer?.Dispose();
+    }
 }

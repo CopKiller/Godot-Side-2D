@@ -11,8 +11,9 @@ public class AttributeService() : IAttributeService
 {
     // TODO: Implement Attribute service
     // This service will be responsible for handling all Attribute related tasks
-    
-    public int DefaultUpdateInterval { get; set; } = 1;
+
+    public bool NeedUpdate { get; set; } = true;
+    public int DefaultUpdateInterval { get; set; } = 5;
 
     public INetworkAttribute NetworkEvents { get; } = new NetworkAttribute();
     
@@ -36,9 +37,8 @@ public class AttributeService() : IAttributeService
     public void SetPlayerCombatState(int index, bool inCombat)
     {
         var player = AttributePlayers.GetValueOrDefault(index);
-        if (player == null) return;
-        
-        player.SetCombatState(inCombat);
+
+        player?.SetCombatState(inCombat);
     }
     
 

@@ -8,11 +8,11 @@ namespace Side2D.Server.Combat;
 
 public class CombatService(IAttributeService attributeService) : ICombatService
 {
+    public bool NeedUpdate { get; set; } = true;
+    public int DefaultUpdateInterval { get; set; } = 5;
+    
     private List<ICombatEntity> _entities = [];
-    
     private Dictionary<int, ICombatPlayer> _players = new();
-    
-    private int _defaultUpdateInterval = 1;
     
     public void NotifyReceivePlayerAttack(int attackerIndex, int victimIndex)
     {

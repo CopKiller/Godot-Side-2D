@@ -15,6 +15,11 @@ public class GameData
     public GameData()
     {
         var currentDirectory = Environment.CurrentDirectory + DataPath;
+        
+        if (!Directory.Exists(currentDirectory))
+        {
+            Directory.CreateDirectory(currentDirectory);
+        }
 
         var path = currentDirectory + "/World/~/" + DataExtension;
         _worldData = new WorldData(2, path);

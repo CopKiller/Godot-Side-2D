@@ -9,6 +9,8 @@ using Core.Game.Interfaces.Services.Physic.World;
 using Core.Game.Models;
 using Core.Game.Models.Enum;
 using Core.Game.Models.Player;
+using Genbox.VelcroPhysics.Dynamics;
+using Genbox.VelcroPhysics.Factories;
 using Genbox.VelcroPhysics.Shared;
 using Infrastructure.Physics;
 using Infrastructure.Physics.Player;
@@ -22,17 +24,49 @@ namespace Side2D.Server.Physics;
 public class PhysicService(ICombatService combatService) : IPhysicService
 {
     // TODO: Implement physics service
+    
+    public bool NeedUpdate { get; set; } = true;
     public int DefaultUpdateInterval { get; set; } = 1;
     public INetworkPhysic NetworkEvents { get; } = new NetworkPhysic();
     private Dictionary<int, PhysicWorld> Worlds { get; } = new();
     
     private float _lastUpdateTime;
     
+    Body? playerBodyTest = null;
+    
     public void Register() { }
 
-    public void Start() { }
+    public void Start()
+    {
+        // Inicializa o mundo de física para testes...
+        var physicWorld = new PhysicWorld(1, new Vector2(0, 9.8f));
+        
+        Worlds.Add(1, physicWorld);
+        
+        //var playerPreFab = new PhysicPlayerDef(1, new Vector2(0, 0));
+        
+        //playerBodyTest = BodyFactory.CreateFromDef(physicWorld, playerPreFab);
+        
+        //FixtureFactory.AttachRectangle(32, 64, 1, Vector2.Zero, playerBodyTest);
+        
+        // Adicionar vários body, para analisar desempenho...
+        
+        for (int i = 0; i < 1000; i++)
+        {
+            var playerPreFab = new PhysicPlayerDef(i, new Vector2(0, 0));
+        
+            var playerBody = BodyFactory.CreateFromDef(physicWorld, playerPreFab);
+        
+            FixtureFactory.AttachRectangle(32, 64, 1, Vector2.Zero, playerBody);
+        }
+        
+        
+        //var player = new PhysicPlayer(1, playerBodyTest);
+        
+        //physicWorld.AddPhysicEntity(1, player);
+    }
 
-    public void Stop() { Dispose(); }
+    public void Stop() {  }
     
     public void Restart()
     {
@@ -51,6 +85,10 @@ public class PhysicService(ICombatService combatService) : IPhysicService
         {
             value.Step(deltaTime);
         }
+        
+        //Console.WriteLine($"{playerBodyTest?.Position}");
+        
+        //playerBodyTest?.ApplyForce(new Vector2(500,0));
 
         _lastUpdateTime = currentTime;
     }
