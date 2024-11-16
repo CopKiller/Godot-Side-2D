@@ -13,6 +13,7 @@
       <ProjectReference Include="..\Services\Side2D.Server.Network\Side2D.Server.Network.csproj" />
       <ProjectReference Include="..\Services\Side2D.Server.Physics\Side2D.Server.Physics.csproj" />
       <ProjectReference Include="..\Services\Side2D.Server.Repository\Side2D.Server.Repository.csproj" />
+      <ProjectReference Include="..\Services\Side2D.Server.TempData\Side2D.Server.TempData.csproj" />
     </ItemGroup>
 
 </Project>

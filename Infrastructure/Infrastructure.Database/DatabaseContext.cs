@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database;
 
-public sealed class DatabaseContext : DbContext
+public class DatabaseContext : DbContext
 {
     public DbSet<AccountModel> Accounts { get; set; }
     public DbSet<PlayerModel> Players { get; set; }

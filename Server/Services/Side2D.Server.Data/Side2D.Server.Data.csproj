@@ -6,4 +6,14 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Data\Infrastructure.Data.csproj" />
+    </ItemGroup>
+
+    <Target Name="SetPrivateAssets" BeforeTargets="ResolveReferences">
+        <ItemGroup>
+            <ProjectReference Update="@(ProjectReference)" PrivateAssets="All" />
+        </ItemGroup>
+    </Target>
+
 </Project>

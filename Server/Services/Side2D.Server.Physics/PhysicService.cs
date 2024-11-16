@@ -32,16 +32,14 @@ public class PhysicService(ICombatService combatService) : IPhysicService
     
     private float _lastUpdateTime;
     
-    Body? playerBodyTest = null;
-    
     public void Register() { }
 
     public void Start()
     {
         // Inicializa o mundo de física para testes...
-        var physicWorld = new PhysicWorld(1, new Vector2(0, 9.8f));
+        //var physicWorld = new PhysicWorld(1, new Vector2(0, 9.8f));
         
-        Worlds.Add(1, physicWorld);
+        //Worlds.Add(1, physicWorld);
         
         //var playerPreFab = new PhysicPlayerDef(1, new Vector2(0, 0));
         
@@ -51,14 +49,14 @@ public class PhysicService(ICombatService combatService) : IPhysicService
         
         // Adicionar vários body, para analisar desempenho...
         
-        for (int i = 0; i < 1000; i++)
-        {
-            var playerPreFab = new PhysicPlayerDef(i, new Vector2(0, 0));
+        //for (int i = 0; i < 1000; i++)
+        //{
+        //    var playerPreFab = new PhysicPlayerDef(i, new Vector2(0, 0));
+        //
+        //    var playerBody = BodyFactory.CreateFromDef(physicWorld, playerPreFab);
         
-            var playerBody = BodyFactory.CreateFromDef(physicWorld, playerPreFab);
-        
-            FixtureFactory.AttachRectangle(32, 64, 1, Vector2.Zero, playerBody);
-        }
+        //    FixtureFactory.AttachRectangle(32, 64, 1, Vector2.Zero, playerBody);
+        //}
         
         
         //var player = new PhysicPlayer(1, playerBodyTest);

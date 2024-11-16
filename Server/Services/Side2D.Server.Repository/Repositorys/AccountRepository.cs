@@ -9,7 +9,7 @@ using Side2D.Server.Repository.Results;
 
 namespace Side2D.Server.Repository.Repositorys;
 
-public class AccountRepository(DatabaseContext context) : Repository<AccountModel>(context), IAccountRepository
+public class AccountRepository(Infrastructure.Database.DatabaseContext context) : Repository<AccountModel>(context), IAccountRepository
 {
     public async Task<IException?> AddAccountAsync(AccountModel account)
     {

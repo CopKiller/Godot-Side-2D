@@ -1,14 +1,11 @@
 ﻿
 using Core.Game.Interfaces.Attribute.Player;
-using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Physic.Player;
 using Core.Game.Interfaces.TempData.Player;
-using Core.Game.Models;
 using Core.Game.Models.Enum;
 using LiteNetLib;
 using Infrastructure.Network.CustomDataSerializable;
 using Infrastructure.Network.Packet.Server;
-using Side2D.Server.TempData;
 
 namespace Side2D.Server.Network
 {

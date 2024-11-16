@@ -7,13 +7,14 @@ using Core.Game.Interfaces.Attribute;
 using Core.Game.Interfaces.Combat;
 using Core.Game.Interfaces.Physic;
 using Core.Game.Interfaces.Repositories;
+using Core.Game.Interfaces.Services.Network;
 using Core.Game.Interfaces.TempData;
 using Core.Game.Models.Enum;
 using Infrastructure.Logger;
 using Infrastructure.Network;
 
 namespace Side2D.Server.Network;
-public class ServerNetworkService : NetworkService
+public class ServerNetworkService : NetworkService, INetworkService
 {
     private Dictionary<int, ServerClient> Players { get; set; } = new();
     private ServerPacketProcessor? ServerPacketProcessor { get; set; }
@@ -117,12 +118,14 @@ public class ServerNetworkService : NetworkService
     private void OnPeerDisconnectedEvent(NetPeer peer, DisconnectInfo disconnectInfo)
     {
         Players[peer.Id].Disconnect();
+        
+        // Remove player from services
         TempDataService.RemovePlayerData(peer.Id);
-        //PhysicService.RemovePhysicEntity(N, peer.Id, EntityType.Player);
+        PhysicService.RemovePhysicEntity(1, peer.Id, EntityType.Player);
         AttributeService.RemovePlayerAttribute(peer.Id);
         CombatService.RemovePlayerCombat(peer.Id);
+        
         Players.Remove(peer.Id);
-
         Log.Print($"{peer.Id}: {Enum.GetName(disconnectInfo.Reason)}");
     }
     private void OnNetworkErrorEvent(IPEndPoint endPoint, SocketError socketError)

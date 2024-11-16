@@ -8,7 +8,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Network\Infrastructure.Network.csproj" />
-      <ProjectReference Include="..\Side2D.Server.TempData\Side2D.Server.TempData.csproj" />
     </ItemGroup>
 
 </Project>

@@ -1,5 +1,4 @@
-﻿
-using Core.Game.Services;
+﻿using Core.Game.Interfaces.Service;
 using Infrastructure.Logger;
 using Side2D.Server.Logger;
 using Side2D.Server.Services;
@@ -8,8 +7,7 @@ namespace Side2D.Server.Infrastructure;
 
 internal class InitServer
 {
-    private IServicesManager? ServicesManager { get; set; }
-    private IServerServices? ServerServices { get; set; }
+    private ServerServicesManager? ServicesManager { get; set; }
     private bool IsRunning { get; set; }
 
     public void Start()
@@ -27,7 +25,7 @@ internal class InitServer
     {
         if (!IsRunning) return;
         
-        ServicesManager?.Stop();
+        ServicesManager?.Manager.Stop();
         
         Log.Print("Server Stopped...");
         
@@ -36,7 +34,7 @@ internal class InitServer
     
     public void Dispose()
     {
-        ServicesManager?.Dispose();
+        ServicesManager?.Manager.Dispose();
     }
     
     private void StartLogger()
@@ -48,18 +46,15 @@ internal class InitServer
     
     private void StartServices()
     {
-        // Get my services collections.
-        ServerServices = new ServerServices();
-        
         // Initialize services manager.
-        ServicesManager = new ServicesManager(ServerServices.GetServices());
+        ServicesManager = new ServerServicesManager();
         
         // Register and start services.
-        ServicesManager.Register();
-        ServicesManager.Start();
+        ServicesManager.Manager.Register();
+        ServicesManager.Manager.Start();
         
         Log.Print("Services Initialized...");
         
-        ServicesManager.Update();
+        ServicesManager.Manager.Update();
     }
 }

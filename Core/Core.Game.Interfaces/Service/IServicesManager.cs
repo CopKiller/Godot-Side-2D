@@ -1,4 +1,4 @@
-namespace Core.Game.Services;
+namespace Core.Game.Interfaces.Service;
 
 public interface IServicesManager : IDisposable
 {

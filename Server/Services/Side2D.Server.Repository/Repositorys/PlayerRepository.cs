@@ -8,7 +8,7 @@ using Side2D.Server.Repository.Results;
 
 namespace Side2D.Server.Repository.Repositorys
 {
-    public class PlayerRepository(DatabaseContext context) : Repository<PlayerModel>(context), IPlayerRepository
+    public class PlayerRepository(Infrastructure.Database.DatabaseContext context) : Repository<PlayerModel>(context), IPlayerRepository
     {
         public async Task<IException?> AddPlayerAsync(int accountId, PlayerModel player)
         {

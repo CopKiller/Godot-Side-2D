@@ -21,7 +21,6 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\Core\Core.Game.Interfaces\Core.Game.Interfaces.csproj" />
-      <ProjectReference Include="..\..\Core\Core.Game.Models\Core.Game.Models.csproj" />
     </ItemGroup>
 
 </Project>

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Game.Services;
 
-public sealed class ServicesManager(IServiceCollection collection) : IServicesManager
+public class ServicesManager(IServiceCollection collection) : IServicesManager
 {
     private const int DefaultUpdateInterval = 1;
     private IServiceProvider? ServiceProvider { get; set; }
