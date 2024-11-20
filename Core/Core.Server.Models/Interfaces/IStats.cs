@@ -1,6 +1,6 @@
-using Core.Game.Models.Enum;
+using Core.Server.Models.Enum;
 
-namespace Core.Game.Models.Interfaces;
+namespace Core.Server.Models.Interfaces;
 
 public interface IStats : IGameEntity
 {

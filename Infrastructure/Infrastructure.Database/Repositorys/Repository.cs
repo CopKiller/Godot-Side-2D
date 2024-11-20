@@ -1,5 +1,8 @@
+using System.Linq.Expressions;
 using Core.Database.Interfaces;
+using Core.Database.Interfaces.Account;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace Infrastructure.Database.Repositorys;
 
@@ -8,32 +11,46 @@ public class Repository<T>(DatabaseContext context) : IRepository<T>
 {
     private readonly DbSet<T> _dbSet = context.Set<T>();
 
-    public async Task<T?> GetByIdAsync(int id)
+    protected async Task<T?> GetByIdAsync(int id)
     {
-        return await _dbSet.AsNoTracking().FirstAsync(x => x.Id == id);
+        return await _dbSet.FirstOrDefaultAsync(x => x.Id == id);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    protected async Task<bool> ExistsAsync(Expression<Func<T, bool>> predicate)
     {
-        return await _dbSet.AsNoTracking().ToListAsync();
+        return await _dbSet.AnyAsync(predicate);
+    }
+    
+    protected async Task<bool> ExistsAsync(string propertyName, object value)
+    {
+        return await _dbSet
+            .AnyAsync(entity => EF.Property<object>(entity, propertyName) == value);
     }
 
-    public async Task AddAsync(T entity)
+    protected async Task<IEnumerable<T>> GetAllAsync(int page = 1, int pageSize = 10)
+    {
+        return await _dbSet
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+    }
+
+    protected async Task AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
     }
 
-    public void Update(T entity)
+    protected void Update(T entity)
     {
         _dbSet.Update(entity);
     }
 
-    public void Delete(T entity)
+    protected void Delete(T entity)
     {
         _dbSet.Remove(entity);
     }
 
-    public async Task<int> SaveChangesAsync()
+    protected async Task<int> SaveChangesAsync()
     {
         return await context.SaveChangesAsync();
     }

@@ -1,3 +1,5 @@
+using Core.Database.Interfaces;
+using Core.Database.Interfaces.Account;
 using Core.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +8,7 @@ namespace Infrastructure.Database;
 public class DatabaseContext : DbContext
 {
     public DbSet<AccountModel> Accounts { get; set; }
+    
     public DbSet<PlayerModel> Players { get; set; }
     
     public DatabaseContext()
@@ -47,5 +50,4 @@ public class DatabaseContext : DbContext
         optionsBuilder.UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking);
         optionsBuilder.AddInterceptors(new DetachEntitiesInterceptor());
     }
-
 }

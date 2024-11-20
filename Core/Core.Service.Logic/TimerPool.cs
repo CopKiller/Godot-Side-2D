@@ -1,38 +1,20 @@
 using System.Diagnostics;
+using Core.Service.Interfaces;
+using Core.Service.Interfaces.Types;
 
 namespace Core.Service.Logic;
 
-internal class TimerPool : IDisposable
+internal class TimerPool(IServiceConfiguration configuration, ILogger? logger) : IDisposable
 {
-    private readonly long _defaultUpdateInterval;
     private Stopwatch MainTimer { get; } = new();
     private Dictionary<ISingleService, long> ServiceLastTick { get; } = new();
     private Task? UpdateTask { get; set; }
     private CancellationTokenSource? UpdateCancellationTokenSource { get; set; }
 
-    public TimerPool(long defaultUpdateInterval, bool start = true)
-    {
-        _defaultUpdateInterval = defaultUpdateInterval;
-        if (start) Start();
-    }
-
-    public void Start()
+    public void Start(CancellationToken cancellationToken)
     {
         MainTimer.Start();
-    }
-    
-    public void Stop()
-    {
-        MainTimer.Stop();
-    }
-
-    public void AddService<T>(T service) where T : ISingleService
-    {
-        ServiceLastTick.TryAdd(service, 0);
-    }
-    
-    public void StartUpdateTask(CancellationToken cancellationToken)
-    {
+        
         UpdateTask = Task.Run(async () =>
         {
             while (!cancellationToken.IsCancellationRequested)
@@ -45,30 +27,42 @@ internal class TimerPool : IDisposable
                 }
 
                 var elapsed = MainTimer.ElapsedMilliseconds - startTick;
-                if (elapsed < _defaultUpdateInterval)
+                if (elapsed < configuration.UpdateIntervalMs)
                 {
-                    await Task.Delay((int)(_defaultUpdateInterval - elapsed), cancellationToken);
+                    await Task.Delay((int)(configuration.UpdateIntervalMs - elapsed), cancellationToken);
                 }
             }
+            
+            Stop();
         }, cancellationToken);
     }
-
     private void Update(ISingleService service)
     {
-        if (!service.NeedUpdate) return;
+        if (!service.Configuration.NeedUpdate) return;
         
         var tick = MainTimer.ElapsedMilliseconds;
         
         var tickCounter = tick - ServiceLastTick[service];
-        if (tickCounter < service.DefaultUpdateInterval) return;
+        if (tickCounter < service.Configuration.UpdateIntervalMs) return;
 
         service.Update(tick);
         ServiceLastTick[service] = tick;
     }
-
+    public void Stop()
+    {
+        foreach (var service in ServiceLastTick.Keys)
+        {
+            logger?.PrintInfo($"Service {service.GetType().Name} stopped.");
+        }
+        
+        MainTimer.Stop();
+    }
+    public void AddService<T>(T service) where T : ISingleService
+    {
+        ServiceLastTick.TryAdd(service, 0);
+    }
     public void Dispose()
     {
         Stop();
-        UpdateCancellationTokenSource?.Dispose();
     }
 }

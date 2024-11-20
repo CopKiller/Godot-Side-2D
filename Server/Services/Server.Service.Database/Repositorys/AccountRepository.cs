@@ -1,51 +1,53 @@
 
+using Core.Database.Consistency;
+using Core.Database.Interfaces;
+using Core.Database.Interfaces.Account;
+using Core.Database.Models;
+using Core.Game.Interfaces.Repositories;
+using Infrastructure.Database;
+using Infrastructure.Database.Repositorys;
+using Microsoft.EntityFrameworkCore;
 using Server.Service.Database.Results;
 
 namespace Server.Service.Database.Repositorys;
 
-public class AccountRepository(Infrastructure.Database.DatabaseContext context) : Repository<AccountModel>(context), IAccountRepository
+public class AccountRepository<T>(DatabaseContext context) : Repository<T>(context), IAccountRepository<T>
+where T : class, IAccountModel
 {
-    public async Task<IException?> AddAccountAsync(AccountModel account)
+    private DatabaseContext Context { get; } = context;
+    public async Task<IDatabaseException?> AddAccountAsync(T account)
     {
-        if (await EmailExistsAsync(account.Email))
-            return new DatabaseException("Email already exists");
-        if (await UsernameExistsAsync(account.Username))
-            return new DatabaseException("Username already exists");
-
-        account.Password = PasswordHelper.HashPassword(account.Password);
-
+        if (await ExistsAsync(p => p.Username == account.Username))
+            return new DatabaseException("Account already exists");
+        if (await ExistsAsync(p => p.Email == account.Email))
+            return new DatabaseException("E-mail already exists");
+        
         await AddAsync(account);
         
         var countChanges = await SaveChangesAsync();
         
         return countChanges > 0 ? null : new DatabaseException("Failed to add account");
     }
-
+    
+    public async Task<IResult<T>> GetAccountAsync(string username, string password)
+    {
+        var account = await Context.Accounts
+                .Include(p => p.Players)
+                .FirstOrDefaultAsync(p => p.Username == username && p.Password == password)
+            as T;
+        
+        return account == null
+            ? new Result<T>(account, new DatabaseException("Account not found")) 
+            : new Result<T>(account, null);
+    }
+    
     public async Task<bool> EmailExistsAsync(string email)
     {
-        return await Context.Accounts.AsNoTracking().AnyAsync(a => a.Email == email);
+        return await ExistsAsync(p => p.Email == email);
     }
-
+    
     public async Task<bool> UsernameExistsAsync(string username)
     {
-        return await Context.Accounts.AsNoTracking().AnyAsync(a => a.Username == username);
-    }
-
-    public async Task<IResult<AccountModel?>> GetAccountAsync(string username, string password)
-    {
-        
-        var account = await Context.Accounts.AsNoTracking()
-            .Include(a => a.Players)
-            .ThenInclude(a => a.Position)
-            .Include(a => a.Players)
-            .ThenInclude(a => a.Vitals)
-            .Include(a => a.Players)
-            .ThenInclude(a => a.IStats)
-            .FirstOrDefaultAsync(a => a.Username == username);
-        
-        if (account != null && !PasswordHelper.VerifyPassword(password, account.Password))
-            return new Result<AccountModel?>(null, new DatabaseException("Invalid username or password"));
-        
-        return new Result<AccountModel?>(account, null);
+        return await ExistsAsync(p => p.Username == username);
     }
 }

@@ -1,4 +1,4 @@
-namespace Core.Game.Models.Enum;
+namespace Core.Server.Models.Enum;
 
 public enum AttributesType : byte
 {

@@ -7,4 +7,10 @@
         <LangVersion>latest</LangVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\..\Core\Core.Service.Logic\Core.Service.Logic.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\Infrastructure.Database\Infrastructure.Database.csproj" />
+      <ProjectReference Include="..\..\Infrastructure\Insfrastructure.Logger\Insfrastructure.Logger.csproj" />
+      <ProjectReference Include="..\Services\Server.Service.Database\Server.Service.Database.csproj" />
+    </ItemGroup>
 </Project>

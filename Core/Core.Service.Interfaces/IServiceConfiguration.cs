@@ -1,3 +1,5 @@
+using Core.Service.Interfaces.Types;
+
 namespace Core.Service.Interfaces;
 
 public interface IServiceConfiguration

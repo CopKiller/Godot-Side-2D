@@ -9,7 +9,9 @@
 
     <ItemGroup>
       <ProjectReference Include="..\..\..\Core\Core.Database.Consistency\Core.Database.Consistency.csproj" />
-      <ProjectReference Include="..\..\..\Core\Core.Database.Interfaces\Core.Database.Interfaces.csproj" />
+      <ProjectReference Include="..\..\..\Core\Core.Server.Interfaces\Core.Server.Interfaces.csproj" />
+      <ProjectReference Include="..\..\..\Core\Core.Service.Interfaces\Core.Service.Interfaces.csproj" />
+      <ProjectReference Include="..\..\..\Infrastructure\Infrastructure.Database\Infrastructure.Database.csproj" />
     </ItemGroup>
 
 </Project>

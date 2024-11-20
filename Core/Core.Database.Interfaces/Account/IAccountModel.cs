@@ -1,6 +1,6 @@
 namespace Core.Database.Interfaces.Account;
 
-public interface IAccountModel
+public interface IAccountModel : IEntity
 {
     string Username { get; set; }
     string Password { get; set; }

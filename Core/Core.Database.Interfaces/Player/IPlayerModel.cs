@@ -1,6 +1,6 @@
 namespace Core.Database.Interfaces;
 
-public interface IPlayerModel
+public interface IPlayerModel : IEntity
 {
     public int SlotNumber { get; set; }
     public string Name { get; set; }

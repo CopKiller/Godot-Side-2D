@@ -1,10 +1,10 @@
 using Core.Database.Interfaces;
-using Core.Game.Interfaces.Result;
+using Core.Database.Interfaces.Account;
 
 namespace Server.Service.Database.Results;
 
-public class Result<T>(T? value, IDatabaseException? error) : IResult<T>
+public class Result<T>(T? value, IDatabaseException? error) : IResult<T> where T : class
 {
     public T? Value { get; } = value;
-    public IException? Error { get; } = error;
+    public IDatabaseException? Error { get; } = error;
 }

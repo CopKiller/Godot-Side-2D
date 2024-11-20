@@ -1,53 +1,62 @@
 
+using Core.Database.Consistency;
+using Core.Database.Interfaces;
+using Core.Database.Models;
+using Core.Game.Interfaces.Repositories;
+using Infrastructure.Database;
+using Infrastructure.Database.Repositorys;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 using Server.Service.Database.Results;
 
 namespace Server.Service.Database.Repositorys
 {
-    public class PlayerRepository(Infrastructure.Database.DatabaseContext context) : Repository<PlayerModel>(context), IPlayerRepository
+    public class PlayerRepository<T>(DatabaseContext context) : Repository<T>(context), IPlayerRepository<T>
+        where T : class, IPlayerModel
     {
-        public async Task<IException?> AddPlayerAsync(int accountId, PlayerModel player)
+        private DatabaseContext Context { get; } = context;
+        
+        public async Task<IDatabaseException?> AddPlayerAsync(int accountId, T player)
         {
-            if (await NameExistsAsync(player.Name))
-                return new DatabaseException("Username already exists");
+            if (await ExistsAsync(p => p.Name == player.Name))
+                return new DatabaseException("Player already exists");
             
-            var account = await Context.Accounts
-                .Include(a => a.Players)
-                .FirstOrDefaultAsync(a => a.Id == accountId);
-    
-            if (account == null)
-                return new DatabaseException("Account not found");
+            var account = await Context.Accounts.FirstAsync(p => p.Id == accountId);
             
             account.Players.Add(player);
-            Context.Accounts.Update(account);
-
-            var result = await SaveChangesAsync();
-            return result > 0 ? null : new DatabaseException("Failed to add player");
-        }
-
-        public async Task<IResult<List<PlayerModel>>> GetPlayersByAccountIdAsync(int accountId)
-        {
-            // Obtém os jogadores associados ao AccountId fornecido
-            var players = await Context.Accounts
-                .AsNoTracking()
-                .Where(a => a.Id == accountId)
-                .SelectMany(a => a.Players)
-                .ToListAsync();
-
-
-            return players.Count != 0 ? new Result<List<PlayerModel>>(players, null) : new Result<List<PlayerModel>>([], new DatabaseException("You do not have characters!"));
-        }
-
-        public async Task<bool> NameExistsAsync(string name)
-        {
-            return await Context.Players.AsNoTracking().AnyAsync(p => p.Name == name);
+            
+            await AddAsync(player);
+            
+            var countChanges = await SaveChangesAsync();
+            
+            return countChanges > 0 ? null : new DatabaseException("Failed to add player");
         }
         
-        public async Task<bool> UpdatePlayerAsync(PlayerModel player)
+        public async Task<IResult<List<T>>> GetPlayersAsync(int accountId)
         {
-            Console.WriteLine($"Updating player {player.Id} {player.Name}");
-            
-            context.Players.Update(player);
-            var result = await context.SaveChangesAsync() > 0;
+            var players = await Context.Players
+                .Include(p => p.Position)
+                .Include(p => p.Vitals)
+                .Include(p => p.Stats)
+                .Where(p => p.AccountModelId == accountId)
+                .ToListAsync() as List<T>;
+
+            // Encapsular o resultado em um IResult
+            return players?.Count == 0 ? new Result<List<T>>(players, new DatabaseException("Players not found")) : new Result<List<T>>(players, null);
+        }
+
+        public Task<bool> NameExistsAsync(string username)
+        {
+            return ExistsAsync(p => p.Name == username);
+        }
+
+        public async Task<bool> UpdatePlayerAsync(T player)
+        {
+            Console.WriteLine($"Updating player {player.Id} {player.Name}...");
+
+            Update(player);
+
+            var result = await SaveChangesAsync() > 0;
             return result;
         }
     }

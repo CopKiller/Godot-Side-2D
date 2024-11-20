@@ -5,19 +5,18 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Core.Service.Logic;
 
-public class ServiceManager(IServiceCollection collection) : IServiceManager
+public class ServiceManager(IServiceConfiguration configuration, IServiceCollection collection) : IServiceManager
 {
-    private const int DefaultUpdateInterval = 1;
+    public IServiceConfiguration Configuration { get; } = configuration;
     private IServiceProvider? ServiceProvider { get; set; }
-    private List<ISingleService> Services { get; set; } = new();
+    private List<ISingleService> Services { get; set; } = [];
     private TimerPool? TickCounter { get; set; }
     private CancellationTokenSource? _updateCancellationTokenSource;
+    
+    private ILogger? Logger { get; set; }
 
-    public void Register(IServiceConfiguration configuration)
+    public void Register()
     {
-        Log.PrintInfo("Registrando serviços...");
-        
-        TickCounter = new TimerPool(DefaultUpdateInterval, false);
         
         ServiceProvider = collection.BuildServiceProvider(new ServiceProviderOptions
         {
@@ -27,58 +26,67 @@ public class ServiceManager(IServiceCollection collection) : IServiceManager
         
         Services.Clear();
         
-        Log.PrintInfo("Obtendo serviços registrados como ISingleService que são singletons...");
-        foreach (var serviceType in collection.Select(x => x.ServiceType))
+        // Obter serviço ILogger apartir do ServiceProvider
+        Logger = ServiceProvider.GetService<ILogger>();
+        
+        TickCounter = new TimerPool(Configuration, Logger);
+        
+        Logger?.PrintInfo("Obtendo serviços registrados como ISingleService que são singletons...");
+        foreach (var serviceDescriptor in collection)
         {
-            if (ServiceProvider.GetRequiredService(serviceType) is ISingleService singletonService)
+            
+            if (serviceDescriptor.Lifetime != ServiceLifetime.Singleton)
             {
-                singletonService.Register();
-                Services.Add(singletonService);
-                TickCounter.AddService(singletonService);
+                continue;
+            }
+            
+            // Verifica se o tipo do serviço implementa ISingleService
+            if (typeof(ISingleService).IsAssignableFrom(serviceDescriptor.ServiceType))
+            {
+                // Resolve o serviço
+                var singletonService = ServiceProvider.GetService(serviceDescriptor.ServiceType) as ISingleService;
+        
+                if (singletonService != null)
+                {
+                    singletonService.Register();
+                    Services.Add(singletonService);
+                    TickCounter.AddService(singletonService);
+                }
             }
         }
     }
     
     public void Start()
     {
-        Log.PrintInfo("Iniciando serviços...");
+        Logger?.PrintInfo("Starting services...");
         Services.ForEach(service =>
         {
             service.Start();
-            Log.PrintInfo($"Serviço {service.GetType().Name} iniciado.");
+            Logger?.PrintInfo($"Service {service.GetType().Name} started.");
         });
-        TickCounter?.Start();
+        
+        _updateCancellationTokenSource ??= new CancellationTokenSource();
+        TickCounter?.Start(_updateCancellationTokenSource.Token);
     }
     
     public void Stop()
     {
-        Log.PrintInfo("Parando serviços...");
+        Logger?.PrintInfo("Parando serviços...");
         _updateCancellationTokenSource?.Cancel();
-        TickCounter?.Stop();
-        Services.ForEach(service =>
-        {
-            service.Stop();
-            Log.PrintInfo($"Serviço {service.GetType().Name} parado.");
-        });
     }
     
     public void Restart()
     {
-        Log.PrintInfo("Reiniciando serviços...");
+        Logger?.PrintInfo("Reiniciando serviços...");
         Stop();
         Start();
     }
     
-    public void Update()
-    {
-        _updateCancellationTokenSource?.Cancel();
-        _updateCancellationTokenSource = new CancellationTokenSource();
-        TickCounter?.StartUpdateTask(_updateCancellationTokenSource.Token);
-    }
+    public void Update() { }
     
     public void Dispose()
     {
-        Log.PrintInfo("Descartando serviços...");
+        Logger?.PrintInfo("Descartando serviços...");
         
         TickCounter?.Dispose();
         

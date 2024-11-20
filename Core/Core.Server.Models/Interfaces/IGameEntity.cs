@@ -1,4 +1,4 @@
-namespace Core.Game.Models.Interfaces;
+namespace Core.Server.Models.Interfaces;
 
 public interface IGameEntity
 { 

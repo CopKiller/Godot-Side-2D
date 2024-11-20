@@ -20,5 +20,5 @@ public class AccountModel : IEntity, IAccountModel
     [Required]
     public required string BirthDate { get; set; }
     
-    public List<PlayerModel> Players { get; set; } = [];
+    public List<IPlayerModel> Players { get; set; } = [];
 }

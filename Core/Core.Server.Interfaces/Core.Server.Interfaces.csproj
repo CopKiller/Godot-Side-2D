@@ -1,14 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>net9.0</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <LangVersion>latest</LangVersion>
+        <TargetFramework>net9.0</TargetFramework>
+        <RootNamespace>Core.Game.Interfaces</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
       <ProjectReference Include="..\Core.Database.Interfaces\Core.Database.Interfaces.csproj" />
+      <ProjectReference Include="..\Core.Service.Interfaces\Core.Service.Interfaces.csproj" />
     </ItemGroup>
 
 </Project>
