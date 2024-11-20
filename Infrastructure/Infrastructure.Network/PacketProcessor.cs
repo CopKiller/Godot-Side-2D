@@ -20,6 +20,7 @@ namespace Infrastructure.Network
             this.RegisterNestedType<Vitals>(NetSerializerExtension.Put, NetSerializerExtension.GetVitals);
             this.RegisterNestedType<Position>(NetSerializerExtension.Put, NetSerializerExtension.GetPosition);
             this.RegisterNestedType<Vector2>(NetSerializerExtension.Put, NetSerializerExtension.GetVector2);
+            this.RegisterNestedType<VectorTwo>(NetSerializerExtension.Put, NetSerializerExtension.GetVectorTwo);
         }
     }
 }

@@ -143,7 +143,9 @@ public partial class Player : CharacterBody2D
 		PlayerDataModel.Position.IsMoving = _isMoving;
 
 		// Envia a atualização
+		_cPlayerMove.Direction = _direction;
 		_cPlayerMove.Position = new Microsoft.Xna.Framework.Vector2(Position.X, Position.Y);
+		_cPlayerMove.Velocity = new Microsoft.Xna.Framework.Vector2(_velocity.X, _velocity.Y);
 		_clientPlayer.SendData(_cPlayerMove, DeliveryMethod.Sequenced);
 	}
 	

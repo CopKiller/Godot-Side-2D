@@ -29,7 +29,7 @@ namespace Infrastructure.Network.CustomDataSerializable.Extension
             return vitals;
         }
         
-        public static void Put(this NetDataWriter writer, Attributes val)
+        public static void Put(this NetDataWriter writer, IStats val)
         {
             writer.Put(val.Strength);
             writer.Put(val.Defense);
@@ -38,9 +38,9 @@ namespace Infrastructure.Network.CustomDataSerializable.Extension
             writer.Put(val.Willpower);
         }
         
-        public static Attributes GetAttributes(this NetDataReader reader)
+        public static IStats GetAttributes(this NetDataReader reader)
         {
-            var attributes = new Attributes()
+            var attributes = new IStats()
             {
                 Strength = reader.GetInt(),
                 Defense = reader.GetInt(),
@@ -84,6 +84,22 @@ namespace Infrastructure.Network.CustomDataSerializable.Extension
         public static Vector2 GetVector2(this NetDataReader reader)
         {
             var vector2 = new Vector2()
+            {
+                X = reader.GetFloat(),
+                Y = reader.GetFloat(),
+            };
+            return vector2;
+        }
+        
+        public static void Put(this NetDataWriter writer, VectorTwo vector)
+        {
+            writer.Put(vector.X);
+            writer.Put(vector.Y);
+        }
+
+        public static VectorTwo GetVectorTwo(this NetDataReader reader)
+        {
+            var vector2 = new VectorTwo()
             {
                 X = reader.GetFloat(),
                 Y = reader.GetFloat(),

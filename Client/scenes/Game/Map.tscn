@@ -362,8 +362,10 @@ tile_size = Vector2i(32, 32)
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_b2i3i")
 
-[node name="Map" type="Node2D"]
+[node name="Map" type="Node2D" node_paths=PackedStringArray("TileMapLayer")]
 script = ExtResource("1_xumii")
+ExportDirectory = "res://Exports/Map"
+TileMapLayer = [NodePath("Terrain"), NodePath("Attributes")]
 
 [node name="1" parent="." instance=ExtResource("2_4u4qp")]
 

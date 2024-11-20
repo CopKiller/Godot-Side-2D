@@ -1,5 +1,4 @@
-using Core.Game.Interfaces.Repositories;
-using Core.Game.Models.Interfaces;
+using Core.Database.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database.Repositorys;
@@ -7,36 +6,35 @@ namespace Infrastructure.Database.Repositorys;
 public class Repository<T>(DatabaseContext context) : IRepository<T>
     where T : class, IEntity
 {
-    protected readonly DatabaseContext Context = context;
     private readonly DbSet<T> _dbSet = context.Set<T>();
 
-    protected async Task<T?> GetByIdAsync(int id)
+    public async Task<T?> GetByIdAsync(int id)
     {
         return await _dbSet.AsNoTracking().FirstAsync(x => x.Id == id);
     }
 
-    protected async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<IEnumerable<T>> GetAllAsync()
     {
         return await _dbSet.AsNoTracking().ToListAsync();
     }
 
-    protected async Task AddAsync(T entity)
+    public async Task AddAsync(T entity)
     {
         await _dbSet.AddAsync(entity);
     }
 
-    protected void Update(T entity)
+    public void Update(T entity)
     {
         _dbSet.Update(entity);
     }
 
-    protected void Delete(T entity)
+    public void Delete(T entity)
     {
         _dbSet.Remove(entity);
     }
 
-    protected async Task<int> SaveChangesAsync()
+    public async Task<int> SaveChangesAsync()
     {
-        return await Context.SaveChangesAsync();
+        return await context.SaveChangesAsync();
     }
 }

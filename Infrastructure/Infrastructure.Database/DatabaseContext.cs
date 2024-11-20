@@ -1,4 +1,4 @@
-using Core.Game.Models;
+using Core.Database.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Database;

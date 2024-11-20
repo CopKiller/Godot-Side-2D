@@ -8,15 +8,15 @@ namespace Infrastructure.Network.Packet.Server
     public class SVitalsNotification
     {
         public int Index { get; set; }
-        public VitalType VitalType { get; set; }
+        public VitalsType VitalsType { get; set; }
         public double Value { get; set; }
         
-        public static SVitalsNotification Create(int index, VitalType vitalType, double value)
+        public static SVitalsNotification Create(int index, VitalsType vitalsType, double value)
         {
             return new SVitalsNotification
             {
                 Index = index,
-                VitalType = vitalType,
+                VitalsType = vitalsType,
                 Value = value
             };
         }

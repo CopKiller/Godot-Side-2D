@@ -16,25 +16,26 @@ namespace Infrastructure.Database.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.0-rc.2.24474.1");
 
-            modelBuilder.Entity("Core.Game.Models.AccountModel", b =>
+            modelBuilder.Entity("Core.Database.Models.AccountModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("BirthDate")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Email")
                         .IsRequired()
-                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<string>("Username")
                         .IsRequired()
-                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.HasKey("Id");
@@ -48,7 +49,36 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("Accounts");
                 });
 
-            modelBuilder.Entity("Core.Game.Models.Player.Attributes", b =>
+            modelBuilder.Entity("Core.Database.Models.Player.Position", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("PlayerModelId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<double>("Rotation")
+                        .HasColumnType("REAL");
+
+                    b.Property<float>("X")
+                        .HasColumnType("REAL");
+
+                    b.Property<float>("Y")
+                        .HasColumnType("REAL");
+
+                    b.Property<int>("Z")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("PlayerModelId")
+                        .IsUnique();
+
+                    b.ToTable("Position");
+                });
+
+            modelBuilder.Entity("Core.Database.Models.Player.Stats", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -77,36 +107,10 @@ namespace Infrastructure.Database.Migrations
                     b.HasIndex("PlayerModelId")
                         .IsUnique();
 
-                    b.ToTable("Attributes");
+                    b.ToTable("Stats");
                 });
 
-            modelBuilder.Entity("Core.Game.Models.Player.Position", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("INTEGER");
-
-                    b.Property<byte>("Direction")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("PlayerModelId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<float>("X")
-                        .HasColumnType("REAL");
-
-                    b.Property<float>("Y")
-                        .HasColumnType("REAL");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("PlayerModelId")
-                        .IsUnique();
-
-                    b.ToTable("Position");
-                });
-
-            modelBuilder.Entity("Core.Game.Models.Player.Vitals", b =>
+            modelBuilder.Entity("Core.Database.Models.Player.Vitals", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -135,7 +139,7 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("Vitals");
                 });
 
-            modelBuilder.Entity("Core.Game.Models.PlayerModel", b =>
+            modelBuilder.Entity("Core.Database.Models.PlayerModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -144,27 +148,20 @@ namespace Infrastructure.Database.Migrations
                     b.Property<int>("AccountModelId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<byte>("Gender")
+                    b.Property<int>("Experience")
                         .HasColumnType("INTEGER");
 
-                    b.Property<float>("JumpVelocity")
-                        .HasColumnType("REAL");
+                    b.Property<int>("Gold")
+                        .HasColumnType("INTEGER");
 
                     b.Property<int>("Level")
                         .HasColumnType("INTEGER");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(20)
                         .HasColumnType("TEXT");
 
                     b.Property<int>("SlotNumber")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<float>("Speed")
-                        .HasColumnType("REAL");
-
-                    b.Property<byte>("Vocation")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -177,42 +174,42 @@ namespace Infrastructure.Database.Migrations
                     b.ToTable("Players");
                 });
 
-            modelBuilder.Entity("Core.Game.Models.Player.Attributes", b =>
+            modelBuilder.Entity("Core.Database.Models.Player.Position", b =>
                 {
-                    b.HasOne("Core.Game.Models.PlayerModel", "PlayerModel")
-                        .WithOne("Attributes")
-                        .HasForeignKey("Core.Game.Models.Player.Attributes", "PlayerModelId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("PlayerModel");
-                });
-
-            modelBuilder.Entity("Core.Game.Models.Player.Position", b =>
-                {
-                    b.HasOne("Core.Game.Models.PlayerModel", "PlayerModel")
+                    b.HasOne("Core.Database.Models.PlayerModel", "PlayerModel")
                         .WithOne("Position")
-                        .HasForeignKey("Core.Game.Models.Player.Position", "PlayerModelId")
+                        .HasForeignKey("Core.Database.Models.Player.Position", "PlayerModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PlayerModel");
                 });
 
-            modelBuilder.Entity("Core.Game.Models.Player.Vitals", b =>
+            modelBuilder.Entity("Core.Database.Models.Player.Stats", b =>
                 {
-                    b.HasOne("Core.Game.Models.PlayerModel", "PlayerModel")
+                    b.HasOne("Core.Database.Models.PlayerModel", "PlayerModel")
+                        .WithOne("Stats")
+                        .HasForeignKey("Core.Database.Models.Player.Stats", "PlayerModelId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("PlayerModel");
+                });
+
+            modelBuilder.Entity("Core.Database.Models.Player.Vitals", b =>
+                {
+                    b.HasOne("Core.Database.Models.PlayerModel", "PlayerModel")
                         .WithOne("Vitals")
-                        .HasForeignKey("Core.Game.Models.Player.Vitals", "PlayerModelId")
+                        .HasForeignKey("Core.Database.Models.Player.Vitals", "PlayerModelId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("PlayerModel");
                 });
 
-            modelBuilder.Entity("Core.Game.Models.PlayerModel", b =>
+            modelBuilder.Entity("Core.Database.Models.PlayerModel", b =>
                 {
-                    b.HasOne("Core.Game.Models.AccountModel", "AccountModel")
+                    b.HasOne("Core.Database.Models.AccountModel", "AccountModel")
                         .WithMany("Players")
                         .HasForeignKey("AccountModelId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -221,17 +218,17 @@ namespace Infrastructure.Database.Migrations
                     b.Navigation("AccountModel");
                 });
 
-            modelBuilder.Entity("Core.Game.Models.AccountModel", b =>
+            modelBuilder.Entity("Core.Database.Models.AccountModel", b =>
                 {
                     b.Navigation("Players");
                 });
 
-            modelBuilder.Entity("Core.Game.Models.PlayerModel", b =>
+            modelBuilder.Entity("Core.Database.Models.PlayerModel", b =>
                 {
-                    b.Navigation("Attributes")
+                    b.Navigation("Position")
                         .IsRequired();
 
-                    b.Navigation("Position")
+                    b.Navigation("Stats")
                         .IsRequired();
 
                     b.Navigation("Vitals")

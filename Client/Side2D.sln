@@ -4,7 +4,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D", "Side2D.csproj", "
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{4ED8C8FA-D7FA-45EE-AA13-46B01ACEAD7E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Game.Services", "..\Core\Core.Game.Services\Core.Game.Services.csproj", "{B58098CF-A3B8-4721-9CB2-E151386034A1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Service.Logic", "..\Core\Core.Service.Logic\Core.Service.Logic.csproj", "{B58098CF-A3B8-4721-9CB2-E151386034A1}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Game.Interfaces", "..\Core\Core.Game.Interfaces\Core.Game.Interfaces.csproj", "{F7A896BD-6344-43F2-AAC5-E89205AA548C}"
 EndProject
@@ -20,19 +20,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Client", "Client", "{D3E64C
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{EFA95CB6-9C7D-45DF-BD14-CF56D75A4435}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Attributes", "..\Server\Services\Side2D.Server.Attributes\Side2D.Server.Attributes.csproj", "{7BA552F2-9B8D-4A21-A0D3-2BB359CCCED4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.AttributesService", "..\Server\Services\Side2D.Server.AttributesService\Side2D.Server.AttributesService.csproj", "{7BA552F2-9B8D-4A21-A0D3-2BB359CCCED4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Network", "..\Server\Services\Side2D.Server.Network\Side2D.Server.Network.csproj", "{1AA4CE7C-DF32-4C9E-AACC-E0C6F51708AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.NetworkService", "..\Server\Services\Side2D.Server.NetworkService\Side2D.Server.NetworkService.csproj", "{1AA4CE7C-DF32-4C9E-AACC-E0C6F51708AE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Physics", "..\Server\Services\Side2D.Server.Physics\Side2D.Server.Physics.csproj", "{A0EFCCDA-3CF9-4814-9124-41BD324445D3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.PhysicsService", "..\Server\Services\Side2D.Server.PhysicsService\Side2D.Server.PhysicsService.csproj", "{A0EFCCDA-3CF9-4814-9124-41BD324445D3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Repository", "..\Server\Services\Side2D.Server.Repository\Side2D.Server.Repository.csproj", "{86925B00-D1ED-4F0F-AF10-2E17BF628480}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Service.Database", "..\Server\Services\Server.Service.Database\Server.Service.Database.csproj", "{86925B00-D1ED-4F0F-AF10-2E17BF628480}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.TempData", "..\Server\Services\Side2D.Server.TempData\Side2D.Server.TempData.csproj", "{0C24233D-7CDA-49D3-A837-6B273D82C9AF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.TempDataService", "..\Server\Services\Side2D.Server.TempDataService\Side2D.Server.TempDataService.csproj", "{0C24233D-7CDA-49D3-A837-6B273D82C9AF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server", "..\Server\Side2D.Server\Side2D.Server.csproj", "{D478BF2E-B8E1-472F-837B-04B9601D8A58}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Services", "..\Server\Side2D.Server.Services\Side2D.Server.Services.csproj", "{3C65BF62-4503-45FB-82DA-9D82B05E6D80}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Server.Services.Initializer", "..\Server\Server.Services.Initializer\Server.Services.Initializer.csproj", "{3C65BF62-4503-45FB-82DA-9D82B05E6D80}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Database", "..\Infrastructure\Infrastructure.Database\Infrastructure.Database.csproj", "{A5576530-2F95-4017-B740-39B4B7F1EC79}"
 EndProject
@@ -42,7 +42,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Insfrastructure.Logger", ".
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiteNetLib", "..\Infrastructure\LiteNetLib\LiteNetLib\LiteNetLib.csproj", "{551C430E-E4F2-4B3B-8A65-50FD9E6EF542}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Combat", "..\Server\Services\Side2D.Server.Combat\Side2D.Server.Combat.csproj", "{7B851ACF-F5A3-4FCC-AB71-726C6C4B77AE}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.CombatService", "..\Server\Services\Side2D.Server.CombatService\Side2D.Server.CombatService.csproj", "{7B851ACF-F5A3-4FCC-AB71-726C6C4B77AE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.Physics", "..\Infrastructure\Infrastructure.Physics\Infrastructure.Physics.csproj", "{77454882-9E19-4FD1-B4A8-E26D73B62418}"
 EndProject
@@ -56,7 +56,15 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VelcroPhysics.Models", "..\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aether.Physics2D", "..\Infrastructure\Aether.Physics\Physics2D\Aether.Physics2D.csproj", "{FF178597-6727-4FF7-98B1-EBFC9A18EDF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.Data", "..\Server\Services\Side2D.Server.Data\Side2D.Server.Data.csproj", "{CDE6498F-B410-4CAF-A93E-781923E2F6BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Side2D.Server.DataService", "..\Server\Services\Side2D.Server.DataService\Side2D.Server.DataService.csproj", "{CDE6498F-B410-4CAF-A93E-781923E2F6BF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Database.Models", "..\Core\Core.Database.Models\Core.Database.Models.csproj", "{C9AD7680-A90F-4DE5-A5E0-69C4E9A0E352}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Database.Interfaces", "..\Core\Core.Database.Interfaces\Core.Database.Interfaces.csproj", "{FE3E45C7-F342-4682-B4B9-38C3C3A82295}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Database.Consistency", "..\Core\Core.Database.Consistency\Core.Database.Consistency.csproj", "{33B5565F-7DE0-400E-BBF3-BC4699227752}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core.Service.Interfaces", "..\Core\Core.Service.Interfaces\Core.Service.Interfaces.csproj", "{BAB3A5B1-AF0B-4A9A-8D4F-108F808429C7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,6 +211,30 @@ Global
 		{CDE6498F-B410-4CAF-A93E-781923E2F6BF}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
 		{CDE6498F-B410-4CAF-A93E-781923E2F6BF}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
 		{CDE6498F-B410-4CAF-A93E-781923E2F6BF}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{C9AD7680-A90F-4DE5-A5E0-69C4E9A0E352}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9AD7680-A90F-4DE5-A5E0-69C4E9A0E352}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9AD7680-A90F-4DE5-A5E0-69C4E9A0E352}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9AD7680-A90F-4DE5-A5E0-69C4E9A0E352}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{C9AD7680-A90F-4DE5-A5E0-69C4E9A0E352}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9AD7680-A90F-4DE5-A5E0-69C4E9A0E352}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{FE3E45C7-F342-4682-B4B9-38C3C3A82295}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3E45C7-F342-4682-B4B9-38C3C3A82295}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FE3E45C7-F342-4682-B4B9-38C3C3A82295}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3E45C7-F342-4682-B4B9-38C3C3A82295}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{FE3E45C7-F342-4682-B4B9-38C3C3A82295}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{FE3E45C7-F342-4682-B4B9-38C3C3A82295}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{33B5565F-7DE0-400E-BBF3-BC4699227752}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33B5565F-7DE0-400E-BBF3-BC4699227752}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{33B5565F-7DE0-400E-BBF3-BC4699227752}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{33B5565F-7DE0-400E-BBF3-BC4699227752}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{33B5565F-7DE0-400E-BBF3-BC4699227752}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{33B5565F-7DE0-400E-BBF3-BC4699227752}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
+		{BAB3A5B1-AF0B-4A9A-8D4F-108F808429C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB3A5B1-AF0B-4A9A-8D4F-108F808429C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB3A5B1-AF0B-4A9A-8D4F-108F808429C7}.ExportDebug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB3A5B1-AF0B-4A9A-8D4F-108F808429C7}.ExportDebug|Any CPU.Build.0 = Debug|Any CPU
+		{BAB3A5B1-AF0B-4A9A-8D4F-108F808429C7}.ExportRelease|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAB3A5B1-AF0B-4A9A-8D4F-108F808429C7}.ExportRelease|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{B58098CF-A3B8-4721-9CB2-E151386034A1} = {4ED8C8FA-D7FA-45EE-AA13-46B01ACEAD7E}
@@ -230,5 +262,9 @@ Global
 		{BEE18D28-B150-45BD-A64D-E5240023A042} = {518007E6-3067-4310-A5A1-6AB51AFBF0C8}
 		{FF178597-6727-4FF7-98B1-EBFC9A18EDF0} = {518007E6-3067-4310-A5A1-6AB51AFBF0C8}
 		{CDE6498F-B410-4CAF-A93E-781923E2F6BF} = {EFA95CB6-9C7D-45DF-BD14-CF56D75A4435}
+		{C9AD7680-A90F-4DE5-A5E0-69C4E9A0E352} = {4ED8C8FA-D7FA-45EE-AA13-46B01ACEAD7E}
+		{FE3E45C7-F342-4682-B4B9-38C3C3A82295} = {4ED8C8FA-D7FA-45EE-AA13-46B01ACEAD7E}
+		{33B5565F-7DE0-400E-BBF3-BC4699227752} = {4ED8C8FA-D7FA-45EE-AA13-46B01ACEAD7E}
+		{BAB3A5B1-AF0B-4A9A-8D4F-108F808429C7} = {4ED8C8FA-D7FA-45EE-AA13-46B01ACEAD7E}
 	EndGlobalSection
 EndGlobal

@@ -22,7 +22,7 @@ public struct PlayerDataModel : INetSerializable
 
     public Vitals Vitals { get; set; } = new Vitals();
     
-    public Attributes Attributes { get; set; } = new Attributes();
+    public IStats IStats { get; set; } = new IStats();
     
     public Position Position { get; set; } = new Position();
     
@@ -41,7 +41,7 @@ public struct PlayerDataModel : INetSerializable
         Vocation = Vocation.None;
         Gender = Gender.Undefined;
         Vitals = null;
-        Attributes = null;
+        IStats = null;
         Position = null;
         JumpVelocity = 0;
         Speed = 0;
@@ -57,7 +57,7 @@ public struct PlayerDataModel : INetSerializable
         Gender = playerModel.Gender;
         
         Vitals = playerModel.Vitals;
-        Attributes = playerModel.Attributes;
+        IStats = playerModel.IStats;
         Position = playerModel.Position;
         Position.Index = index;
         
@@ -73,7 +73,7 @@ public struct PlayerDataModel : INetSerializable
         Vocation = playerModel.Vocation;
         
         Vitals = playerModel.Vitals;
-        Attributes = playerModel.Attributes;
+        IStats = playerModel.IStats;
         Position = playerModel.Position;
         
         JumpVelocity = playerModel.JumpVelocity;
@@ -90,7 +90,7 @@ public struct PlayerDataModel : INetSerializable
         writer.Put((byte)Gender);
         
         writer.Put(Vitals);
-        writer.Put(Attributes);
+        writer.Put(IStats);
         writer.Put(Position);
         
         writer.Put(JumpVelocity);
@@ -107,7 +107,7 @@ public struct PlayerDataModel : INetSerializable
         Gender = (Gender)reader.GetByte();
         
         Vitals = reader.GetVitals();
-        Attributes = reader.GetAttributes();
+        IStats = reader.GetAttributes();
         Position = reader.GetPosition();
         
         JumpVelocity = reader.GetFloat();

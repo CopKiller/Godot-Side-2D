@@ -10,7 +10,7 @@ namespace Infrastructure.Data.Vocations.Contract;
 {
     [DataMember] public int Id { get; set; }
     [DataMember] public Vocation Vocation { get; set; } = Vocation.None;
-    [DataMember] public Attributes Attributes { get; set; } = new();
+    [DataMember] public IStats IStats { get; set; } = new();
     [DataMember] public Vitals Vitals { get; set; } = new();
     [DataMember] public Position Position { get; set; } = new();
     [DataMember] public float JumpVelocity { get; set; } = -400.0F;
@@ -24,16 +24,16 @@ namespace Infrastructure.Data.Vocations.Contract;
         switch (vocation)
         {
             case Vocation.Knight:
-                Attributes.Strength = 5;
-                Attributes.Defense = 5;
+                IStats.Strength = 5;
+                IStats.Defense = 5;
                 break;
             case Vocation.Mage:
-                Attributes.Intelligence = 5;
-                Attributes.Willpower = 5;
+                IStats.Intelligence = 5;
+                IStats.Willpower = 5;
                 break;
             case Vocation.Assassin:
-                Attributes.Agility = 5;
-                Attributes.Strength = 3;
+                IStats.Agility = 5;
+                IStats.Strength = 3;
                 break;
             case Vocation.None:
                 return;
@@ -48,6 +48,6 @@ namespace Infrastructure.Data.Vocations.Contract;
         Position.Y = 400;
         
         // Set the vitals based on the vocation
-        Vitals.Calculate(Attributes);
+        Vitals.SetBy(IStats);
     }
 }
