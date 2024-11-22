@@ -2,18 +2,11 @@
 
 namespace Infrastructure.Logger;
 
-public class CustomLoggerProvider : ILoggerProvider
+public class CustomLoggerProvider(LogLevel minLogLevel) : ILoggerProvider
 {
-    private readonly LogLevel _minLogLevel;
-
-    public CustomLoggerProvider(LogLevel minLogLevel)
-    {
-        _minLogLevel = minLogLevel;
-    }
-
     public ILogger CreateLogger(string categoryName)
     {
-        return new Logger(categoryName, _minLogLevel);
+        return new Logger(categoryName, minLogLevel);
     }
 
     public void Dispose()

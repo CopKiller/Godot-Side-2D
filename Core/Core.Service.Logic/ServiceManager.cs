@@ -2,18 +2,20 @@
 using Core.Service.Interfaces;
 using Core.Service.Interfaces.Types;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace Core.Service.Logic;
 
 public class ServiceManager(IServiceConfiguration configuration, IServiceCollection collection) : IServiceManager
 {
     public IServiceConfiguration Configuration { get; } = configuration;
-    private IServiceProvider? ServiceProvider { get; set; }
+    public IServiceProvider? ServiceProvider { get; set; }
     private List<ISingleService> Services { get; set; } = [];
     private TimerPool? TickCounter { get; set; }
     private CancellationTokenSource? _updateCancellationTokenSource;
     
-    private ILogger? Logger { get; set; }
+    private ILogger<ServiceManager>? Log { get; set; }
+    private ILoggerFactory? LoggerFactory { get; set; }
 
     public void Register()
     {
@@ -26,43 +28,36 @@ public class ServiceManager(IServiceConfiguration configuration, IServiceCollect
         
         Services.Clear();
         
-        // Obter serviço ILogger apartir do ServiceProvider
-        Logger = ServiceProvider.GetService<ILogger>();
+        // Obter serviço ILogger apartir do ServiceProvider.
+        LoggerFactory = ServiceProvider.GetRequiredService<ILoggerFactory>();
+        Log = LoggerFactory.CreateLogger<ServiceManager>();
         
-        TickCounter = new TimerPool(Configuration, Logger);
+        TickCounter = new TimerPool(Configuration, LoggerFactory.CreateLogger<TimerPool>());
         
-        Logger?.PrintInfo("Obtendo serviços registrados como ISingleService que são singletons...");
-        foreach (var serviceDescriptor in collection)
+        Log?.LogDebug("Getting singleton services (ISingleService)...");
+        foreach (var serviceDescriptor in collection.Where(sd => 
+                     sd.Lifetime == ServiceLifetime.Singleton && 
+                     typeof(ISingleService).IsAssignableFrom(sd.ServiceType)))
         {
-            
-            if (serviceDescriptor.Lifetime != ServiceLifetime.Singleton)
+            var singletonService = ServiceProvider.GetRequiredService(serviceDescriptor.ServiceType) as ISingleService;
+
+            if (singletonService != null)
             {
-                continue;
-            }
-            
-            // Verifica se o tipo do serviço implementa ISingleService
-            if (typeof(ISingleService).IsAssignableFrom(serviceDescriptor.ServiceType))
-            {
-                // Resolve o serviço
-                var singletonService = ServiceProvider.GetService(serviceDescriptor.ServiceType) as ISingleService;
-        
-                if (singletonService != null)
-                {
-                    singletonService.Register();
-                    Services.Add(singletonService);
-                    TickCounter.AddService(singletonService);
-                }
+                singletonService.Register();
+                Services.Add(singletonService);
+                TickCounter?.AddService(singletonService);
+                Log?.LogDebug($"Registered singleton service: {singletonService.GetType().Name}");
             }
         }
     }
     
     public void Start()
     {
-        Logger?.PrintInfo("Starting services...");
+        Log?.LogDebug("Starting services...");
         Services.ForEach(service =>
         {
             service.Start();
-            Logger?.PrintInfo($"Service {service.GetType().Name} started.");
+            Log?.LogDebug($"Service {service.GetType().Name} started.");
         });
         
         _updateCancellationTokenSource ??= new CancellationTokenSource();
@@ -71,22 +66,20 @@ public class ServiceManager(IServiceConfiguration configuration, IServiceCollect
     
     public void Stop()
     {
-        Logger?.PrintInfo("Parando serviços...");
+        Log?.LogDebug("Parando serviços...");
         _updateCancellationTokenSource?.Cancel();
     }
     
     public void Restart()
     {
-        Logger?.PrintInfo("Reiniciando serviços...");
+        Log?.LogDebug("Reiniciando serviços...");
         Stop();
         Start();
     }
     
-    public void Update() { }
-    
     public void Dispose()
     {
-        Logger?.PrintInfo("Descartando serviços...");
+        Log?.LogDebug("Descartando serviços...");
         
         TickCounter?.Dispose();
         
@@ -100,8 +93,17 @@ public class ServiceManager(IServiceConfiguration configuration, IServiceCollect
     
         foreach (var service in Services.OfType<IDisposable>())
         {
-            service.Dispose();
+            try
+            {
+                service.Dispose();
+                Log?.LogDebug($"Disposed service: {service.GetType().Name}");
+            }
+            catch (Exception ex)
+            {
+                Log?.LogError(ex, $"Error while disposing service: {service.GetType().Name}");
+            }
         }
+
     }
 
 }

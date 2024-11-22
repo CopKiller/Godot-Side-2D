@@ -1,17 +1,12 @@
 ﻿using Core.Database.Interfaces;
 using Core.Database.Interfaces.Account;
 using Core.Game.Interfaces.Repositories;
-using Core.Service.Interfaces;
-using Core.Service.Interfaces.Types;
-using Core.Service.Logic;
 using Infrastructure.Database;
 using Infrastructure.Logger;
-using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Server.Service.Database.Repositorys;
 using Server.Service.Database;
-using ILogger = Core.Service.Interfaces.ILogger;
 
 namespace Server.Services.Initializer;
 
@@ -29,18 +24,16 @@ internal class ServerServices
 
     private void ConfigureLoggerService(IServiceCollection services)
     {
+        const LogLevel logLevel = LogLevel.Debug;
+        
         // Adiciona o logging do Microsoft.Extensions.Logging
         services.AddLogging(loggingBuilder =>
         {
+            // Configura o nível mínimo para todos os logs
+            loggingBuilder.SetMinimumLevel(logLevel);
+            
             // Adiciona o provider customizado
-            loggingBuilder.AddProvider(new CustomLoggerProvider(LogLevel.Information));
-        });
-
-        // Registro do Logger customizado (associado à sua interface `ILogger`)
-        services.AddScoped<ILogger>(serviceProvider =>
-        {
-            var loggerFactory = serviceProvider.GetRequiredService<ILoggerFactory>();
-            return new Logger("Server", LogLevel.Information);
+            loggingBuilder.AddProvider(new CustomLoggerProvider(logLevel));
         });
     }
     

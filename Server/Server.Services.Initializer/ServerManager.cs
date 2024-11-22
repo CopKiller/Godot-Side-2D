@@ -15,14 +15,26 @@ public sealed class ServerManager
     
     public ServerManager()
     {
-        
         var serverServices = new ServerServices().GetServices();
         
-        var serviceConfig = new ServiceConfiguration() { Enabled = true, NeedUpdate = true, UpdateIntervalMs = 1 };
+        var serviceConfig = new DatabaseServiceConfiguration() { Enabled = true, NeedUpdate = true, UpdateIntervalMs = 1 };
         
         Manager = new ServiceManager(serviceConfig, serverServices);
-        
+    }
+    
+    public void Start()
+    {
         Manager.Register();
         Manager.Start();
+    }
+    
+    public void Stop()
+    {
+        Manager.Stop();
+    }
+    
+    public void Dispose()
+    {
+        Manager.Dispose();
     }
 }

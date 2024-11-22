@@ -16,6 +16,8 @@ public class Program
             Console.WriteLine("Finalizando servidor...");
             _serverManager?.Stop();
             
+            _serverManager?.Dispose();
+            
             _serverManager?.Start();
             
             //_serverManager?.Dispose();

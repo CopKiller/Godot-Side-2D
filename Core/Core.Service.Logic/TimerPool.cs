@@ -1,10 +1,11 @@
 using System.Diagnostics;
 using Core.Service.Interfaces;
 using Core.Service.Interfaces.Types;
+using Microsoft.Extensions.Logging;
 
 namespace Core.Service.Logic;
 
-internal class TimerPool(IServiceConfiguration configuration, ILogger? logger) : IDisposable
+internal class TimerPool(IServiceConfiguration configuration, ILogger<TimerPool>? logger) : IDisposable
 {
     private Stopwatch MainTimer { get; } = new();
     private Dictionary<ISingleService, long> ServiceLastTick { get; } = new();
@@ -52,7 +53,8 @@ internal class TimerPool(IServiceConfiguration configuration, ILogger? logger) :
     {
         foreach (var service in ServiceLastTick.Keys)
         {
-            logger?.PrintInfo($"Service {service.GetType().Name} stopped.");
+            service.Stop();
+            logger?.LogDebug($"{nameof(Service)} stopped.");
         }
         
         MainTimer.Stop();
@@ -63,6 +65,15 @@ internal class TimerPool(IServiceConfiguration configuration, ILogger? logger) :
     }
     public void Dispose()
     {
-        Stop();
+        
+        foreach (var service in ServiceLastTick.Keys)
+        {
+            service.Dispose();
+            logger?.LogDebug($"{nameof(Service)} disposed.");
+        }
+        
+        ServiceLastTick.Clear();
+        
+        MainTimer.Stop();
     }
 }
